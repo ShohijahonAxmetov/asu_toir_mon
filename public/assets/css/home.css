@@ -1,0 +1,143 @@
+.choices, .flatpickr-input {
+    min-width: 240px;
+}
+.month_input:focus-visible {
+    outline: none;
+}
+#avaries_chart {
+    width: 100%;
+    height: auto;
+}
+#tex_chart {
+    height: 500px;
+}
+/* calendar styles */
+.calendar-wrapper .group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.calendar-wrapper img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: baseline;
+}
+.calendar-wrapper a {
+  text-decoration: none;
+}
+.calendar-wrapper {
+  width: 360px;
+  padding: 2em;
+/*      border: 1px solid #dcdcff;*/
+  border-radius: 5px;
+  background: #fff;
+}
+.calendar-wrapper table {
+  clear: both;
+  width: 100%;
+  border: 1px solid #dcdcff;
+  border-radius: 3px;
+  border-collapse: collapse;
+  color: #444;
+}
+.calendar-wrapper td {
+  height: 48px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid #dcdcff;
+  border-top: 1px solid #dcdcff;
+  width: 14.28571429%;
+}
+.calendar-wrapper td.not-current {
+  color: #c0c0c0;
+}
+.calendar-wrapper td.today {
+  font-weight: 700;
+  color: #28283b;
+  font-size: 1.5em;
+}
+.calendar-wrapper thead td {
+  border: none;
+  color: #28283b;
+  text-transform: uppercase;
+  font-size: 1.5em;
+}
+.calendar-wrapper #btnPrev {
+  float: left;
+  margin-bottom: 20px;
+}
+.calendar-wrapper #btnPrev:before {
+  content: '\f104';
+  font-family: FontAwesome;
+  padding-right: 4px;
+}
+.calendar-wrapper #btnNext {
+  float: right;
+  margin-bottom: 20px;
+}
+.calendar-wrapper #btnNext:after {
+  content: '\f105';
+  font-family: FontAwesome;
+  padding-left: 4px;
+}
+.calendar-wrapper #btnPrev,
+.calendar-wrapper #btnNext {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #c0c0c0;
+  cursor: pointer;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+.calendar-wrapper #btnPrev:hover,
+.calendar-wrapper #btnNext:hover {
+  color: #28283b;
+  font-weight: bold;
+}
+
+/*  for calendar modal spinner  */
+.modal-loader {
+    background-color: rgba(255,255,255,.8);top: 0;left: 0;
+}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #000 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.modal-body {
+    overflow-x: scroll;
+}
+/* calendar styles end  */
