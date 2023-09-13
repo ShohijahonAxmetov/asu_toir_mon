@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RequirementYearApplication extends Model
+class RequirementRepairApplication extends Model
 {
     use HasFactory;
 
@@ -19,5 +19,5 @@ class RequirementYearApplication extends Model
         'declared_quantity',
         'delivery_date'
     ];
-    
+
 }

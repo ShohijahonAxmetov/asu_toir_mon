@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RequirementYearApplication extends Model
+class RequirementEmergencyApplication extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'repair_application_id',
+        'emergency_application_id',
         'technical_resource_id',
         'required_quantity',
         'warehouse_number',
@@ -19,5 +19,5 @@ class RequirementYearApplication extends Model
         'declared_quantity',
         'delivery_date'
     ];
-    
+
 }

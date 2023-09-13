@@ -5,20 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlanRemont extends Model
+class EmergencyApplication extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'application_date',
         'equipment_id',
-        'remont_type_id',
-        'remont_begin',
-        'remont_end'
+        'plan_remont_id'
     ];
 
     public function equipment()
     {
         return $this->belongsTo(Equipment::class);
     }
-    
+
+    public function planRemont()
+    {
+        return $this->belongsTo(PlanRemont::class);
+    }
+
 }

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class RemontMove extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'plan_remont_id',
+        'remont_begin',
+        'remont_end'
+    ];
+
+
 }
