@@ -9,10 +9,13 @@ class Equipment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'desc'];
+    protected $fillable = [
+        'type_equipment_id',
+        'garage_number'
+    ];
 
-    public function details()
+    public function typeEquipment()
     {
-        return $this->hasMany(Detail::class);
+        return $this->belongsTo(TypeEquipment::class);
     }
 }
