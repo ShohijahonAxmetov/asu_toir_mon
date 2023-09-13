@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
+use App\Models\TypeEquipment;
 use App\Models\Detail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -18,16 +19,24 @@ class EquipmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $equipments = Equipment::latest()
-            ->paginate(12);
+        $equipments = Equipment::latest();
+        $search = null;
+        if(isset($request->type_equipment_id) && $request->type_equipment_id != '') {
+            $equipments = $equipments->where('type_equipment_id', $request->type_equipment_id);
+            $search = $request->type_equipment_id;
+        }
+        $equipments = $equipments->paginate(12);
+        $type_equipments = TypeEquipment::all();
 
-        return view('app.equipments.index', [
+        return view('app.'.$this->route_name.'.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'equipments' => $equipments
+            'equipments' => $equipments,
+            'type_equipments' => $type_equipments,
+            'search' => $search,
         ]);
     }
 
@@ -36,10 +45,13 @@ class EquipmentController extends Controller
      */
     public function create()
     {
+        $type_equipments = TypeEquipment::all();
+
         return view('app.'.$this->route_name.'.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
-            'route_parameter' => $this->route_parameter
+            'route_parameter' => $this->route_parameter,
+            'type_equipments' => $type_equipments,
         ]);
     }
 
@@ -51,7 +63,8 @@ class EquipmentController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'name' => 'required'
+            'garage_number' => 'required',
+            'type_equipment_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return back()->withInput()->with([
@@ -81,11 +94,14 @@ class EquipmentController extends Controller
      */
     public function edit(Equipment $equipment)
     {
+        $type_equipments = TypeEquipment::all();
+
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'equipment' => $equipment
+            'equipment' => $equipment,
+            'type_equipments' => $type_equipments,
         ]);
     }
 
@@ -97,7 +113,8 @@ class EquipmentController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'name' => 'required'
+            'garage_number' => 'required',
+            'type_equipment_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return back()->with([
@@ -124,20 +141,6 @@ class EquipmentController extends Controller
         return back()->with([
             'success' => true,
             'message' => 'Успешно удален'
-        ]);
-    }
-
-    public function getDetails(Request $request, $id)
-    {
-        // $details = Equipment::find($id)->details;
-        $details = Detail::where([
-            ['equipment_id', $id],
-            // ['type_technical_inspection_id', $request->type_technical_inspection_id],
-        ])
-        ->get();
-
-        return response([
-            'details' => $details
         ]);
     }
 }

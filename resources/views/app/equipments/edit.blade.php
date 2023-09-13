@@ -53,14 +53,27 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="name" class="form-label">Название</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $equipment->name ?? null }}" id="name" placeholder="Название...">
-                                        @error('name')
+                                        <label for="garage_number" class="form-label required">Гаражный номер</label>
+                                        <input type="text" required class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') ?? $equipment->garage_number }}" id="garage_number" placeholder="Гаражный номер...">
+                                        @error('garage_number')
                                         <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="type_equipment_id" class="form-label required">Тип оборудования</label>
+                                    <select class="form-control mb-4 @error('type_equipment_id') is-invalid @enderror" name="type_equipment_id" required>
+                                        @foreach ($type_equipments as $key => $item)
+                                            <option value="{{ $item->id }}" {{ old('type_equipment_id', $equipment->type_equipment_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('type_equipment_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                             <!-- Button -->

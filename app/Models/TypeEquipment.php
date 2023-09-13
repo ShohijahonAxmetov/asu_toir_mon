@@ -9,6 +9,8 @@ class TypeEquipment extends Model
 {
     use HasFactory;
 
+    protected $table = 'type_equipments';
+
     protected $fillable = [
         'name'
     ];

@@ -18,11 +18,12 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('equipments/{id}/getDetails', [\App\Http\Controllers\EquipmentController::class, 'getDetails']);
     Route::resource('equipments', \App\Http\Controllers\EquipmentController::class);
-    Route::resource('details', \App\Http\Controllers\DetailController::class);
-    Route::resource('technical_inspections', \App\Http\Controllers\TechnicalInspectionController::class);
-    Route::resource('type_technical_inspections', \App\Http\Controllers\TypeTechnicalInspectionController::class);
+    Route::resource('type_equipments', \App\Http\Controllers\TypeEquipmentController::class);
+    Route::resource('technical_resources', \App\Http\Controllers\TechnicalResourceController::class);
+    Route::resource('technical_resource_type_eq', \App\Http\Controllers\TechnicalResourceTypeEquipmentController::class);
+    Route::resource('plan_remonts', \App\Http\Controllers\PlanRemontController::class);
+    Route::resource('year_applications', \App\Http\Controllers\YearApplicationController::class);
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/calendar/get_days', [App\Http\Controllers\HomeController::class, 'get_days']);

@@ -39,42 +39,6 @@
         </div>
     </div> <!-- / .header -->
 
-    <!-- filter -->
-    <div class="container-fluid">
-        <div class="card mt-4">
-            <!-- <div class="card-header">
-                <h3 class="mb-0">Фильтр</h3>
-            </div> -->
-            <div class="card-body">
-                <form action="{{route($route_name.'.index')}}">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="type_equipment_id" class="form-label">Тип оборудования</label>
-                                <select class="form-control @error('categories') is-invalid @enderror" name="type_equipment_id" data-choices>
-                                    <option value="">Выберите из списка</option>
-                                    @foreach ($type_equipments as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('type_equipment_id')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary lift">
-                                    Фильтр
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- CARDS -->
     <div class="container-fluid">
         <div class="card mt-4">
@@ -85,22 +49,20 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Гаражный номер</th>
-                            <th scope="col">Тип оборудования</th>
+                            <th scope="col">Название</th>
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($equipments as $key => $item)
+                        @foreach ($type_equipments as $key => $item)
                             <tr>
-                                <th scope="row" style="width: 100px">{{ $equipments->firstItem() + $key }}</th>
+                                <th scope="row" style="width: 100px">{{ $type_equipments->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->garage_number }}
+                                        {{ $item->name }}
                                     </div>
                                 </td>
-                                <td>{{ $item->typeEquipment->name }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
@@ -118,7 +80,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $equipments->links() }}
+                    {{ $type_equipments->links() }}
                 </div>
             </div>
         </div>

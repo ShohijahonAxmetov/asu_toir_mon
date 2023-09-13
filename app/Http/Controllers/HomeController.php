@@ -29,53 +29,55 @@ class HomeController extends Controller
         /*
             dannie dlya modali
         */
-        $zaplanirovannie = Equipment::whereHas('details', function($q) {
-            $q->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-            })
-            ->with(['details' => function ($q) {
-                $q->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-            }])
-            ->get();
-        $provedennie = Equipment::whereHas('details', function($q) {
-            $q->whereHas('technical_inspections', function ($qi) {
-                $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-            });
-            })
-            ->with(['details' => function ($q) {
-                $q->whereHas('technical_inspections', function ($qi) {
-                    $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-                });
-            }])
-            ->get();
+        // $zaplanirovannie = Equipment::whereHas('details', function($q) {
+        //     $q->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //     })
+        //     ->with(['details' => function ($q) {
+        //         $q->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //     }])
+        //     ->get();
+        // $provedennie = Equipment::whereHas('details', function($q) {
+        //     $q->whereHas('technical_inspections', function ($qi) {
+        //         $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //     });
+        //     })
+        //     ->with(['details' => function ($q) {
+        //         $q->whereHas('technical_inspections', function ($qi) {
+        //             $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //         });
+        //     }])
+        //     ->get();
 
 
-        $type_technical_inspections = TypeTechnicalInspection::all();
-        $result_plan = [];
-        $result_fact = [];
-        foreach($type_technical_inspections as $key => $item) {
-            $result_plan[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
-                $q->where('type_technical_inspection_id', $item->id)
-                    ->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-            })
-            ->count();
+        // $type_technical_inspections = TypeTechnicalInspection::all();
+        // $result_plan = [];
+        // $result_fact = [];
+        // foreach($type_technical_inspections as $key => $item) {
+        //     $result_plan[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
+        //         $q->where('type_technical_inspection_id', $item->id)
+        //             ->whereBetween('planned', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //     })
+        //     ->count();
 
-            $result_fact[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
-                $q->where('type_technical_inspection_id', $item->id)
-                    ->whereHas('technical_inspections', function ($qi) {
-                        $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
-                    });
-            })
-            ->count();
-        }
+        //     $result_fact[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
+        //         $q->where('type_technical_inspection_id', $item->id)
+        //             ->whereHas('technical_inspections', function ($qi) {
+        //                 $qi->whereBetween('now', [date('Y-m-d', strtotime(date('Y').'-01')), date('Y-m-d', strtotime(date('Y').'-12-31'))]);
+        //             });
+        //     })
+        //     ->count();
+        // }
 
 
-        return view('home', [
-            'result_plan' => $result_plan,
-            'result_fact' => $result_fact,
+        // return view('home', [
+        //     'result_plan' => $result_plan,
+        //     'result_fact' => $result_fact,
 
-            'zaplanirovannie' => $zaplanirovannie,
-            'provedennie' => $provedennie,
-        ]);
+        //     'zaplanirovannie' => $zaplanirovannie,
+        //     'provedennie' => $provedennie,
+        // ]);
+
+        return view('home');
     }
 
     public function chart()

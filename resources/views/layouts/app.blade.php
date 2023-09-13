@@ -61,7 +61,7 @@
 
                         <!-- Menu -->
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarIcon">
-                            <a href="/sign-in.html" class="dropdown-item">Logout</a>
+                            <a href="/sign-in.html" class="dropdown-item">Выход</a>
                         </div>
 
                     </div>
@@ -80,56 +80,106 @@
                         </li>
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
-                               href="{{ route('equipments.index') }}">
+                            <a class="nav-link" href="#equipments" data-bs-toggle="collapse" role="button"
+                               aria-expanded="{{ request()->is('equipments') || request()->is('equipments/*') || request()->is('type_equipments') || request()->is('type_equipments/*') ? 'true' : 'false' }}"
+                               aria-controls="documents">
                                 <i class="fe fe-truck"></i> Оборудования
                             </a>
+                            <div
+                                class="collapse {{ request()->is('equipments') || request()->is('equipments/*') || request()->is('type_equipments') || request()->is('type_equipments/*') ? 'show' : '' }}"
+                                id="equipments">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('type_equipments') || request()->is('type_equipments/*') ? 'active' : '' }}"
+                                           href="{{ route('type_equipments.index') }}">
+                                            Типы оборудования
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
+                                           href="{{ route('equipments.index') }}">
+                                            Оборудования
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('details') || request()->is('details/*') ? 'active' : '' }}"
-                               href="{{ route('details.index') }}">
-                                <i class="fe fe-settings"></i> Агрегаты, узлы
+                            <a class="nav-link" href="#technical_resources" data-bs-toggle="collapse" role="button"
+                               aria-expanded="{{ request()->is('technical_resources') || request()->is('technical_resources/*') || request()->is('technical_resource_type_equipment') || request()->is('technical_resource_type_equipment/*') ? 'true' : 'false' }}"
+                               aria-controls="documents">
+                                <i class="fe fe-settings"></i> Материально-технические ресурсы
+                            </a>
+                            <div
+                                class="collapse {{ request()->is('technical_resources') || request()->is('technical_resources/*') || request()->is('technical_resource_type_equipment') || request()->is('technical_resource_type_equipment/*') ? 'show' : '' }}"
+                                id="technical_resources">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('technical_resources') || request()->is('technical_resources/*') ? 'active' : '' }}"
+                                           href="{{ route('technical_resources.index') }}">
+                                            Материально-технические ресурсы
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('technical_resource_type_equipment') || request()->is('technical_resource_type_equipment/*') ? 'active' : '' }}"
+                                           href="{{ route('technical_resource_type_eq.index') }}">
+                                            Узлы для типа оборудования
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('plan_remonts') || request()->is('plan_remonts/*') ? 'active' : '' }}"
+                               href="{{ route('plan_remonts.index') }}">
+                                <i class="fe fe-briefcase"></i> Запланированные ремонты
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('technical_inspections') || request()->is('technical_inspections/*') ? 'active' : '' }}"
-                               href="{{ route('technical_inspections.index') }}">
-                                <i class="fe fe-briefcase"></i> Технические обслуживания и ремонты
+                            <a class="nav-link" href="#applications" data-bs-toggle="collapse" role="button"
+                               aria-expanded="{{ request()->is('year_applications') || request()->is('year_applications/*') ? 'true' : 'false' }}"
+                               aria-controls="documents">
+                                <i class="fe fe-book"></i> Заявки
                             </a>
+                            <div
+                                class="collapse {{ request()->is('year_applications') || request()->is('year_applications/*') ? 'show' : '' }}"
+                                id="applications">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('year_applications') || request()->is('year_applications/*') ? 'active' : '' }}"
+                                           href="{{ route('year_applications.index') }}">
+                                            Годовая заявка на ремонт
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="">
+                                            Заявки на ремонты
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="">
+                                            Аварийная разовая заявка
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-{{--                        <li class="nav-item">--}}
-{{--                            <a class="nav-link" href="#posts" data-bs-toggle="collapse" role="button"--}}
-{{--                               aria-expanded="{{ request()->is('posts') || request()->is('posts/*') || request()->is('posts_categories') || request()->is('posts_categories/*') ? 'true' : 'false' }}"--}}
-{{--                               aria-controls="posts">--}}
-{{--                                <i class="fe fe-cast"></i> Посты--}}
-{{--                            </a>--}}
-{{--                            <div--}}
-{{--                                class="collapse {{ request()->is('admin/posts') || request()->is('admin/posts/*') || request()->is('admin/posts_categories') || request()->is('admin/posts_categories/*') ? 'show' : '' }}"--}}
-{{--                                id="posts">--}}
-{{--                                <ul class="nav nav-sm flex-column">--}}
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link {{ request()->is('') || request()->is('') ? 'active' : '' }}"--}}
-{{--                                           href="">--}}
-{{--                                            Посты--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button"
-                               aria-expanded="{{ request()->is('admin/site_infos') || request()->is('admin/site_infos/*') ? 'true' : 'false' }}"
+                               aria-expanded=""
                                aria-controls="documents">
                                 <i class="fe fe-book"></i> Справочники
                             </a>
                             <div
-                                class="collapse {{ request()->is('type_technical_inspections') || request()->is('type_technical_inspections/*') ? 'show' : '' }}"
+                                class="collapse"
                                 id="static_info">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link {{ request()->is('type_technical_inspections') || request()->is('type_technical_inspections/*') ? 'active' : '' }}"
-                                           href="{{ route('type_technical_inspections.index') }}">
+                                        <a class="nav-link"
+                                           href="">
                                             Типы технических обслуживаний
                                         </a>
                                     </li>

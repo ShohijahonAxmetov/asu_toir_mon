@@ -11,19 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requirement_year_applications', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('year_application_id')->constrained();
+            $table->foreignId('plan_remont_id')->constrained();
             $table->foreignId('equipment_id')->constrained();
             $table->foreignId('technical_resource_id')->constrained();
-            $table->integer('month');
-            $table->foreignId('plan_remont_id')->constrained();
             $table->float('required_quantity', 13, 3);
             $table->date('warehouse_number')->nullable();
             $table->date('warehouse_date')->nullable();
             $table->float('warehouse_quantity', 13, 3)->nullable();
+            $table->integer('type_application');
+            $table->integer('requirement_id');
+            $table->date('application_date');
             $table->float('declared_quantity', 13, 3);
             $table->date('delivery_date');
+            $table->date('remont_begin');
+
             $table->timestamps();
         });
     }
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirement_year_applications');
+        Schema::dropIfExists('applications');
     }
 };

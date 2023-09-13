@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requirement_year_applications', function (Blueprint $table) {
+        Schema::create('requirement_emergency_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('year_application_id')->constrained();
-            $table->foreignId('equipment_id')->constrained();
+            $table->foreignId('emergency_application_id')->constrained();
             $table->foreignId('technical_resource_id')->constrained();
-            $table->integer('month');
-            $table->foreignId('plan_remont_id')->constrained();
             $table->float('required_quantity', 13, 3);
             $table->date('warehouse_number')->nullable();
             $table->date('warehouse_date')->nullable();
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirement_year_applications');
+        Schema::dropIfExists('requirement_emergency_applications');
     }
 };
