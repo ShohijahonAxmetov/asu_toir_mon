@@ -8,4 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class OrderResource extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'application_id',
+        'order_number',
+        'order_date',
+        'order_quantity',
+        'contract_number',
+        'contract_date',
+        'local_foreign',
+        'date_manufacture_contract',
+        'date_manufacture_fact',
+        'customs_date_receipt',
+        'customs_date_exit',
+        'date_delivery_object',
+        'execution_statuse_id'
+    ];
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class);
+    }
+
 }

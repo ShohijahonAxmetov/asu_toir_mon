@@ -18,4 +18,10 @@ class Equipment extends Model
     {
         return $this->belongsTo(TypeEquipment::class);
     }
+
+    public function planRemonts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PlanRemont::class);
+    }
+
 }

@@ -9,5 +9,16 @@ class PlanRemont extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'equipment_id',
+        'remont_type_id',
+        'remont_begin',
+        'remont_end'
+    ];
+
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+    
 }
