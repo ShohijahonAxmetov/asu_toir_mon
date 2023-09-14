@@ -64,12 +64,25 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="type_equipment_id" class="form-label required">Тип оборудования</label>
-                                    <select class="form-control mb-4 @error('type_equipment_id') is-invalid @enderror" name="type_equipment_id" required>
+                                    <select class="form-control @error('type_equipment_id') is-invalid @enderror" name="type_equipment_id" required>
                                         @foreach ($type_equipments as $key => $item)
                                             <option value="{{ $item->id }}" {{ old('type_equipment_id', $equipment->type_equipment_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('type_equipment_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="department_id" class="form-label required">Подразделение</label>
+                                    <select class="form-control mb-4 @error('department_id') is-invalid @enderror" name="department_id" required>
+                                        @foreach ($departments as $key => $item)
+                                            <option value="{{ $item->id }}" {{ old('department_id', $equipment->department_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

@@ -87,6 +87,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Гаражный номер</th>
                             <th scope="col">Тип оборудования</th>
+                            <th scope="col">Подразделение</th>
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
@@ -100,7 +101,8 @@
                                         {{ $item->garage_number }}
                                     </div>
                                 </td>
-                                <td>{{ $item->typeEquipment->name }}</td>
+                                <td>{{ $item->typeEquipment->name ?? '--' }}</td>
+                                <td>{{ $item->department->name ?? '--' }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">

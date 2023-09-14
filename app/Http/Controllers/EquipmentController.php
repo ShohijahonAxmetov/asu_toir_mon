@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Equipment;
 use App\Models\TypeEquipment;
 use App\Models\Detail;
@@ -46,12 +47,14 @@ class EquipmentController extends Controller
     public function create()
     {
         $type_equipments = TypeEquipment::all();
+        $departments = Department::all();
 
         return view('app.'.$this->route_name.'.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'type_equipments' => $type_equipments,
+            'departments' => $departments,
         ]);
     }
 
@@ -65,6 +68,7 @@ class EquipmentController extends Controller
         $validator = Validator::make($data, [
             'garage_number' => 'required',
             'type_equipment_id' => 'required|integer',
+            'department_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return back()->withInput()->with([
@@ -95,6 +99,7 @@ class EquipmentController extends Controller
     public function edit(Equipment $equipment)
     {
         $type_equipments = TypeEquipment::all();
+        $departments = Department::all();
 
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
@@ -102,6 +107,7 @@ class EquipmentController extends Controller
             'route_parameter' => $this->route_parameter,
             'equipment' => $equipment,
             'type_equipments' => $type_equipments,
+            'departments' => $departments,
         ]);
     }
 
@@ -115,6 +121,7 @@ class EquipmentController extends Controller
         $validator = Validator::make($data, [
             'garage_number' => 'required',
             'type_equipment_id' => 'required|integer',
+            'department_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return back()->with([

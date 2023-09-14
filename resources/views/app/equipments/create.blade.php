@@ -73,6 +73,19 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="department_id" class="form-label required">Подразделение</label>
+                                        <select class="form-control mb-4 @error('department_id') is-invalid @enderror" name="department_id" required>
+                                            @foreach ($departments as $key => $item)
+                                                <option value="{{ $item->id }}" {{ old('department_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('department_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <!-- Button -->
