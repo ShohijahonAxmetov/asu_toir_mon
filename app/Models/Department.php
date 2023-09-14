@@ -10,7 +10,18 @@ class Department extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'parent_id'
     ];
+
+    public function equipments()
+    {
+        return $this->hasMany(Equipment::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Department::class, 'parent_id');
+    }
 
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('type_equipment_id')->constrained();
+            $table->foreignId('department_id')->constrained();
             $table->text('garage_number');
             // $table->text('desc')->nullable();
             $table->timestamps();

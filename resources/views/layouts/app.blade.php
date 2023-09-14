@@ -111,7 +111,7 @@
                                 <i class="fe fe-settings"></i> Материально-технические ресурсы
                             </a>
                             <div
-                                class="collapse {{ request()->is('technical_resources') || request()->is('technical_resources/*') || request()->is('technical_resource_type_equipment') || request()->is('technical_resource_type_equipment/*') ? 'show' : '' }}"
+                                class="collapse {{ request()->is('technical_resources') || request()->is('technical_resources/*') || request()->is('technical_resource_type_eqs') || request()->is('technical_resource_type_eqs/*') ? 'show' : '' }}"
                                 id="technical_resources">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
@@ -122,7 +122,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('technical_resource_type_equipment') || request()->is('technical_resource_type_equipment/*') ? 'active' : '' }}"
-                                           href="{{ route('technical_resource_type_eq.index') }}">
+                                           href="{{ route('technical_resource_type_eqs.index') }}">
                                             Узлы для типа оборудования
                                         </a>
                                     </li>
@@ -169,18 +169,18 @@
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button"
-                               aria-expanded=""
+                               aria-expanded="{{ request()->is('departments') || request()->is('departments/*') ? 'true' : 'false' }}"
                                aria-controls="documents">
                                 <i class="fe fe-book"></i> Справочники
                             </a>
                             <div
-                                class="collapse"
+                                class="collapse {{ request()->is('departments') || request()->is('departments/*') ? 'show' : '' }}"
                                 id="static_info">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link"
-                                           href="">
-                                            Типы технических обслуживаний
+                                           href="{{route('departments.index')}}">
+                                            Подразделения
                                         </a>
                                     </li>
                                 </ul>

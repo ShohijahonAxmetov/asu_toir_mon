@@ -11,6 +11,7 @@ class Equipment extends Model
 
     protected $fillable = [
         'type_equipment_id',
+        'department_id',
         'garage_number'
     ];
 
@@ -22,6 +23,11 @@ class Equipment extends Model
     public function planRemonts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PlanRemont::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
 }
