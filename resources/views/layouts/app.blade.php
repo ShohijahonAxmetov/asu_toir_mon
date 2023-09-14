@@ -169,18 +169,24 @@
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button"
-                               aria-expanded="{{ request()->is('departments') || request()->is('departments/*') ? 'true' : 'false' }}"
+                               aria-expanded="{{ request()->is('departments') || request()->is('departments/*') || request()->is('remont_types') || request()->is('remont_types/*') ? 'true' : 'false' }}"
                                aria-controls="documents">
                                 <i class="fe fe-book"></i> Справочники
                             </a>
                             <div
-                                class="collapse {{ request()->is('departments') || request()->is('departments/*') ? 'show' : '' }}"
+                                class="collapse {{ request()->is('departments') || request()->is('departments/*') || request()->is('remont_types') || request()->is('remont_types/*') ? 'show' : '' }}"
                                 id="static_info">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link"
                                            href="{{route('departments.index')}}">
                                             Подразделения
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="{{route('remont_types.index')}}">
+                                            Вид ремонта
                                         </a>
                                     </li>
                                 </ul>

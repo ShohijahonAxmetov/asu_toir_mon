@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Equipment;
 use App\Models\TypeEquipment;
-use App\Models\Detail;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class EquipmentController extends Controller
 {

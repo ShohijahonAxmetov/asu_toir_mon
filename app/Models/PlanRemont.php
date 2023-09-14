@@ -20,5 +20,9 @@ class PlanRemont extends Model
     {
         return $this->belongsTo(Equipment::class);
     }
-    
+
+    public function remontType()
+    {
+        return $this->belongsTo(RemontType::class);
+    }
 }
