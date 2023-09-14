@@ -85,22 +85,24 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Гаражный номер</th>
                             <th scope="col">Тип оборудования</th>
+                            <th scope="col">МТР</th>
+                            <th scope="col">Родительский узел</th>
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($equipments as $key => $item)
+                        @foreach ($details as $key => $item)
                             <tr>
-                                <th scope="row" style="width: 100px">{{ $equipments->firstItem() + $key }}</th>
+                                <th scope="row" style="width: 100px">{{ $details->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->garage_number }}
+                                        {{ $item->typeEquipment->name ?? '--' }}
                                     </div>
                                 </td>
-                                <td>{{ $item->typeEquipment->name }}</td>
+                                <td>{{ $item->technicalResource->catalog_name }}</td>
+                                <td>{{ $item->parent->technicalResource->catalog_name ?? '--' }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
@@ -118,7 +120,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $equipments->links() }}
+                    {{ $details->links() }}
                 </div>
             </div>
         </div>

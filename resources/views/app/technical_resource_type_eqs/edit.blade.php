@@ -47,29 +47,45 @@
             <div class="col-8">
                 <div class="card mw-50">
                     <div class="card-body">
-                        <form method="post" action="{{ route($route_name . '.update', [$route_parameter => $equipment]) }}" enctype="multipart/form-data" id="add">
+                        <form method="post" action="{{ route($route_name . '.update', [$route_parameter => $detail]) }}" enctype="multipart/form-data" id="add">
                             @csrf
                             @method('put')
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="garage_number" class="form-label required">Гаражный номер</label>
-                                        <input type="text" required class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') ?? $equipment->garage_number }}" id="garage_number" placeholder="Гаражный номер...">
-                                        @error('garage_number')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label for="type_equipment_id" class="form-label required">Тип оборудования</label>
-                                    <select class="form-control mb-4 @error('type_equipment_id') is-invalid @enderror" name="type_equipment_id" required>
+                                    <select class="form-control @error('type_equipment_id') is-invalid @enderror" name="type_equipment_id" required>
                                         @foreach ($type_equipments as $key => $item)
-                                            <option value="{{ $item->id }}" {{ old('type_equipment_id', $equipment->type_equipment_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" {{ old('type_equipment_id', $detail->type_equipment_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('type_equipment_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="technical_resource_id" class="form-label required">МТР</label>
+                                    <select class="form-control @error('technical_resource_id') is-invalid @enderror" name="technical_resource_id" required>
+                                        @foreach ($technical_resources as $key => $item)
+                                            <option value="{{ $item->id }}" {{ old('technical_resource_id', $detail->technical_resource_id) == $item->id ? 'selected' : '' }}>{{ $item->catalog_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('technical_resource_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="parent_id" class="form-label">Родительский узел</label>
+                                    <select class="form-control mb-4 @error('parent_id') is-invalid @enderror" name="parent_id">
+                                        <option value=""></option>
+                                        @foreach ($details as $key => $item)
+                                            <option value="{{ $item->id }}" {{ old('parent_id', $detail->parent_id) == $item->id ? 'selected' : '' }}>{{ $item->technicalResource->catalog_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('parent_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
