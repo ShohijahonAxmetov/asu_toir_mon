@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('year_applications', \App\Http\Controllers\YearApplicationController::class);
     Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
     Route::resource('remont_types', \App\Http\Controllers\RemontTypeController::class);
+    Route::resource('execution_statuses', \App\Http\Controllers\ExecutionStatusController::class);
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/calendar/get_days', [App\Http\Controllers\HomeController::class, 'get_days']);

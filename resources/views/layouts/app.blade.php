@@ -186,7 +186,13 @@
                                     <li class="nav-item">
                                         <a class="nav-link"
                                            href="{{route('remont_types.index')}}">
-                                            Вид ремонта
+                                            Виды ремонтов
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="{{route('execution_statuses.index')}}">
+                                            Статус исполнения
                                         </a>
                                     </li>
                                 </ul>
