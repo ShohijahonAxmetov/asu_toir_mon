@@ -52,9 +52,13 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="title" class="form-label required">Гаражный номер</label>
-                                        <input type="text" class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') }}" id="garage_number" placeholder="Гаражный номер...">
-                                        @error('garage_number')
+                                        <label for="department_id" class="form-label required">Подразделение</label>
+                                        <select class="form-control mb-4 @error('department_id') is-invalid @enderror" name="department_id" required>
+                                            @foreach ($departments as $key => $item)
+                                                <option value="{{ $item->id }}" {{ old('department_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('department_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -74,13 +78,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="department_id" class="form-label required">Подразделение</label>
-                                        <select class="form-control mb-4 @error('department_id') is-invalid @enderror" name="department_id" required>
-                                            @foreach ($departments as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('department_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('department_id')
+                                        <label for="title" class="form-label required">Гаражный номер</label>
+                                        <input type="text" class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') }}" id="garage_number" placeholder="Гаражный номер...">
+                                        @error('garage_number')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

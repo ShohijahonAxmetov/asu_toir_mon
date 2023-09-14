@@ -46,7 +46,8 @@ class EquipmentController extends Controller
      */
     public function create()
     {
-        $type_equipments = TypeEquipment::all();
+        // $type_equipments = TypeEquipment::all();
+		$type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
 
         return view('app.'.$this->route_name.'.create', [
@@ -98,7 +99,8 @@ class EquipmentController extends Controller
      */
     public function edit(Equipment $equipment)
     {
-        $type_equipments = TypeEquipment::all();
+        // $type_equipments = TypeEquipment::all();
+		$type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
 
         return view('app.'.$this->route_name.'.edit', [
