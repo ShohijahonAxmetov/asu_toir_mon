@@ -10,8 +10,11 @@ class RequirementYearApplication extends Model
     use HasFactory;
 
     protected $fillable = [
-        'repair_application_id',
+        'year_application_id',
+        'equipment_id',
+        'month',
         'technical_resource_id',
+        'plan_remont_id',
         'required_quantity',
         'warehouse_number',
         'warehouse_date',
@@ -19,5 +22,19 @@ class RequirementYearApplication extends Model
         'declared_quantity',
         'delivery_date'
     ];
-    
+
+    public function yearApplication()
+    {
+        return $this->belongsTo(YearApplication::class);
+    }
+
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+
+    public function planRemont()
+    {
+        return $this->belongsTo(PlanRemont::class);
+    }
 }

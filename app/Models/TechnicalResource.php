@@ -28,4 +28,9 @@ class TechnicalResource extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function yearApplications()
+    {
+        return $this->hasMany(YearApplication::class);
+    }
 }

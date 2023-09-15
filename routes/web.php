@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('technical_resource_type_eqs', \App\Http\Controllers\TechnicalResourceTypeEquipmentController::class);
     Route::resource('plan_remonts', \App\Http\Controllers\PlanRemontController::class);
     Route::resource('year_applications', \App\Http\Controllers\YearApplicationController::class);
+    Route::resource('requirements_year_applications', \App\Http\Controllers\RequirementYearApplicationController::class);
     Route::resource('repair_applications', \App\Http\Controllers\RepairApplicationController::class);
     Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
     Route::resource('remont_types', \App\Http\Controllers\RemontTypeController::class);

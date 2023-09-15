@@ -10,12 +10,14 @@ class BaseController extends Controller
     public static function store($model, $data, $update = 0)
     {
         if($update) {
-            $model->update($data);
+            $result = $model->update($data);
         } else {
             $model = "\\".$model;
 
-            $model::create($data);
+            $result = $model::create($data);
         }
+
+        return $result;
     }
 
     public static function destroy($model)

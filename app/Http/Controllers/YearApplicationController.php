@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Equipment;
+use App\Models\RequirementYearApplication;
+use App\Models\TechnicalResource;
 use App\Models\TypeEquipment;
 use App\Models\YearApplication;
 use Illuminate\Http\Request;
@@ -43,15 +45,16 @@ class YearApplicationController extends Controller
      */
     public function create()
     {
-        $type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
+        $technical_resources = TechnicalResource::orderBy('catalog_name', 'ASC')
+            ->get();
 
         return view('app.'.$this->route_name.'.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'type_equipments' => $type_equipments,
             'departments' => $departments,
+            'technical_resources' => $technical_resources,
         ]);
     }
 
@@ -64,6 +67,7 @@ class YearApplicationController extends Controller
 
         $validator = Validator::make($data, [
             'department_id' => 'required|integer',
+            'technical_resource_id' => 'required|integer',
             'year' => 'required|integer',
         ]);
         if ($validator->fails()) {
@@ -72,6 +76,21 @@ class YearApplicationController extends Controller
                 'message' => 'Ошибка валидации'
             ]);
         }
+//        OBSERVER
+        $data['unit_id'] = TechnicalResource::find($data['technical_resource_id'])->unit_id;
+        $data['quantity'] = 0;
+        $data['quantity_m1'] = 0;
+        $data['quantity_m2'] = 0;
+        $data['quantity_m3'] = 0;
+        $data['quantity_m4'] = 0;
+        $data['quantity_m5'] = 0;
+        $data['quantity_m6'] = 0;
+        $data['quantity_m7'] = 0;
+        $data['quantity_m8'] = 0;
+        $data['quantity_m9'] = 0;
+        $data['quantity_m10'] = 0;
+        $data['quantity_m11'] = 0;
+        $data['quantity_m12'] = 0;
 
         BaseController::store(YearApplication::class, $data);
 
@@ -94,15 +113,16 @@ class YearApplicationController extends Controller
      */
     public function edit(YearApplication $yearApplication)
     {
-        $type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
+        $technical_resources = TechnicalResource::orderBy('catalog_name', 'ASC')
+            ->get();
 
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'year_application' => $yearApplication,
-            'type_equipments' => $type_equipments,
+            'technical_resources' => $technical_resources,
             'departments' => $departments,
         ]);
     }

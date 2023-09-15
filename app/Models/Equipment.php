@@ -34,5 +34,4 @@ class Equipment extends Model
     {
         return $this->hasMany(RepairApplication::class);
     }
-
 }
