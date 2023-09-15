@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('month');
             $table->foreignId('plan_remont_id')->constrained();
             $table->float('required_quantity', 13, 3);
-            $table->date('warehouse_number')->nullable();
+            $table->string('warehouse_number')->nullable();
             $table->date('warehouse_date')->nullable();
             $table->float('warehouse_quantity', 13, 3)->nullable();
             $table->float('declared_quantity', 13, 3);

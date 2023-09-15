@@ -65,6 +65,19 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label for="technical_resource_id" class="form-label required">МТР</label>
+                                        <select class="form-control mb-4 @error('technical_resource_id') is-invalid @enderror" name="technical_resource_id" required>
+                                            @foreach ($technical_resources as $key => $item)
+                                                <option value="{{ $item->id }}" {{ old('technical_resource_id') == $item->id ? 'selected' : '' }}>{{ $item->catalog_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('technical_resource_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="year" class="form-label required">Год</label>
                                         <input type="text" class="form-control @error('year') is-invalid @enderror" name="year" value="{{ old('year') }}" id="year" placeholder="Год...">
                                         @error('year')
