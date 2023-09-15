@@ -152,8 +152,8 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link"
-                                           href="">
+                                    <a class="nav-link {{ request()->is('repair_applications') || request()->is('repair_applications/*') ? 'active' : '' }}"
+                                           href="{{ route('repair_applications.index') }}">
                                             Заявки на ремонты
                                         </a>
                                     </li>

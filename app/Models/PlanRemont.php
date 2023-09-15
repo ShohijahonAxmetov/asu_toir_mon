@@ -30,4 +30,10 @@ class PlanRemont extends Model
     {
         return $this->hasMany(RemontMove::class);
     }
+
+    public function repairApplications(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RepairApplication::class);
+    }
+
 }

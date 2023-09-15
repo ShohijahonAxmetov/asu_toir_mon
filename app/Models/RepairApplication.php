@@ -15,4 +15,14 @@ class RepairApplication extends Model
         'plan_remont_id'
     ];
 
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+
+    public function planRemont()
+    {
+        return $this->belongsTo(PlanRemont::class);
+    }
+
 }

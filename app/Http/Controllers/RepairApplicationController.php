@@ -4,16 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\RepairApplication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\Equipment;
+use App\Models\PlanRemont;
+
 
 class RepairApplicationController extends Controller
 {
+    public $title = 'Заявка на ремонт';
+    public $route_name = 'repair_applications';
+    public $route_parameter = 'repair_application';
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
-    }
+        $repair_applications = RepairApplication::latest();
+        $search = null;
+        if(isset($request->equipment_id) && $request->equipment_id != '') {
+            $repair_applications = $repair_applications->where('equipment_id', $request->equipment_id);
+            $search = $request->equipment_id;
+        }
+        $repair_applications = $repair_applications->paginate(12);
+        
+        $equipments = Equipment::all();
+
+        return view('app.'.$this->route_name.'.index', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'repair_applications' => $repair_applications,
+            'equipments' => $equipments,
+            'search' => $search,
+        ]);
+   }
 
     /**
      * Show the form for creating a new resource.
@@ -21,7 +48,17 @@ class RepairApplicationController extends Controller
     public function create()
     {
         //
-    }
+        $equipments = Equipment::orderBy('garage_number', 'ASC')->get();
+        $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')->get();
+
+        return view('app.'.$this->route_name.'.create', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'equipments' => $equipments,
+            'plan_remonts' => $plan_remonts,
+        ]);
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -29,6 +66,27 @@ class RepairApplicationController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'equipment_id' => 'required|integer',
+            'plan_remont_id' => 'required|integer',
+            'application_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withInput()->with([
+                'success' => false,
+                'message' => 'Ошибка валидации'
+            ]);
+        }
+
+        BaseController::store(RepairApplication::class, $data);
+
+        return redirect()->route($this->route_name.'.index')->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
     }
 
     /**
@@ -42,17 +100,49 @@ class RepairApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RepairApplication $repairApplication)
+    public function edit(RepairApplication $repair_application)
     {
         //
+        $equipments = Equipment::orderBy('garage_number', 'ASC')->get();
+        $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')->get();
+
+        return view('app.'.$this->route_name.'.edit', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'repair_application' => $repair_application,
+            'equipments' => $equipments,
+            'plan_remonts' => $plan_remonts,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RepairApplication $repairApplication)
+    public function update(Request $request, RepairApplication $repair_application)
     {
         //
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'equipment_id' => 'required|integer',
+            'plan_remont_id' => 'required|integer',
+            'application_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with([
+                'success' => false,
+                'message' => 'Ошибка валидации'
+            ]);
+        }
+
+        BaseController::store($repair_application, $data, 1);
+
+        return redirect()->route($this->route_name.'.index')->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
     }
 
     /**
