@@ -10,6 +10,7 @@ class TechnicalResource extends Model
     use HasFactory;
 
     protected $fillable = [
+        'unit_id',
         'catalog_name',
         'catalog_number',
         'nomen_name',
@@ -21,5 +22,10 @@ class TechnicalResource extends Model
     public function technicalResourceTypeEquipments()
     {
         return $this->hasMany(TechnicalResourceTypeEquipment::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

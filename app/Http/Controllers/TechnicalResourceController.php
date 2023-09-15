@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TechnicalResource;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -34,10 +35,14 @@ class TechnicalResourceController extends Controller
      */
     public function create()
     {
+        $units = Unit::orderBy('name', 'ASC')
+                ->get();
+
         return view('app.'.$this->route_name.'.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
-            'route_parameter' => $this->route_parameter
+            'route_parameter' => $this->route_parameter,
+            'units' => $units,
         ]);
     }
 
@@ -84,11 +89,15 @@ class TechnicalResourceController extends Controller
      */
     public function edit(TechnicalResource $technicalResource)
     {
+        $units = Unit::orderBy('name', 'ASC')
+            ->get();
+
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'technical_resource' => $technicalResource
+            'technical_resource' => $technicalResource,
+            'units' => $units,
         ]);
     }
 

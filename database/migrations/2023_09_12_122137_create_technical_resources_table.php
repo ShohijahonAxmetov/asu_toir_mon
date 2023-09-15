@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('technical_resources', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('unit_id')->nullable()->constrained();
             $table->string('catalog_name');
             $table->string('catalog_number');
             $table->string('nomen_name');
@@ -28,6 +30,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('technical_resources');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };

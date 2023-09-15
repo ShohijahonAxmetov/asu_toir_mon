@@ -22,7 +22,7 @@ class TypeEquipmentController extends Controller
         $type_equipments = TypeEquipment::latest()
             ->paginate(12);
 
-        return view('app.type_equipments.index', [
+        return view('app.'.$this->route_name.'.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,

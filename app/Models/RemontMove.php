@@ -15,5 +15,8 @@ class RemontMove extends Model
         'remont_end'
     ];
 
-
+    public function planRemont()
+    {
+        return $this->belongsTo(PlanRemont::class);
+    }
 }

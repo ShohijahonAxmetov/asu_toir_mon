@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Equipment;
 use App\Models\PlanRemont;
+use App\Models\RemontMove;
 use App\Models\RemontType;
 use App\Models\TypeEquipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PlanRemontController extends Controller
@@ -134,7 +136,25 @@ class PlanRemontController extends Controller
 
         $data['remont_begin'] = date('Y-m-d', strtotime($data['remont_begin']));
         $data['remont_end'] = date('Y-m-d', strtotime($data['remont_end']));
-        BaseController::store($planRemont, $data, 1);
+
+        DB::beginTransaction();
+        try {
+            if($data['remont_begin'] != $planRemont->remont_begin || $data['remont_end'] != $planRemont->remont_end) {
+                $data['plan_remont_id'] = $planRemont->id;
+
+                BaseController::store(RemontMove::class, $data);
+            }
+            BaseController::store($planRemont, $data, 1);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route($this->route_name.'.index')->withInput()->with([
+                'success' => true,
+                'message' => 'Успешно сохранен'
+            ]);
+        }
 
         return redirect()->route($this->route_name.'.index')->with([
             'success' => true,

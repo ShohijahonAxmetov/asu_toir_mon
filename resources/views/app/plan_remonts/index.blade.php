@@ -102,8 +102,8 @@
                                     </div>
                                 </td>
                                 <td>{{ $item->remontType->name ?? '--' }}</td>
-                                <td>{{ isset($item->remont_begin) ? date('d-m-Y', strtotime($item->remont_begin)) : '--' }}</td>
-                                <td>{{ isset($item->remont_end) ? date('d-m-Y', strtotime($item->remont_end)) : '--' }}</td>
+                                <td>{{ isset($item->remontMoves[count($item->remontMoves)-1]->remont_begin) ? date('d-m-Y', strtotime($item->remontMoves[count($item->remontMoves)-1]->remont_begin)) : (date('d-m-Y', strtotime($item->remont_begin)) ?? '--') }}</td>
+                                <td>{{ isset($item->remontMoves[count($item->remontMoves)-1]->remont_end) ? date('d-m-Y', strtotime($item->remontMoves[count($item->remontMoves)-1]->remont_end)) : (date('d-m-Y', strtotime($item->remont_end)) ?? '--') }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
                                         <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>

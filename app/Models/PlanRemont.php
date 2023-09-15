@@ -25,4 +25,9 @@ class PlanRemont extends Model
     {
         return $this->belongsTo(RemontType::class);
     }
+
+    public function remontMoves()
+    {
+        return $this->hasMany(RemontMove::class);
+    }
 }

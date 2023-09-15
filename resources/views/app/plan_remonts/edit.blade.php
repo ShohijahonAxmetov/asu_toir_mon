@@ -80,7 +80,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="remont_begin" class="form-label required">Дата начала</label>
-                                        <input type="date" required class="form-control @error('remont_begin') is-invalid @enderror" name="remont_begin" value="{{ old('remont_begin') ?? $plan_remont->remont_begin }}" id="remont_begin" placeholder="Дата начала...">
+                                        <input type="date" required class="form-control @error('remont_begin') is-invalid @enderror" name="remont_begin" value="{{ old('remont_begin') ?? isset($plan_remont->remontMoves[count($plan_remont->remontMoves)-1]->remont_begin) ? $plan_remont->remontMoves[count($plan_remont->remontMoves)-1]->remont_begin : $plan_remont->remont_begin }}" id="remont_begin" placeholder="Дата начала...">
                                         @error('remont_begin')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -91,7 +91,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="remont_end" class="form-label required">Дата окончания</label>
-                                        <input type="date" required class="form-control @error('remont_end') is-invalid @enderror" name="remont_end" value="{{ old('remont_end') ?? $plan_remont->remont_end }}" id="remont_end" placeholder="Дата окончания...">
+                                        <input type="date" required class="form-control @error('remont_end') is-invalid @enderror" name="remont_end" value="{{ old('remont_end') ?? isset($plan_remont->remontMoves[count($plan_remont->remontMoves)-1]->remont_end) ? $plan_remont->remontMoves[count($plan_remont->remontMoves)-1]->remont_end : $plan_remont->remont_end }}" id="remont_end" placeholder="Дата окончания...">
                                         @error('remont_end')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -115,4 +115,58 @@
             </div>
         </div>
     </div>
+
+    @if(isset($plan_remont->remontMoves[0]))
+    <!-- HEADER -->
+    <div class="header">
+        <div class="container-fluid">
+
+            <!-- Body -->
+            <div class="header-body">
+                <div class="row align-items-end">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h1 class="header-title">
+                            Таблица переносов
+                        </h1>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .header-body -->
+        </div>
+    </div> <!-- / .header -->
+
+    <!-- CARDS -->
+    <div class="container-fluid">
+        <div class="card mt-4">
+            <div class="card-body">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Дата начала</th>
+                            <th scope="col">Дата окончания</th>
+                            <th scope="col">Дата переноса</th>
+{{--                            <th scope="col"></th>--}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($plan_remont->remontMoves as $key => $item)
+                            <tr>
+                                <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
+                                <td>{{ $item->remont_begin }}</td>
+                                <td>{{ $item->remont_end }}</td>
+                                <td>{{ $item->created_at }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 @endsection

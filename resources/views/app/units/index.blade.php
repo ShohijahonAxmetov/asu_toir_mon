@@ -49,32 +49,20 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Наименование каталожное</th>
-                            <th scope="col">Каталожный №</th>
-                            <th scope="col">Наименование номенклатурное</th>
-                            <th scope="col">Номенклатурный №</th>
-                            <th scope="col">Время, необходимое для выполнения заказа</th>
-                            <th scope="col">Время доставки</th>
-                            <th scope="col">Ед. изм.</th>
+                            <th scope="col">Название</th>
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($technical_resources as $key => $item)
+                        @foreach ($units as $key => $item)
                             <tr>
-                                <th scope="row" style="width: 100px">{{ $technical_resources->firstItem() + $key }}</th>
+                                <th scope="row" style="width: 100px">{{ $units->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->catalog_name }}
+                                        {{ $item->name }}
                                     </div>
                                 </td>
-                                <td>{{ $item->catalog_number }}</td>
-                                <td>{{ $item->nomen_name }}</td>
-                                <td>{{ $item->nomen_number }}</td>
-                                <td>{{ $item->time_complete_order }}</td>
-                                <td>{{ $item->delivery_time }}</td>
-                                <td>{{ $item->unit->name ?? '--' }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
@@ -92,7 +80,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $technical_resources->links() }}
+                    {{ $units->links() }}
                 </div>
             </div>
         </div>

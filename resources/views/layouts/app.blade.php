@@ -195,6 +195,12 @@
                                             Статус исполнения
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="{{route('units.index')}}">
+                                            Единицы измерения
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

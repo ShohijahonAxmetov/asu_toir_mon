@@ -24,4 +24,8 @@ class Department extends Model
         return $this->belongsTo(Department::class, 'parent_id');
     }
 
+    public function yearApplication()
+    {
+        return $this->hasOne(YearApplication::class);
+    }
 }

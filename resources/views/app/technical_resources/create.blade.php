@@ -88,6 +88,20 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label for="unit_id" class="form-label required">Ед. изм.</label>
+                                        <select class="form-control mb-4 @error('unit_id') is-invalid @enderror" name="unit_id" required>
+                                            <option value=""></option>
+                                            @foreach ($units as $key => $item)
+                                                <option value="{{ $item->id }}" {{ old('unit_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('unit_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="title" class="form-label required">Время, необходимое для выполнения заказа</label>
                                         <input type="text" class="form-control @error('time_complete_order') is-invalid @enderror" name="time_complete_order" value="{{ old('time_complete_order') }}" id="time_complete_order" placeholder="Время, необходимое для выполнения заказа..." required>
                                         @error('time_complete_order')
