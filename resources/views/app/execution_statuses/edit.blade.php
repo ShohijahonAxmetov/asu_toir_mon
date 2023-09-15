@@ -47,17 +47,18 @@
             <div class="col-8">
                 <div class="card mw-50">
                     <div class="card-body">
-                        <form method="post" action="{{ route($route_name . '.store') }}" enctype="multipart/form-data" id="add">
+                        <form method="post" action="{{ route($route_name . '.update', [$route_parameter => $execution_status]) }}" enctype="multipart/form-data" id="add">
                             @csrf
+                            @method('put')
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="title" class="form-label required">Наименование</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="name" placeholder="Название..." required>
+                                        <label for="name" class="form-label">Наименование</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $execution_status->name ?? null }}" id="name" placeholder="Наименование...">
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
                                         @enderror
                                     </div>
                                 </div>

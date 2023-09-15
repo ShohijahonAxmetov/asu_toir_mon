@@ -53,7 +53,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="title" class="form-label required">Наименование</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="name" placeholder="Название..." required>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="name" placeholder="Наименование..." required>
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
