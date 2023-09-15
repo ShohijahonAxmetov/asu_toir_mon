@@ -30,9 +30,6 @@ class RequirementYearApplicationController extends Controller
      */
     public function create(Request $request)
     {
-        $type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
-        $departments = Department::all();
-
         $equipments = Equipment::orderBy('garage_number', 'ASC')
             ->get();
         $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')
@@ -133,18 +130,39 @@ class RequirementYearApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RequirementYearApplication $requirementYearApplication)
+    public function edit(RequirementYearApplication $requirementYearApplication, Request $request)
     {
-        $type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
-        $departments = Department::all();
+        $equipments = Equipment::orderBy('garage_number', 'ASC')
+            ->get();
+        $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')
+            ->get();
+        $month = [
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь',
+        ];
+        $mtr = $request->mtr;
+        $application = $request->application;
 
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'requirement_year_application' => $requirementYearApplication,
-            'type_equipments' => $type_equipments,
-            'departments' => $departments,
+            'equipments' => $equipments,
+            'month' => $month,
+            'plan_remonts' => $plan_remonts,
+            'mtr' => $mtr,
+            'application' => $application,
         ]);
     }
 
@@ -156,9 +174,15 @@ class RequirementYearApplicationController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'garage_number' => 'required',
-            'type_equipment_id' => 'required|integer',
-            'department_id' => 'required|integer',
+            'equipment_id' => 'required|integer',
+            'month' => 'required|integer',
+            'plan_remont_id' => 'required|integer',
+            'required_quantity' => 'required|integer',
+            'warehouse_number' => 'required',
+            'warehouse_date' => 'required',
+            'warehouse_quantity' => 'required|integer',
+            'declared_quantity' => 'required|integer',
+            'delivery_date' => 'required',
         ]);
         if ($validator->fails()) {
             return back()->with([
