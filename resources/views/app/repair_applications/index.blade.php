@@ -54,7 +54,7 @@
                                 <select class="form-control @error('equipment_id') is-invalid @enderror" name="equipment_id" data-choices>
                                     <option value="">Выберите из списка</option>
                                     @foreach ($equipments as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->garage_number }}</option>
+                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->typeEquipment->name . '  № ' . $item->garage_number . '  ( ' . $item->department->name . '  ) ' }}</option>
                                     @endforeach
                                 </select>
                                 @error('equipment_id')
@@ -114,7 +114,8 @@
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-success"><i class="fe fe-edit-2"></i></a>
+                                        <a href="{{ route($route_name . '.show', [$route_parameter => $item]) }}" class="btn btn-sm btn-info ms-3"><i class="fe fe-eye"></i></a>
                                         <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
                                         <form action="{{ route($route_name.'.destroy', [$route_parameter => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
                                             @csrf

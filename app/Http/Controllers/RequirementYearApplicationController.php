@@ -55,8 +55,6 @@ class RequirementYearApplicationController extends Controller
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'type_equipments' => $type_equipments,
-            'departments' => $departments,
             'equipments' => $equipments,
             'month' => $month,
             'plan_remonts' => $plan_remonts,

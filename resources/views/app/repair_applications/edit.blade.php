@@ -33,7 +33,7 @@
             [
             'active' => true,
             'url' => '',
-            'name' => 'Добавление',
+            'name' => 'Редактирование',
             'disabled' => true
             ],
             ]
@@ -54,7 +54,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="application_date" class="form-label required">Дата заявки</label>
-                                        <input type="date" class="form-control @error('application_date') is-invalid @enderror" name="application_date" value="{{ old('application_date') }}" id="application_date" placeholder="Дата заявки...">
+                                        <input type="date" class="form-control @error('application_date') is-invalid @enderror" name="application_date" value="{{ old('application_date', $repair_application->application_date) }}" id="application_date" placeholder="Дата заявки...">
                                         @error('application_date')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -62,7 +62,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                      
+                                     
 
                                 <div class="form-group">
                                         <label for="equipment_id" class="form-label required">Оборудование</label>

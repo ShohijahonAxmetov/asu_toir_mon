@@ -19,7 +19,7 @@ class RepairApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $repair_applications = RepairApplication::latest();
@@ -30,7 +30,7 @@ class RepairApplicationController extends Controller
         }
         $repair_applications = $repair_applications->paginate(12);
         
-        $equipments = Equipment::all();
+        $equipments = Equipment::orderBy('garage_number', 'ASC')->get();
 
         return view('app.'.$this->route_name.'.index', [
             'title' => $this->title,
@@ -94,7 +94,17 @@ class RepairApplicationController extends Controller
      */
     public function show(RepairApplication $repairApplication)
     {
-        //
+        $equipments = Equipment::orderBy('garage_number', 'ASC')->get();
+        $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')->get();
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'equipments' => $equipments,
+            'plan_remonts' => $plan_remonts,
+            'repair_application' => $repairApplication,
+        ]);
     }
 
     /**

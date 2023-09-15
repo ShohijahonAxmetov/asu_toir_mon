@@ -19,7 +19,7 @@ class YearApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $year_applications = YearApplication::latest();
         $search = null;
