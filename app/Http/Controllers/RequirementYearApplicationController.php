@@ -178,8 +178,9 @@ class RequirementYearApplicationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RequirementYearApplication $requirementYearApplication)
+    public function update(Request $request, $requirementYearApplication)
     {
+        $requirementYearApplication = RequirementYearApplication::find($requirementYearApplication);
         $data = $request->all();
 
         $validator = Validator::make($data, [
@@ -200,7 +201,45 @@ class RequirementYearApplicationController extends Controller
             ]);
         }
 
-        BaseController::store($requirementYearApplication, $data, 1);
+//        OBSERVER
+        DB::beginTransaction();
+        try {
+
+//            obnovit(minusovat) kolichcestvo zayavlennix godovogo grafika
+            $year_application = YearApplication::find($data['year_application_id']);
+            $inp = 'quantity_m'.$requirementYearApplication->month+1;
+            $year_application->update([
+                $inp => max($year_application->$inp - $requirementYearApplication->declared_quantity, 0)
+            ]);
+
+            BaseController::store($requirementYearApplication, $data, 1);
+
+            $requirementYearApplication1 = RequirementYearApplication::find($requirementYearApplication->id);
+//            obnovit(plyusovat) kolichcestvo zayavlennix godovogo grafika
+            $inp1 = 'quantity_m'.$requirementYearApplication1->month+1;
+            $year_application->update([
+                $inp1 => $year_application->$inp + $requirementYearApplication1->declared_quantity
+            ]);
+
+//            obnovlenie obshego kolichestvo
+            $total = 0;
+            for ($i=0; $i<12; $i++) {
+                $monthKey = 'quantity_m'.($i+1);
+                $total += $year_application->$monthKey;
+            }
+            $year_application->update([
+                'quantity' => $total
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->route('year_applications.show', ['year_application' => $data['year_application_id']])->with([
             'success' => true,
@@ -211,9 +250,43 @@ class RequirementYearApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RequirementYearApplication $requirementYearApplication)
+    public function destroy($requirementYearApplication)
     {
-        BaseController::destroy($requirementYearApplication);
+        $requirementYearApplication = RequirementYearApplication::find($requirementYearApplication);
+//        OBSERVER
+        DB::beginTransaction();
+        try {
+
+
+//            obnovit(minusovat) kolichcestvo zayavlennix godovogo grafika
+            $year_application = YearApplication::find($requirementYearApplication->year_application_id);
+            $inp = 'quantity_m'.$requirementYearApplication->month+1;
+            $year_application->update([
+                $inp => $year_application->$inp - $requirementYearApplication->declared_quantity
+            ]);
+
+            BaseController::destroy($requirementYearApplication);
+
+
+//            obnovlenie obshego kolichestvo
+            $total = 0;
+            for ($i=0; $i<12; $i++) {
+                $monthKey = 'quantity_m'.($i+1);
+                $total += $year_application->$monthKey;
+            }
+            $year_application->update([
+                'quantity' => $total
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return back()->with([
             'success' => true,

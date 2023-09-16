@@ -166,6 +166,12 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('order_resources') || request()->is('order_resources/*') ? 'active' : '' }}"
+                               href="{{ route('order_resourcesп.index') }}">
+                                <i class="fe fe-book"></i> Мониторинг
+                            </a>
+                        </li>
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button"

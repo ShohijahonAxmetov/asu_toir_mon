@@ -10,6 +10,7 @@ use App\Models\TechnicalResource;
 use App\Models\TypeEquipment;
 use App\Models\YearApplication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class YearApplicationController extends Controller
@@ -185,7 +186,23 @@ class YearApplicationController extends Controller
      */
     public function destroy(YearApplication $yearApplication)
     {
-        BaseController::destroy($yearApplication);
+        DB::beginTransaction();
+        try {
+
+            foreach ($yearApplication->requirements as $item) {
+                BaseController::destroy($item);
+            }
+            BaseController::destroy($yearApplication);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return back()->with([
             'success' => true,
