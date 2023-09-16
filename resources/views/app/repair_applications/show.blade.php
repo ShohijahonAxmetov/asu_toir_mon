@@ -105,10 +105,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Узел, деталь</th>
-                            <th scope="col">Месяц</th>
-                            <th scope="col">Ремонт</th>
                             <th scope="col">Потребное количество на ремонт</th>
-                            <th scope="col">Склад</th>
+                            <th scope="col">Номер склада</th>
                             <th scope="col">Склад (дата)</th>
                             <th scope="col">Склад (кол-во)</th>
                             <th scope="col">Заявлено (кол-во)</th>
@@ -118,16 +116,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($year_application->requirements as $key => $item)
+                        @foreach ($sub_table as $key => $item)
                             <tr>
                                 <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->equipment->garage_number ?? '--' }}
+                                        {{ $item->technicalResource->catalog_name ?? '--' }}
                                     </div>
                                 </td>
-                                <td>{{ $item->month ?? '--' }}</td>
-                                <td>{{ $item->planRemont->remont_begin ?? '--' }}</td>
                                 <td>{{ $item->required_quantity ?? '--' }}</td>
                                 <td>{{ $item->warehouse_number ?? '--' }}</td>
                                 <td>{{ $item->warehouse_date ?? '--' }}</td>
@@ -137,9 +133,9 @@
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ route('requirements_year_applications.edit', ['requirements_year_application' => $item, 'application' => $year_application, 'mtr' => $year_application->technical_resource_id]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                        <a href="{{ route($route_name_sub. '.edit', ['requirements_repair_application' => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
                                         <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
-                                        <form action="{{ route('requirements_year_applications.destroy', ['requirements_year_application' => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
+                                        <form action="{{ route('requirements_repair_applications.destroy', ['requirements_repair_application' => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
                                         </form>
