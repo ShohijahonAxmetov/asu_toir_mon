@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('year_applications', \App\Http\Controllers\YearApplicationController::class);
     Route::resource('requirements_year_applications', \App\Http\Controllers\RequirementYearApplicationController::class);
     Route::resource('repair_applications', \App\Http\Controllers\RepairApplicationController::class);
-    Route::resource('requirement_repair_applications', \App\Http\Controllers\RepairApplicationController::class);
+    Route::resource('requirement_repair_applications', \App\Http\Controllers\RequirementRepairApplicationController::class);
     Route::resource('departments', \App\Http\Controllers\DepartmentController::class);
     Route::resource('remont_types', \App\Http\Controllers\RemontTypeController::class);
     Route::resource('execution_statuses', \App\Http\Controllers\ExecutionStatusController::class);
