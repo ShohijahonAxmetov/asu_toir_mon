@@ -101,6 +101,16 @@ class RequirementYearApplicationController extends Controller
                 $inp => $year_application->$inp + $requirement->declared_quantity
             ]);
 
+//            obnovlenie obshego kolichestvo
+            $total = 0;
+            for ($i=0; $i<12; $i++) {
+                $monthKey = 'quantity_m'.($i+1);
+                $total += $year_application->$monthKey;
+            }
+            $year_application->update([
+                'quantity' => $total
+            ]);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -111,7 +121,7 @@ class RequirementYearApplicationController extends Controller
             ]);
         }
 
-        return redirect()->route('year_applications.edit', ['year_application' => $data['year_application_id']])->with([
+        return redirect()->route('year_applications.show', ['year_application' => $data['year_application_id']])->with([
             'success' => true,
             'message' => 'Успешно сохранен'
         ]);
@@ -128,8 +138,9 @@ class RequirementYearApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RequirementYearApplication $requirementYearApplication, Request $request)
+    public function edit(Request $request, $requirementYearApplication)
     {
+        $requirementYearApplication = RequirementYearApplication::find($requirementYearApplication);
         $equipments = Equipment::orderBy('garage_number', 'ASC')
             ->get();
         $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')
@@ -191,7 +202,7 @@ class RequirementYearApplicationController extends Controller
 
         BaseController::store($requirementYearApplication, $data, 1);
 
-        return redirect()->route($this->route_name.'.index')->with([
+        return redirect()->route('year_applications.show', ['year_application' => $data['year_application_id']])->with([
             'success' => true,
             'message' => 'Успешно сохранен'
         ]);

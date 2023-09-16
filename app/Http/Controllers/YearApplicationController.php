@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Equipment;
+use App\Models\PlanRemont;
 use App\Models\RequirementYearApplication;
 use App\Models\TechnicalResource;
 use App\Models\TypeEquipment;
@@ -105,7 +106,33 @@ class YearApplicationController extends Controller
      */
     public function show(YearApplication $yearApplication)
     {
-        //
+        $departments = Department::all();
+        $technical_resources = TechnicalResource::orderBy('catalog_name', 'ASC')
+            ->get();
+        $month = [
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь',
+        ];
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'departments' => $departments,
+            'technical_resources' => $technical_resources,
+            'year_application' => $yearApplication,
+            'month' => $month,
+        ]);
     }
 
     /**
