@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('remont_types', \App\Http\Controllers\RemontTypeController::class);
     Route::resource('execution_statuses', \App\Http\Controllers\ExecutionStatusController::class);
     Route::resource('units', \App\Http\Controllers\UnitController::class);
+    Route::resource('order_resources', \App\Http\Controllers\OrderResourceController::class);
+
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/calendar/get_days', [App\Http\Controllers\HomeController::class, 'get_days']);
