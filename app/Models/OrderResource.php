@@ -30,4 +30,9 @@ class OrderResource extends Model
         return $this->belongsTo(Application::class);
     }
 
+    public function executionStatuse()
+    {
+        return $this->belongsTo(ExecutionStatus::class);
+    }
+
 }
