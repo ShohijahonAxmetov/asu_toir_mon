@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Equipment;
 use App\Models\PlanRemont;
+use App\Models\RequirementRepairApplication;
 
 
 class RepairApplicationController extends Controller
 {
-    public $title = 'Заявка на ремонт';
+    public $title = 'Заявки на ремонт';
     public $route_name = 'repair_applications';
     public $route_parameter = 'repair_application';
+
+    public $route_name_sub = 'requirement_repair_applications';
 
     /**
      * Display a listing of the resource.
@@ -97,13 +100,17 @@ class RepairApplicationController extends Controller
         $equipments = Equipment::orderBy('garage_number', 'ASC')->get();
         $plan_remonts = PlanRemont::orderBy('remont_begin', 'ASC')->get();
 
+        $sub_table = RequirementRepairApplication::where('repair_application_id', $repairApplication->id)->orderBy('technical_resource_id', 'ASC')->get();
+
         return view('app.'.$this->route_name.'.show', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'equipments' => $equipments,
-            'plan_remonts' => $plan_remonts,
+            'route_name_sub' => $this->route_name_sub,
+/*            'equipments' => $equipments,
+            'plan_remonts' => $plan_remonts, */
             'repair_application' => $repairApplication,
+            'sub_table' => $sub_table, 
         ]);
     }
 

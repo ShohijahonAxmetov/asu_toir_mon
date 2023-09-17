@@ -18,8 +18,8 @@
                     </div>
                     <div class="col-auto">
                         
-							<a href="{{ route($route_name . '.edit', [$route_parameter => $repair_application]) }}" class="btn btn-primary lift">Update</a>
-							<a class="btn btn-danger lift ms-3" onclick="var result = confirm('Вы уверены?');if (result){event.preventDefault();document.getElementById('delete-form{{ $repair_application->id }}').submit();}"> Delete</a>
+							<a href="{{ route($route_name . '.edit', [$route_parameter => $repair_application]) }}" class="btn btn-primary lift">Редактировать</a>
+							<a class="btn btn-danger lift ms-3" onclick="var result = confirm('Вы уверены?');if (result){event.preventDefault();document.getElementById('delete-form{{ $repair_application->id }}').submit();}"> Удалить</a>
 							<form action="{{ route($route_name . '.destroy', [$route_parameter => $repair_application]) }}" id="delete-form{{ $repair_application->id }}" method="POST" style="display: none;">
 								@csrf
 								@method('DELETE')
@@ -32,16 +32,22 @@
 
     <!-- CARDS -->
     <div class="container-fluid">
-    @include('app.components.breadcrumb', [
+        @include('app.components.breadcrumb', [
             'datas' => [
-            [
-            'active' => true,
-            'url' => '',
-            'name' => $title,
-            'disabled' => false
+                [
+                    'active' => false,
+                    'url' => route($route_name.'.index'),
+                    'name' => $title,
+                    'disabled' => false
+                ],
+                [
+                    'active' => true,
+                    'url' => '',
+                    'name' => 'Просмотр',
+                    'disabled' => false
+                ]
             ]
-            ]
-            ])
+        ])
         <div class="card mw-50">
             <div class="card-body">
                 <table class="table table-bordered table-striped">
@@ -63,7 +69,33 @@
                 </table>
             </div>
         </div>
-        
+    </div>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="container-fluid">
+
+            <!-- Body -->
+            <div class="header-body">
+                <div class="row align-items-end">
+                    <div class="col d-flex justify-content-between">
+
+                        <!-- Title -->
+                        <h1 class="header-title">
+                            Потребность в узлах, деталях и материалах для ремонта
+                        </h1>
+
+                        <a href="{{route($route_name_sub.'.create', ['id_application' => $repair_application, 'id_equipment' => $repair_application->equipment_id])}}" class="btn btn-primary">Добавить</a>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .header-body -->
+        </div>
+    </div> <!-- / .header -->
+
+
+    <!-- CARDS -->
+    <div class="container-fluid">
         <div class="card mt-4">
             <div class="card-body">
                 <!-- Table -->
@@ -72,11 +104,9 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Оборудование</th>
-                            <th scope="col">Месяц</th>
-                            <th scope="col">Ремонт</th>
+                            <th scope="col">Узел, деталь</th>
                             <th scope="col">Потребное количество на ремонт</th>
-                            <th scope="col">Склад</th>
+                            <th scope="col">Номер склада</th>
                             <th scope="col">Склад (дата)</th>
                             <th scope="col">Склад (кол-во)</th>
                             <th scope="col">Заявлено (кол-во)</th>
@@ -86,13 +116,38 @@
                         </tr>
                         </thead>
                         <tbody>
-                        
+                        @foreach ($sub_table as $key => $item)
+                            <tr>
+                                <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {{ $item->technicalResource->catalog_name ?? '--' }}
+                                    </div>
+                                </td>
+                                <td>{{ $item->required_quantity ?? '--' }}</td>
+                                <td>{{ $item->warehouse_number ?? '--' }}</td>
+                                <td>{{ $item->warehouse_date ?? '--' }}</td>
+                                <td>{{ $item->warehouse_quantity ?? '--' }}</td>
+                                <td>{{ $item->declared_quantity ?? '--' }}</td>
+                                <td>{{ isset($item->delivery_date) ? date('d-m-Y', strtotime($item->delivery_date)) : '--' }}</td>
+                                <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
+                                <td style="width: 200px">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ route($route_name_sub. '.edit', ['requirements_repair_application' => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                        <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
+                                        <form action="{{ route('requirements_repair_applications.destroy', ['requirements_repair_application' => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        
     </div>
-    
+
 @endsection

@@ -20,4 +20,15 @@ class RequirementRepairApplication extends Model
         'delivery_date'
     ];
 
+
+    public function repairApplication()
+    {
+        return $this->belongsTo(RepairApplication::class);
+    }
+
+    public function technicalResource()
+    {
+        return $this->belongsTo(TechnicalResource::class);
+    }
+
 }
