@@ -88,34 +88,15 @@ class RequirementYearApplicationController extends Controller
             ]);
         }
 
-//        OBSERVER
         DB::beginTransaction();
         try {
-
-            $requirement = BaseController::store(RequirementYearApplication::class, $data);
-
-//            obnovit kolichcestvo zayavlennix godovogo grafika
-            $year_application = YearApplication::find($data['year_application_id']);
-            $inp = 'quantity_m'.$requirement->month+1;
-            $year_application->update([
-                $inp => $year_application->$inp + $requirement->declared_quantity
-            ]);
-
-//            obnovlenie obshego kolichestvo
-            $total = 0;
-            for ($i=0; $i<12; $i++) {
-                $monthKey = 'quantity_m'.($i+1);
-                $total += $year_application->$monthKey;
-            }
-            $year_application->update([
-                'quantity' => $total
-            ]);
+            BaseController::store(RequirementYearApplication::class, $data);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with([
+            return back()->withInput()->with([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
@@ -204,38 +185,13 @@ class RequirementYearApplicationController extends Controller
 //        OBSERVER
         DB::beginTransaction();
         try {
-
-//            obnovit(minusovat) kolichcestvo zayavlennix godovogo grafika
-            $year_application = YearApplication::find($data['year_application_id']);
-            $inp = 'quantity_m'.$requirementYearApplication->month+1;
-            $year_application->update([
-                $inp => max($year_application->$inp - $requirementYearApplication->declared_quantity, 0)
-            ]);
-
             BaseController::store($requirementYearApplication, $data, 1);
-
-            $requirementYearApplication1 = RequirementYearApplication::find($requirementYearApplication->id);
-//            obnovit(plyusovat) kolichcestvo zayavlennix godovogo grafika
-            $inp1 = 'quantity_m'.$requirementYearApplication1->month+1;
-            $year_application->update([
-                $inp1 => $year_application->$inp + $requirementYearApplication1->declared_quantity
-            ]);
-
-//            obnovlenie obshego kolichestvo
-            $total = 0;
-            for ($i=0; $i<12; $i++) {
-                $monthKey = 'quantity_m'.($i+1);
-                $total += $year_application->$monthKey;
-            }
-            $year_application->update([
-                'quantity' => $total
-            ]);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with([
+            return back()->withInput()->with([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
@@ -252,37 +208,17 @@ class RequirementYearApplicationController extends Controller
      */
     public function destroy($requirementYearApplication)
     {
-        $requirementYearApplication = RequirementYearApplication::find($requirementYearApplication);
+        RequirementYearApplication::find($requirementYearApplication);
 //        OBSERVER
         DB::beginTransaction();
         try {
-
-
-//            obnovit(minusovat) kolichcestvo zayavlennix godovogo grafika
-            $year_application = YearApplication::find($requirementYearApplication->year_application_id);
-            $inp = 'quantity_m'.$requirementYearApplication->month+1;
-            $year_application->update([
-                $inp => $year_application->$inp - $requirementYearApplication->declared_quantity
-            ]);
-
             BaseController::destroy($requirementYearApplication);
-
-
-//            obnovlenie obshego kolichestvo
-            $total = 0;
-            for ($i=0; $i<12; $i++) {
-                $monthKey = 'quantity_m'.($i+1);
-                $total += $year_application->$monthKey;
-            }
-            $year_application->update([
-                'quantity' => $total
-            ]);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with([
+            return back()->withInput()->with([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);

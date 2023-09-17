@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreignId('equipment_id')->constrained();
             $table->foreignId('technical_resource_id')->constrained();
             $table->float('required_quantity', 13, 3);
-            $table->date('warehouse_number')->nullable();
+            $table->string('warehouse_number')->nullable();
             $table->date('warehouse_date')->nullable();
             $table->float('warehouse_quantity', 13, 3)->nullable();
             $table->integer('type_application');
@@ -36,6 +37,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('applications');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };
