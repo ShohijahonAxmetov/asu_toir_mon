@@ -51,8 +51,7 @@
                             @csrf
                             @method('put')
                             <div class="row">
-                                <input type="hidden" name="application_id" value="{{$application_id}}">
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <label for="application_id" class="form-label required">Заявка</label>
                                     <select class="form-control @error('application_id') is-invalid @enderror" name="application_id" required>
                                         @foreach ($applications as $key => $item)
@@ -64,7 +63,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div> -->
+                                </div>
                                 @foreach([['№ заказа', 'order_number', 'text', 1], ['Дата заказа', 'order_date', 'date', 1], ['Кол-во', 'order_quantity', 'text', 1], ['Номер договора', 'contract_number', 'text', 0], ['Дата договора', 'contract_date' ,'date', 0]] as $item)
                                 <div class="col-12">
                                     <div class="form-group">

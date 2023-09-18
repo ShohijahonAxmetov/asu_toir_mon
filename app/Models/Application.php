@@ -40,8 +40,8 @@ class Application extends Model
         return $this->belongsTo(TechnicalResource::class);
     }
 
-    public function orderResources()
+    public function orderResource()
     {
-        return $this->hasMany(OrderResource::class);
+        return $this->hasOne(OrderResource::class);
     }
 }

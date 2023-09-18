@@ -51,8 +51,7 @@
                             @csrf
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="hidden" name="application_id" value="{{$application_id}}">
-                                    <!-- <div class="form-group">
+                                    <div class="form-group">
                                         <label for="application_id" class="form-label required">Заявка</label>
                                         <select class="form-control @error('application_id') is-invalid @enderror" name="application_id" required>
                                             @foreach ($applications as $key => $item)
@@ -64,7 +63,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> -->
+                                    </div>
                                     <div class="form-group">
                                         <label for="order_number" class="form-label required">№ заказа</label>
                                         <input type="text" class="form-control @error('order_number') is-invalid @enderror" name="order_number" value="{{ old('order_number') }}" id="order_number" placeholder="№ заказа..." required>

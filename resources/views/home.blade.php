@@ -347,6 +347,7 @@
                                               '<th scope="col">Тип оборудования</th>' +
                                               '<th scope="col">Тип ремонта</th>' +
                                               '<th scope="col">Дата ремонта</th>' +
+                                              '<th scope="col"></th>' +
                                             '</tr>' +
                                           '</thead>' +
                                           '<tbody>';
@@ -357,6 +358,7 @@
                                                 '<td>' + (element.type_equipment.name ?? '--') + '</td>' +
                                                 '<td>' + (element.plan_remonts[0].remont_type.name) + '</td>' +
                                                 '<td>' + (element.plan_remonts[0].remont_begin + ' - ' + element.plan_remonts[0].remont_end) + '</td>' +
+                                                '<td><a href="' + '/order_resources?equipment_id=' + element.id + '&plan_remont_id=' + element.plan_remonts[0].id + '' + '" class="btn btn-sm btn-info ms-3"><i class="fe fe-eye"></i></a></td>' +
                                             '</tr>';
                     });
                     result = result + '</tbody>' +
@@ -373,27 +375,30 @@
 
 </script>
 <!-- calendar scripts end -->
-
 <script>
     const ctx = document.getElementById('applicationChart');
 
     new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: [
-                'Pink',
-                'Blue',
-                'Yellow',
-                'Red'
+                'оформляется договор',
+                'договор исполняется',
+                'в пути',
+                'на таможне',
+                'в пути после таможни',
+                'исполнен'
             ],
             datasets: [{
                 label: 'My First Dataset',
-                data: [300, 50, 100, 75],
+                data: {{$applications}},
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(255, 20, 1)'
+                    '#bd1200',
+                    '#e74c3c',
+                    '#ffc3bd',
+                    '#b0fe15',
+                    '#20c997',
+                    '#0a8b65',
                 ],
                 hoverOffset: 4
             }]

@@ -152,8 +152,8 @@
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
                                         <a href="{{ route('requirements_year_applications.edit', ['requirements_year_application' => $item, 'application' => $year_application, 'mtr' => $year_application->technical_resource_id]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
-                                        <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
-                                        <form action="{{ route('requirements_year_applications.destroy', ['requirements_year_application' => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
+                                        <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete2-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
+                                        <form action="{{ route('requirements_year_applications.destroy', ['requirements_year_application' => $item]) }}" id="delete2-form{{ $item->id }}" method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
                                         </form>

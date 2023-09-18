@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PlanRemont;
 use App\Models\TypeTechnicalInspection;
 use App\Models\Equipment;
-use App\Models\Detail;
+use App\Models\Application;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -82,7 +82,8 @@ class HomeController extends Controller
             ->get();
 
         return view('home', [
-            'remonts' => $remonts
+            'remonts' => $remonts,
+            'applications' => json_encode($this->applications())
         ]);
     }
 
@@ -139,6 +140,8 @@ class HomeController extends Controller
         ]);
     }
 
+
+    // calendar functions
     public function get_days(Request $request)
     {
         $date_arr = explode("-", $request->date);
@@ -194,7 +197,7 @@ class HomeController extends Controller
                 })
                 ->with(['planRemonts' => function ($q) use ($year, $month, $day) {
                     $q->where('remont_begin', $year . '-' . $month . '-' . $day);
-                }, 'planRemonts.applications', 'planRemonts.remontType', 'planRemonts.applications.orderResources', 'planRemonts.applications.technicalResource', 'typeEquipment', 'department'])
+                }, 'planRemonts.applications', 'planRemonts.remontType', 'planRemonts.applications.orderResource', 'planRemonts.applications.technicalResource', 'typeEquipment', 'department'])
                 ->first();
 
             if($item) $res[] = $item;
@@ -203,5 +206,23 @@ class HomeController extends Controller
         return response([
             'res' => $res
         ]);
+    }
+
+    public function applications(): array
+    {
+        $applications = [];
+
+        // $applications_from_db = Application::latest()
+        //     ->with('orderResource')
+        //     ->get();
+
+        foreach ([2,3,4,5,6,7] as $key => $value) {
+            $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
+                $q->where('execution_statuse_id', $value);
+            })
+            ->count();
+        }
+
+        return $applications;
     }
 }

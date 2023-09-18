@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\OrderResource;
+use App\Models\PlanRemont;
+use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,29 +19,40 @@ class OrderResourceController extends Controller
      */
     public function index(Request $request)
     {
-        $order_resources = OrderResource::latest();
-        $search = null;
-        if(isset($request->application_id) && $request->application_id != '') {
-            $order_resources = $order_resources->where('application_id', $request->application_id);
-            $search = $request->application_id;
+        $applications = Application::latest();
+        $equipment_id = null;
+        $plan_remont_id = null;
+        if(isset($request->equipment_id) && $request->equipment_id != '') {
+            $applications = $applications->where('equipment_id', $request->equipment_id);
+            $equipment_id = $request->equipment_id;
         }
-        $order_resources = $order_resources->paginate(12);
-        $applications = Application::all();
+        if(isset($request->plan_remont_id) && $request->plan_remont_id != '') {
+            $applications = $applications->where('plan_remont_id', $request->plan_remont_id);
+            $plan_remont_id = $request->plan_remont_id;
+        }
+        $applications = $applications->with('orderResource')->paginate(12);
+
+        $plan_remonts = PlanRemont::latest()
+            ->get();
+        $equipments = Equipment::orderBy('garage_number', 'ASC')
+            ->get();
 
         return view('app.'.$this->route_name.'.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'order_resources' => $order_resources,
             'applications' => $applications,
-            'search' => $search,
+            'equipment_id' => $equipment_id,
+            'plan_remont_id' => $plan_remont_id,
+            'plan_remonts' => $plan_remonts,
+            'equipments' => $equipments,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $applications = Application::all();
 
@@ -48,6 +61,7 @@ class OrderResourceController extends Controller
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'applications' => $applications,
+            'application_id' => $request->application_id
         ]);
     }
 
@@ -99,7 +113,7 @@ class OrderResourceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OrderResource $orderResource)
+    public function edit(Request $request, OrderResource $orderResource)
     {
         $applications = Application::all();
 
@@ -109,6 +123,7 @@ class OrderResourceController extends Controller
             'route_parameter' => $this->route_parameter,
             'order_resource' => $orderResource,
             'applications' => $applications,
+            'application_id' => $request->application_id
         ]);
     }
 
