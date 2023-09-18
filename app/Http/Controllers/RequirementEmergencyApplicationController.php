@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RequirementEmergencyApplication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\RequirementEmergencyApplication;
+use App\Models\TechnicalResource;
 
 class RequirementEmergencyApplicationController extends Controller
 {
+    public $title = 'Потребность в узлах, деталях и материалах для ремонта';
+    public $title_main = 'Аварийные заявки';
+    public $route_name = 'req_emergency_applications';
+    public $route_name_main = 'emergency_applications';
+    public $route_parameter = 'req_emergency_application';
+    public $route_parameter_main = 'emergency_application';
+
     /**
      * Display a listing of the resource.
      */
@@ -18,9 +28,22 @@ class RequirementEmergencyApplicationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $id_application = $request->id_application;
+        $id_equipment = $request->id_equipment;
+
+        $mtr = TechnicalResource::orderBy('catalog_name', 'ASC')
+            ->get();
+
+        return view('app.'.$this->route_name.'.create', [
+            'title' => $this->title,
+            'title_main' => $this->title_main,
+            'route_name' => $this->route_name,
+            'route_name_main' => $this->route_name_main,
+            'mtr' => $mtr,
+            'id_application' => $id_application,
+        ]);
     }
 
     /**
@@ -28,7 +51,31 @@ class RequirementEmergencyApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'technical_resource_id' => 'required|integer',
+            'required_quantity' => 'required|integer',
+            'warehouse_number' => 'required',
+            'warehouse_date' => 'required',
+            'warehouse_quantity' => 'required|integer',
+            'declared_quantity' => 'required|integer',
+            'delivery_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withInput()->with([
+                'success' => false,
+                'message' => 'Ошибка валидации'
+            ]);
+        }
+
+        BaseController::store(RequirementEmergencyApplication::class, $data);
+
+        return redirect()->route($this->route_name_main.'.show', [$this->route_parameter_main => $data['emergency_application_id']])->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
     }
 
     /**
@@ -42,17 +89,63 @@ class RequirementEmergencyApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RequirementEmergencyApplication $requirementEmergencyApplication)
+    public function edit(Request $request, $requirementEmergencyApplication)
     {
-        //
+
+   //     var_dump($requirementEmergencyApplication);
+     //   die();
+
+        $requirementEmergencyApplication = RequirementEmergencyApplication::find($requirementEmergencyApplication);
+
+        $id_application = $requirementEmergencyApplication->emergency_application_id;
+        $id_equipment = $requirementEmergencyApplication->emergencyApplication->equipment_id;
+
+        $mtr = TechnicalResource::orderBy('catalog_name', 'ASC')
+            ->get();
+
+        return view('app.'.$this->route_name.'.edit', [
+            'title' => $this->title,
+            'title_main' => $this->title_main,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'route_name_main' => $this->route_name_main,
+            'req_emergency_application' => $requirementEmergencyApplication,
+            'mtr' => $mtr,
+            'id_application' => $id_application,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RequirementEmergencyApplication $requirementEmergencyApplication)
+    public function update(Request $request, $requirementEmergencyApplication)
     {
-        //
+        $requirementEmergencyApplication = RequirementEmergencyApplication::find($requirementEmergencyApplication);
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'technical_resource_id' => 'required|integer',
+            'required_quantity' => 'required|integer',
+            'warehouse_number' => 'required',
+            'warehouse_date' => 'required',
+            'warehouse_quantity' => 'required|integer',
+            'declared_quantity' => 'required|integer',
+            'delivery_date' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return back()->with([
+                'success' => false,
+                'message' => 'Ошибка валидации'
+            ]);
+        }
+
+        BaseController::store($requirementEmergencyApplication, $data, 1);
+
+        return redirect()->route($this->route_name_main . '.show', [$this->route_parameter_main => $data['emergency_application_id']])->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
     }
 
     /**
@@ -60,6 +153,11 @@ class RequirementEmergencyApplicationController extends Controller
      */
     public function destroy(RequirementEmergencyApplication $requirementEmergencyApplication)
     {
-        //
+        BaseController::destroy($requirementEmergencyApplication);
+
+        return back()->with([
+            'success' => true,
+            'message' => 'Успешно удален'
+        ]);
     }
 }

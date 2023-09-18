@@ -27,7 +27,7 @@ class RepairApplication extends Model
 
     public function requirements()
     {
-        return $this->hasMany(RequirementYearApplication::class);
+        return $this->hasMany(RequirementRepairApplication::class);
     }    
 
 }

@@ -9,6 +9,8 @@ class RequirementEmergencyApplication extends Model
 {
     use HasFactory;
 
+    protected $table = 'req_emergency_applications';
+
     protected $fillable = [
         'emergency_application_id',
         'technical_resource_id',
@@ -19,5 +21,16 @@ class RequirementEmergencyApplication extends Model
         'declared_quantity',
         'delivery_date'
     ];
+
+
+    public function emergencyApplication()
+    {
+        return $this->belongsTo(EmergencyApplication::class);
+    }
+
+    public function technicalResource()
+    {
+        return $this->belongsTo(TechnicalResource::class);
+    }
 
 }

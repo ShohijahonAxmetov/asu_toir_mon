@@ -158,8 +158,8 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link"
-                                           href="">
+                                        <a class="nav-link {{ request()->is('emergency_applications') || request()->is('emergency_applications/*') ? 'active' : '' }}"
+                                           href="{{ route('emergency_applications.index') }}">
                                             Аварийная разовая заявка
                                         </a>
                                     </li>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\RequirementRepairApplication;
@@ -14,7 +15,7 @@ class RequirementRepairApplicationController extends Controller
     public $title_main = 'Заявки на ремонт';
     public $route_name = 'requirement_repair_applications';
     public $route_name_main = 'repair_applications';
-    public $route_parameter = 'requirements_repair_application';
+    public $route_parameter = 'requirement_repair_application';
     public $route_parameter_main = 'repair_application';
 
     /**
@@ -46,6 +47,8 @@ class RequirementRepairApplicationController extends Controller
             'title_main' => $this->title_main,
             'route_name' => $this->route_name,
             'route_name_main' => $this->route_name_main,
+            'route_parameter_main' =>  $this->route_parameter_main,
+
 /*            'route_parameter' => $this->route_parameter,
             'equipments' => $equipments,
             'month' => $month,
@@ -133,8 +136,11 @@ class RequirementRepairApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RequirementRepairApplication $requirementRepairApplication)
+    public function edit(Request $request, $requirementRepairApplication)
     {
+        //var_dump( $request);
+       // die;
+
         $requirementRepairApplication = RequirementRepairApplication::find($requirementRepairApplication);
 
         $id_application = $requirementRepairApplication->repair_application_id;
@@ -147,7 +153,10 @@ class RequirementRepairApplicationController extends Controller
             'title' => $this->title,
             'title_main' => $this->title_main,
             'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
             'route_name_main' => $this->route_name_main,
+            'requirement_repair_application' => $requirementRepairApplication,
+   //         'requirement_year_application' => $requirementYearApplication,
             'mtr' => $mtr,
             'id_application' => $id_application,
         ]);
@@ -177,9 +186,24 @@ class RequirementRepairApplicationController extends Controller
             ]);
         }
 
-        BaseController::store($requirementRepairApplication, $data, 1);
+       // BaseController::store($requirementRepairApplication, $data, 1);
 
-        return redirect()->route('year_applications.show', ['year_application' => $data['year_application_id']])->with([
+        //        OBSERVER
+        DB::beginTransaction();
+        try {
+            BaseController::store($requirementRepairApplication, $data, 1);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withInput()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return redirect()->route($this->route_name_main . '.show', [$this->route_parameter_main => $data['repair_application_id']])->with([
             'success' => true,
             'message' => 'Успешно сохранен'
         ]);

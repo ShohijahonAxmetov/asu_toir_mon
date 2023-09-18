@@ -167,6 +167,27 @@ class RepairApplicationController extends Controller
      */
     public function destroy(RepairApplication $repairApplication)
     {
-        //
+        DB::beginTransaction();
+        try {
+
+            foreach ($repairApplication->requirements as $item) {
+                BaseController::destroy($item);
+            }
+            BaseController::destroy($repairApplication);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return back()->with([
+            'success' => true,
+            'message' => 'Успешно удален'
+        ]);
     }
 }

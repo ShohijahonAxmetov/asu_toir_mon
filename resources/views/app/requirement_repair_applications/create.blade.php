@@ -32,8 +32,8 @@
                 ],
                 [
                     'active' => false,
-                    'url' => route($route_name.'.index'),
-                    'name' => $title,
+                    'url' => route($route_name_main.'.show', [$route_parameter_main => $id_application]),
+                    'name' => $title . ' ',
                     'disabled' => false
                 ],
                 [

@@ -25,4 +25,8 @@ class EmergencyApplication extends Model
         return $this->belongsTo(PlanRemont::class);
     }
 
+    public function requirements()
+    {
+        return $this->hasMany(RequirementEmergencyApplication::class);
+    }    
 }
