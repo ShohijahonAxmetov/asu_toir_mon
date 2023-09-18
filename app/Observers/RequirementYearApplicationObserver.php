@@ -59,13 +59,20 @@ class RequirementYearApplicationObserver
                 ->first()
                 ->update($data);
 
-
 //            obnovit kolichcestvo zayavlennix godovogo grafika
-            $comp = $requirementYearApplication->getOriginal('declared_quantity') - $requirementYearApplication->declared_quantity;
             $year_application = YearApplication::find($data['year_application_id']);
-            $inp = 'quantity_m'.$requirementYearApplication->month+1;
+            // minusovat staroe
+            $old_inp = 'quantity_m'.$requirementYearApplication->getOriginal('month')+1;
+            $old_declared = $requirementYearApplication->getOriginal('declared_quantity');
             $year_application->update([
-                $inp => $year_application->$inp - $comp
+                $old_inp => $year_application->$old_inp - $old_declared
+            ]);
+
+            // plyusovat
+            $inp = 'quantity_m'.$requirementYearApplication->month+1;
+            $declared = $requirementYearApplication->declared_quantity;
+            $year_application->update([
+                $inp => $year_application->$inp + $declared
             ]);
 
 //            obnovlenie obshego kolichestvo

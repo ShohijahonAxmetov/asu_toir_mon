@@ -94,7 +94,19 @@ class YearApplicationController extends Controller
         $data['quantity_m11'] = 0;
         $data['quantity_m12'] = 0;
 
-        BaseController::store(YearApplication::class, $data);
+        DB::beginTransaction();
+        try {
+            BaseController::store(YearApplication::class, $data);
+
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollBack();
+
+            return back()->withInput()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->route($this->route_name.'.index')->with([
             'success' => true,
@@ -172,8 +184,20 @@ class YearApplicationController extends Controller
                 'message' => 'Ошибка валидации'
             ]);
         }
+        
+        DB::beginTransaction();
+        try {
+            BaseController::store($yearApplication, $data, 1);
 
-        BaseController::store($yearApplication, $data, 1);
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollBack();
+
+            return back()->withInput()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->route($this->route_name.'.index')->with([
             'success' => true,

@@ -140,7 +140,7 @@
                                         {{ $item->equipment->garage_number ?? '--' }}
                                     </div>
                                 </td>
-                                <td>{{ $item->month ?? '--' }}</td>
+                                <td>{{ $month[$item->month] }}</td>
                                 <td>{{ $item->planRemont->remont_begin ?? '--' }}</td>
                                 <td>{{ $item->required_quantity ?? '--' }}</td>
                                 <td>{{ $item->warehouse_number ?? '--' }}</td>
