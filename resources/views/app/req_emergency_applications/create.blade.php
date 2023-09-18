@@ -32,7 +32,7 @@
                 ],
                 [
                     'active' => false,
-                    'url' => route($route_name.'.index'),
+                    'url' => route($route_name_main.'.show', [$route_parameter_main => $id_application]),
                     'name' => $title,
                     'disabled' => false
                 ],

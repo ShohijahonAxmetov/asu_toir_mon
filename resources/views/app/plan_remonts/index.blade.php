@@ -54,7 +54,7 @@
                                 <select class="form-control @error('equipment_id') is-invalid @enderror" name="equipment_id" data-choices>
                                     <option value="">Выберите из списка</option>
                                     @foreach ($equipments as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->garage_number }}</option>
+                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->typeEquipment->name . '  № ' . $item->garage_number . '  ( ' . $item->department->name . '  ) ' }}</option>
                                     @endforeach
                                 </select>
                                 @error('type_equipment_id')

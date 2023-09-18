@@ -87,13 +87,13 @@ class RequirementEmergencyApplicationObserver
     public function getArr(RequirementEmergencyApplication $requirementEmergencyApplication): array
     {
         $data = $requirementEmergencyApplication->toArray();
-        $data['type_application'] = 2;
+        $data['type_application'] = 3;
         $data['requirement_id'] = $data['id'];
 
-        $data['plan_remont_id'] = $requirementEmergencyApplication->repairApplication->plan_remont_id;
-        $data['equipment_id'] = $requirementEmergencyApplication->repairApplication->equipment_id;
-        $data['application_date'] = $requirementEmergencyApplication->repairApplication->application_date;
-        $data['remont_begin'] = $requirementEmergencyApplication->repairApplication->planRemont->remont_begin;
+        $data['plan_remont_id'] = $requirementEmergencyApplication->emergencyApplication->plan_remont_id;
+        $data['equipment_id'] = $requirementEmergencyApplication->emergencyApplication->equipment_id;
+        $data['application_date'] = $requirementEmergencyApplication->emergencyApplication->application_date;
+        $data['remont_begin'] = $requirementEmergencyApplication->emergencyApplication->planRemont->remont_begin;
 
 
         return $data;

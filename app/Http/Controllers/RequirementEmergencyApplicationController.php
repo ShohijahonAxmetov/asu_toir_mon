@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\RequirementEmergencyApplication;
 use App\Models\TechnicalResource;
+use App\Models\EmergencyApplication;
 
 class RequirementEmergencyApplicationController extends Controller
 {
-    public $title = 'Потребность в узлах, деталях и материалах для ремонта';
+    public $title = 'Потребность в узлах и деталях для ремонта';
     public $title_main = 'Аварийные заявки';
     public $route_name = 'req_emergency_applications';
     public $route_name_main = 'emergency_applications';
@@ -33,14 +34,21 @@ class RequirementEmergencyApplicationController extends Controller
         $id_application = $request->id_application;
         $id_equipment = $request->id_equipment;
 
+        $repairApp =  EmergencyApplication::find($id_application);
+
+        $t1 =  isset($repairApp->planRemont->remont_begin) ? date('d-m-Y', strtotime($repairApp->planRemont->remont_begin)) : '--';
+        $t2 =  isset($repairApp->planRemont->remont_end) ? date('d-m-Y', strtotime($repairApp->planRemont->remont_end)) : '--';
+        $repair_str = $t1 . ' - ' . $t2;  
+
         $mtr = TechnicalResource::orderBy('catalog_name', 'ASC')
             ->get();
 
         return view('app.'.$this->route_name.'.create', [
-            'title' => $this->title,
+            'title' => $this->title . ' ' . $repair_str,
             'title_main' => $this->title_main,
             'route_name' => $this->route_name,
             'route_name_main' => $this->route_name_main,
+            'route_parameter_main' =>  $this->route_parameter_main,
             'mtr' => $mtr,
             'id_application' => $id_application,
         ]);
