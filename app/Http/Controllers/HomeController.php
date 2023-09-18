@@ -211,10 +211,8 @@ class HomeController extends Controller
     public function applications(): array
     {
         $applications = [];
-
-        // $applications_from_db = Application::latest()
-        //     ->with('orderResource')
-        //     ->get();
+        // $applications[0] = Application::whereNotHas('orderResource')
+        //     ->count();
 
         foreach ([2,3,4,5,6,7] as $key => $value) {
             $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
