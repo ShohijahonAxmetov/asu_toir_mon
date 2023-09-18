@@ -39,4 +39,9 @@ class Application extends Model
     {
         return $this->belongsTo(TechnicalResource::class);
     }
+
+    public function orderResources()
+    {
+        return $this->hasMany(OrderResource::class);
+    }
 }

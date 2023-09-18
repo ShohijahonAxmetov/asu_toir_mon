@@ -35,4 +35,8 @@ class OrderResource extends Model
         return $this->belongsTo(ExecutionStatus::class);
     }
 
+    public function technicalResource()
+    {
+
+    }
 }

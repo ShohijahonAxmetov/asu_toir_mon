@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PlanRemont;
 use App\Models\TypeTechnicalInspection;
 use App\Models\Equipment;
 use App\Models\Detail;
@@ -77,7 +78,12 @@ class HomeController extends Controller
         //     'provedennie' => $provedennie,
         // ]);
 
-        return view('home');
+        $remonts = PlanRemont::whereBetween('remont_begin', [date('Y-m-').'01', date('Y-m-').date( 't', time())])
+            ->get();
+
+        return view('home', [
+            'remonts' => $remonts
+        ]);
     }
 
     public function chart()
@@ -135,8 +141,6 @@ class HomeController extends Controller
 
     public function get_days(Request $request)
     {
-        $data = $request->all();
-
         $date_arr = explode("-", $request->date);
         $year = $date_arr[0];
         $month = intval($date_arr[1]) + 1;
@@ -147,13 +151,11 @@ class HomeController extends Controller
         }
         $days = [];
         foreach($month_days as $day) {
-            $item = Detail::where(function($q) use ($year, $month, $day) {
-                    $q->where('planned', $year . '-' . $month . '-' . $day);
-                })
+            $item = PlanRemont::where('remont_begin', $year . '-' . $month . '-' . $day) // [date('Y-m-').'01', date('Y-m-').date( 't', time())]
                 ->exists();
+
             if($item) {
                 $days[] = $day;
-                continue;
             }
         }
 
@@ -177,8 +179,6 @@ class HomeController extends Controller
             'ДЕКАБРЬ' => 12
         ];
 
-        $data = $request->all();
-
         $date_arr = explode(" ", $request->date);
         $year = $date_arr[3];
         $month = $month[$date_arr[2]];
@@ -188,16 +188,16 @@ class HomeController extends Controller
             ->get();
         $res = [];
         foreach($equipments as $equipment) {
-            $res1 = $equipment->where('id', $equipment->id)
-                ->whereHas('details', function($q) use ($year, $month, $day) {
-                    $q->where('planned', $year . '-' . $month . '-' . $day);
+            $item = $equipment->where('id', $equipment->id)
+                ->whereHas('planRemonts', function($q) use ($year, $month, $day) {
+                    $q->where('remont_begin', $year . '-' . $month . '-' . $day);
                 })
-                ->with(['details' => function ($q) use ($year, $month, $day) {
-                    $q->where('planned', $year . '-' . $month . '-' . $day);
-                }, 'details.technical_inspections'])
+                ->with(['planRemonts' => function ($q) use ($year, $month, $day) {
+                    $q->where('remont_begin', $year . '-' . $month . '-' . $day);
+                }, 'planRemonts.applications', 'planRemonts.remontType', 'planRemonts.applications.orderResources', 'planRemonts.applications.technicalResource', 'typeEquipment', 'department'])
                 ->first();
 
-            if($res1) $res[] = $res1;
+            if($item) $res[] = $item;
         }
 
         return response([

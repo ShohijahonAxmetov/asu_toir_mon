@@ -21,6 +21,11 @@ class PlanRemont extends Model
         return $this->belongsTo(Equipment::class);
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
     public function remontType()
     {
         return $this->belongsTo(RemontType::class);

@@ -45,6 +45,30 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-6 col-xl-4 mb-5">
+            <!-- Traffic -->
+            <div class="card">
+                <div class="card-header">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Заявки
+                    </h4>
+
+                </div>
+                <div class="card-body">
+
+                    <!-- Chart -->
+                    <div class="chart chart-appended">
+                        <canvas id="applicationChart" class="chart-canvas" data-toggle="legend" data-target="#trafficChartLegend"></canvas>
+                    </div>
+
+                    <!-- Legend -->
+                    <div id="trafficChartLegend" class="chart-legend"></div>
+
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row mb-4">
         <div class="col-lg-12">
@@ -199,7 +223,7 @@
         });
 
         var d = new Date()
-        // Первый день недели в выбранном месяце 
+        // Первый день недели в выбранном месяце
         , firstDayOfMonth = new Date(y, m, 7).getDay()
         // Последний день выбранного месяца
         , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
@@ -276,7 +300,7 @@
     };
 
     // Начать календарь
-    var c = new Cal("divCal");          
+    var c = new Cal("divCal");
     c.showcurr();
 
     // Привязываем кнопки «Следующий» и «Предыдущий»
@@ -296,14 +320,12 @@
 
 <!-- modal in click -->
 <script>
-    
+
     $(document).ready(function() {
 
         $(document).on("click",".day",function(day) {
             $('#modal_tbody').html('');
             $('.modal-loader').removeClass('d-none');
-
-            console.log(day.currentTarget.innerText);
 
             $currentDate = day.currentTarget.innerText + ' - ' + $('#this_month_and_year').text();
             $('#exampleModalLabel').text($currentDate);
@@ -314,35 +336,31 @@
             })
                 .then(function (response) {
                     let result = '';
+                    console.log(response)
 
+                    result = result + '<h2>Оборудования</h2>';
+                    result = result + '<table class="table table-striped">' +
+                                          '<thead>' +
+                                            '<tr>' +
+                                              '<th scope="col">#</th>' +
+                                              '<th scope="col">Оборудование</th>' +
+                                              '<th scope="col">Тип оборудования</th>' +
+                                              '<th scope="col">Тип ремонта</th>' +
+                                              '<th scope="col">Дата ремонта</th>' +
+                                            '</tr>' +
+                                          '</thead>' +
+                                          '<tbody>';
                     response.data.res.forEach((element, index) => {
-                        result = result + '<h2>' + element.name + '</h2>';
-                        result = result + '<table class="table table-striped">' +
-                                              '<thead>' +
-                                                '<tr>' +
-                                                  '<th scope="col">#</th>' +
-                                                  '<th scope="col">НАЗВАНИЕ</th>' +
-                                                  '<th scope="col">Плановая дата</th>' +
-                                                  '<th scope="col">Фактическая дата</th>' +
-                                                  '<th scope="col">До слд. Тех. Обслужования</th>' +
-                                                '</tr>' +
-                                              '</thead>' +
-                                              '<tbody>';
-
-                        element.details.forEach((element1, index1) => {
-                            result = result + '<tr>' +
-                                                      '<th scope="row">' + Number(index1 + 1) + '</th>' +
-                                                      '<td>' + (element1.name ?? '--') + '</td>' +
-                                                      '<td>' + (element1.planned ?? '--') + '</td>' +
-                                                      '<td>' + ((element1.technical_inspections && element1.technical_inspections[0]) ? element1.technical_inspections[0].now : '--') + '</td>' +
-                                                      '<td>' + (element1.days ? element1.days + ' дней' : '--') + '</td>' +
-                                                    '</tr>';
-                        });
-
-
-                        result = result + '</tbody>' +
-                         '</table>';
+                        result = result +  '<tr>' +
+                                                '<th scope="row">' + Number(index + 1) + '</th>' +
+                                                '<td>' + (element.garage_number + ' (' + element.department.name + ')') + '</td>' +
+                                                '<td>' + (element.type_equipment.name ?? '--') + '</td>' +
+                                                '<td>' + (element.plan_remonts[0].remont_type.name) + '</td>' +
+                                                '<td>' + (element.plan_remonts[0].remont_begin + ' - ' + element.plan_remonts[0].remont_end) + '</td>' +
+                                            '</tr>';
                     });
+                    result = result + '</tbody>' +
+                        '</table>';
 
 
                     $('#modal_tbody').append(result);
@@ -356,4 +374,37 @@
 </script>
 <!-- calendar scripts end -->
 
+<script>
+    const ctx = document.getElementById('applicationChart');
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Pink',
+                'Blue',
+                'Yellow',
+                'Red'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100, 75],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 20, 1)'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        // options: {
+        //     scales: {
+        //         y: {
+        //             beginAtZero: true
+        //         }
+        //     }
+        // }
+    });
+</script>
 @endsection

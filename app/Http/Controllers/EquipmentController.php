@@ -42,7 +42,6 @@ class EquipmentController extends Controller
      */
     public function create()
     {
-        // $type_equipments = TypeEquipment::all();
 		$type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
 
@@ -87,7 +86,17 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        //
+        $type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
+        $departments = Department::all();
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'type_equipments' => $type_equipments,
+            'departments' => $departments,
+            'equipment' => $equipment,
+        ]);
     }
 
     /**
@@ -95,7 +104,6 @@ class EquipmentController extends Controller
      */
     public function edit(Equipment $equipment)
     {
-        // $type_equipments = TypeEquipment::all();
 		$type_equipments = TypeEquipment::orderBy('name', 'ASC')->get();
         $departments = Department::all();
 
