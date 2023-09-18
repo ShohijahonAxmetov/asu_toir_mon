@@ -98,7 +98,7 @@
                                 <th scope="row" style="width: 100px">{{ $plan_remonts->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->equipment->garage_number ?? '--' }}
+                                        {{ $item->equipment->typeEquipment->name . '  № ' . $item->equipment->garage_number . '  ( ' . $item->equipment->department->name . '  ) ' }}
                                     </div>
                                 </td>
                                 <td>{{ $item->remontType->name ?? '--' }}</td>
