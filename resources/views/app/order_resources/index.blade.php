@@ -179,8 +179,10 @@
                                     if($item->type_application == 1) $model = 'App\Models\RequirementYearApplication';
 
                                     $data_postavki = null;
-                                    $selected_model = $model::find($item->requirement_id);
-                                    if($selected_model) $data_postavki = $selected_model->delivery_date;
+                                    if($model) {
+                                        $selected_model = $model::find($item->requirement_id);
+                                        if($selected_model) $data_postavki = $selected_model->delivery_date;
+                                    }
                                 @endphp
                                 <td>{{ $data_postavki ? date('d-m-Y', strtotime($data_postavki)) : '--' }}</td>
                                 <td>

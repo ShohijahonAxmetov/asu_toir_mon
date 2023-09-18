@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Event;
 
 use App\Models\RequirementRepairApplication;
 use App\Observers\RequirementRepairApplicationObserver;
+use App\Models\RequirementEmergencyApplication;
+use App\Observers\RequirementEmergencyApplicationObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,7 @@ class EventServiceProvider extends ServiceProvider
     {
         RequirementYearApplication::observe(RequirementYearApplicationObserver::class);
         RequirementRepairApplication::observe(RequirementRepairApplicationObserver::class);
+        RequirementEmergencyApplication::observe(RequirementEmergencyApplicationObserver::class);
     }
 
     /**
