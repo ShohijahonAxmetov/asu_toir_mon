@@ -104,6 +104,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                <input type="hidden" name="filter" value="{{$filter}}">
                             </div>
                             <!-- Button -->
                             <div class="model-btns d-flex justify-content-end">

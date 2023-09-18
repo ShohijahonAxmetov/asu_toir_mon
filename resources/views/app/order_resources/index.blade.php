@@ -177,6 +177,8 @@
                                 @php
                                     $model = null;
                                     if($item->type_application == 1) $model = 'App\Models\RequirementYearApplication';
+                                    if($item->type_application == 2) $model = 'App\Models\RequirementRepairApplication';
+                                    if($item->type_application == 3) $model = 'App\Models\RequirementEmergencyApplication';
 
                                     $data_postavki = null;
                                     if($model) {
@@ -196,10 +198,15 @@
                                 </td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
+                                        @php
+                                            $filter = null;
+                                            if(isset($equipment_id)) $filter['equipment_id'] = $equipment_id;
+                                            if(isset($plan_remont_id)) $filter['plan_remont_id'] = $plan_remont_id;
+                                        @endphp
                                         @if(is_null($item->orderResource))
-                                        <a href="{{ route($route_name.'.create', ['application_id' => $item->id]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                        <a href="{{ route($route_name.'.create', ['application_id' => $item->id, 'filter' => $filter]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
                                         @else
-                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item->orderResource, 'application_id' => $item->id]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item->orderResource, 'application_id' => $item->id, 'filter' => $filter]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
                                         @endif
                                     </div>
                                 </td>

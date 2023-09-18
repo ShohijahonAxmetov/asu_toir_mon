@@ -70,7 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
         <div class="col-lg-12">
             <div class="chart__block card p-4 h-100 h-100">
                 <div class="d-flex justify-content-between flex-column mb-5">
@@ -96,7 +96,7 @@
                 <!-- zdes bil modal -->
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 
@@ -212,11 +212,7 @@
                         var now = new Date();
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         var currentDate = new Date(y, m, element)
-                        if(today >= currentDate) {
-                            d_day.classList.add('bg-danger');
-                        } else {
-                            d_day.classList.add('bg-warning');
-                        }
+                        d_day.classList.add('bg-warning');
                     }
                 });
             });
@@ -379,7 +375,7 @@
     const ctx = document.getElementById('applicationChart');
 
     new Chart(ctx, {
-        type: 'doughnut',
+        type: 'pie',
         data: {
             labels: [
                 'оформляется договор',
@@ -400,8 +396,11 @@
                     '#20c997',
                     '#0a8b65',
                 ],
-                hoverOffset: 4
-            }]
+                // borderWidth: 2,
+                hoverOffset: 4,
+                // offset: 0,
+                // weight: 50
+            }],
         },
         // options: {
         //     scales: {

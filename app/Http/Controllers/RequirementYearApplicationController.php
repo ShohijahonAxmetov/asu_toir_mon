@@ -208,8 +208,8 @@ class RequirementYearApplicationController extends Controller
      */
     public function destroy($requirementYearApplication)
     {
-        RequirementYearApplication::find($requirementYearApplication);
-//        OBSERVER
+        $requirementYearApplication = RequirementYearApplication::find($requirementYearApplication);
+
         DB::beginTransaction();
         try {
             BaseController::destroy($requirementYearApplication);

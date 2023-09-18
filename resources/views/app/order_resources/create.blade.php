@@ -172,6 +172,7 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <input type="hidden" name="filter" value="{{$filter}}">
                                 </div>
                             </div>
                             <!-- Button -->

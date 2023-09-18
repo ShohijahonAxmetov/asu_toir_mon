@@ -56,11 +56,15 @@ class OrderResourceController extends Controller
     {
         $applications = Application::all();
 
+        $filter = null;
+        if(isset($request->filter)) $filter = json_encode($request->filter);
+
         return view('app.'.$this->route_name.'.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'applications' => $applications,
+            'filter' => $filter,
             'application_id' => $request->application_id
         ]);
     }
@@ -95,8 +99,10 @@ class OrderResourceController extends Controller
 
         $data['execution_statuse_id'] = $this->setStatus($request);
         BaseController::store(OrderResource::class, $data);
+        $data['filter'] = json_decode($data['filter'], true);
 
-        return redirect()->route($this->route_name.'.index')->with([
+        return redirect()->route($this->route_name.'.index', ['equipment_id' => $data['filter']['equipment_id'] ?? null,
+            'plan_remont_id' => $data['filter']['plan_remont_id'] ?? null])->with([
             'success' => true,
             'message' => 'Успешно сохранен'
         ]);
@@ -117,13 +123,24 @@ class OrderResourceController extends Controller
     {
         $applications = Application::all();
 
+        // $equipment_id = null;
+        // $plan_remont_id = null;
+        // if(isset($request->filter)) {
+        //     if(isset($request->filter['equipment_id'])) $equipment_id = $request->filter['equipment_id'];
+        //     if(isset($request->filter['plan_remont_id'])) $plan_remont_id = $request->filter['equipment_id'];
+        // }
+        $filter = null;
+        if(isset($request->filter)) $filter = json_encode($request->filter);
+
+
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'order_resource' => $orderResource,
             'applications' => $applications,
-            'application_id' => $request->application_id
+            'filter' => $filter,
+            'application_id' => $request->application_id,
         ]);
     }
 
@@ -157,10 +174,12 @@ class OrderResourceController extends Controller
 
         $data['execution_statuse_id'] = $this->setStatus($request);
         BaseController::store($orderResource, $data, 1);
+        $data['filter'] = json_decode($data['filter'], true);
 
-        return redirect()->route($this->route_name.'.index')->with([
+        return redirect()->route($this->route_name.'.index', ['equipment_id' => $data['filter']['equipment_id'] ?? null,
+            'plan_remont_id' => $data['filter']['plan_remont_id'] ?? null])->with([
             'success' => true,
-            'message' => 'Успешно сохранен'
+            'message' => 'Успешно сохранен',
         ]);
     }
 
