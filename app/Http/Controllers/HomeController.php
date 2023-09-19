@@ -208,7 +208,7 @@ class HomeController extends Controller
                     if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == 7) $doned_count ++;
                 }
 
-                $item->percent = ($doned_count/count($item->planRemonts[0]->applications)*100).'% ('.$doned_count.'/'.count($item->planRemonts[0]->applications).')';
+                $item->percent = (round($doned_count/count($item->planRemonts[0]->applications)*100, 2)).'% ('.$doned_count.'/'.count($item->planRemonts[0]->applications).')';
             }
 
             if($item) $res[] = $item;
