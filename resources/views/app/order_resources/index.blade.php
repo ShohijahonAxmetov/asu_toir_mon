@@ -177,31 +177,75 @@
                                 <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_date ?? '--' }}</td>
                                 <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_quantity ?? '--' }}</td>
                                 @php
-                                    if (isset($item->orderResource->contract_date)) {
-                                        $flag_contact = false;
-                                    } else {
-                                       /* $add_days = $item->technicalResource->time_complete_order;
-                                        $date1 = date('d-m-Y',strtotime($item->application_date) + (24*3600*$add_days));
-                                        $date2 = date('d-m-Y');
-                                        $dateTimestamp1 = strtotime($date1);
-                                        $dateTimestamp2 = strtotime($date2);
-                                        $flag_order = true;
-                                        if ($dateTimestamp1 > $dateTimestamp2) {
-                                            $flag_order = false;
+                                    if (isset($item->orderResource->order_date)) {
+                                        if (isset($item->orderResource->contract_date)) {
+                                            $flag_contact = false;
                                         } else {
-                                            $flag_order = true;
-                                        } */
-                                        $flag_contact = true;    
-                                    } 
+                                            $add_days = $item->technicalResource->time_complete_order;
+                                            $date1 = date('d-m-Y', strtotime($item->orderResource->order_date) + (24*3600*$add_days));
+                                            $date2 = date('d-m-Y', strtotime($item->delivery_date));
+                                            $dateTimestamp1 = strtotime($date1);
+                                            $dateTimestamp2 = strtotime($date2);
+
+                                            if ($dateTimestamp1 > $dateTimestamp2) {
+                                                $flag_contact = true;
+                                            } else {
+                                                $flag_contact = false;
+                                            }
+                                        } 
+                                    } else {
+                                        $flag_contact = false;
+                                    }  // 
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
-                                <td>{{ $item->orderResource->contract_date ?? '--' }}</td>
-                                <td>{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
-                                <td>{{ $item->orderResource->date_manufacture_contract ?? '--' }}</td>
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
+
+                                @php
+                                    if (isset($item->orderResource->date_manufacture_contract)) {
+                                        if (isset($item->orderResource->date_manufacture_fact)) {
+                                            $flag_manufacture = false;
+                                        } else {
+                                            $date1 = date('d-m-Y', strtotime($item->orderResource->date_manufacture_contract));
+                                            $date2 = date('d-m-Y');
+                                            $dateTimestamp1 = strtotime($date1);
+                                            $dateTimestamp2 = strtotime($date2);
+                                            if ($dateTimestamp1 > $dateTimestamp2) {
+                                                $flag_manufacture = false;
+                                            } else {
+                                                $flag_manufacture = true;
+                                            }
+                                        }  
+                                    } else {
+                                        $flag_manufacture = false;
+                                    }  // 
+                                @endphp
+                                <td class="{{ $flag_manufacture ? 'bg-danger' : '' }}">{{ $item->orderResource->date_manufacture_contract ?? '--' }}</td>
                                 <td>{{ $item->orderResource->date_manufacture_fact ?? '--' }}</td>
+
                                 <td>{{ $item->orderResource->customs_date_receipt ?? '--' }}</td>
                                 <td>{{ $item->orderResource->customs_date_exit ?? '--' }}</td>
-                                <td>{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
+
+                                @php
+                                    // 4
+
+                                    if (isset($item->orderResource->date_manufacture_fact)) {
+                                        if (!isset($item->orderResource->customs_date_receipt) and !isset($item->orderResource->date_delivery_object)) {
+                                            $add_days = $item->technicalResource->delivery_time;
+                                            $date1 = date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact) + (24*3600*$add_days));
+                                            $date2 = date('d-m-Y');
+                                            $dateTimestamp1 = strtotime($date1);
+                                            $dateTimestamp2 = strtotime($date2);
+
+                                            $flag_delivery = true; 
+                                        } else {
+                                            $flag_delivery = false;
+                                        }
+                                    } else {
+                                        $flag_delivery = false;
+                                    }   // 
+                                @endphp
+                                <td class="{{ $flag_delivery ? 'bg-danger' : '' }}">{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
                                 <td>{{ $item->orderResource->executionStatuse->name ?? App\Models\ExecutionStatus::first()->name }}</td>
                                 <td>
                                     {{
