@@ -249,28 +249,29 @@ class HomeController extends Controller
             ->get();
 
         foreach ($remonts as $key => $remont) {
-            $prosrocheno_dney = 0;
+            // $prosrocheno_dney = 0;
             // chislo ispolnennix zakazov
             $doned_count = 0;
             foreach ($remont->applications as $key => $application) {
                 // vremya vipolneniya v dnyax
                 $vremya_vipolneniya = $application->technicalResource->time_complete_order + $application->technicalResource->delivery_time;
                 $data_vipolneniya = date('Y-m-d', strtotime($application->application_date. ' + '.$vremya_vipolneniya.' days'));
-                $prosrocheno_dney += (strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400;
+                // $prosrocheno_dney = ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) > $prosrocheno_dney ? ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) : $prosrocheno_dney;
 
                 // chislo ispolnennix zakazov
                 if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == 7) $doned_count ++;
             }
-            $remont->prosrocheno_dney = $prosrocheno_dney;
+            // $remont->prosrocheno_dney = $prosrocheno_dney == 0 ? '--' : $prosrocheno_dney;
 
             // procent ispolnennix zakazov
-            $remont->percent = ($doned_count/count($remont->applications)*100).'% ('.$doned_count.'/'.count($remont->applications).')';
+            $percent = $doned_count/count($remont->applications)*100;
+            $remont->percent = $percent.'% ('.$doned_count.'/'.count($remont->applications).')';
 
             // data posledney zayavki
             $remont->latest_application_date = $remont->applications[count($remont->applications)-1]->application_date ?? '--';
         }
 
-        $remonts->sortByDesc('prosrocheno_dney')
+        $remonts = $remonts->sortBy('percent')
             ->take(5);
 
         return $remonts;

@@ -101,7 +101,7 @@
                           <th scope="col">ТИП РЕМОНТА</th>
                           <th scope="col">ДАТА РЕМОНТА</th>
                           <th scope="col">ПРОЦЕНТ ВЫПОЛНЕНИЯ</th>
-                          <th scope="col">Просрочено дней</th>
+                          <!-- <th scope="col">Просрочено дней</th> -->
                           <th scope="col">ДАТА последней заявки</th>
                         </tr>
                       </thead>
@@ -114,7 +114,7 @@
                           <td>{{$remont->remontType->name}}</td>
                           <td>{{$remont->remont_begin}}</td>
                           <td>{{$remont->percent}}</td>
-                          <td>{{$remont->prosrocheno_dney}}</td>
+                          <!-- <td>{{$remont->prosrocheno_dney}}</td> -->
                           <td>{{$remont->latest_application_date}}</td>
                         </tr>
                         @endforeach
