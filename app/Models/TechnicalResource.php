@@ -33,4 +33,9 @@ class TechnicalResource extends Model
     {
         return $this->hasMany(YearApplication::class);
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

@@ -202,7 +202,7 @@
                                 <td>{{ $item->orderResource->customs_date_receipt ?? '--' }}</td>
                                 <td>{{ $item->orderResource->customs_date_exit ?? '--' }}</td>
                                 <td>{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
-                                <td>{{ $item->orderResource->executionStatuse->name ?? '--' }}</td>
+                                <td>{{ $item->orderResource->executionStatuse->name ?? App\Models\ExecutionStatus::first()->name }}</td>
                                 <td>
                                     {{
                                         isset($item->planRemont->remont_begin)

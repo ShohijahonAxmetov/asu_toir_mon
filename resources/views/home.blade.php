@@ -31,11 +31,18 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12 col-xl-4 mb-5">
-            <div class="chart__block card p-4 h-100">
+        <div class="col-lg-6 col-xl-4 mb-5">
+            <div class="chart__block card h-100">
+                <div class="card-header">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Календарь
+                    </h4>
+
+                </div>
                 <div class="d-flex flex-column align-items-center">
-                    <h3 class="d-flex align-self-start mb-5">Календарь</h3>
-                    <div class="d-flex flex-xl-column flex-lg-row">
+                    <div class="d-flex flex-xl-column flex-lg-row py-3">
                         <div class="calendar-wrapper py-0">
                             <button id="btnPrev" type="button">ПРЕДЫДУЩИЙ</button>
                             <button id="btnNext" type="button">СЛЕДУЮЩИЙ</button>
@@ -70,33 +77,55 @@
             </div>
         </div>
     </div>
-    <!-- <div class="row mb-4">
-        <div class="col-lg-12">
-            <div class="chart__block card p-4 h-100 h-100">
-                <div class="d-flex justify-content-between flex-column mb-5">
-                    <h3>Оборудования</h3>
-                    <div class="d-flex flex-xl-column flex-lg-row">
-                        <div class="d-flex align-items-center bg-white" style="border:1px solid #d2ddec;border-radius: 0.375rem;padding: 0.5rem 0.75rem;">
-                            <input value="{{date('Y')}}-01" id="tex_start_date" type="month" class="month_input bg-transparent border-0" style="width:120px">
-                            <span class="mx-3">-</span>
-                            <input value="{{date('Y')}}-12" id="tex_end_date" type="month" class="month_input bg-transparent border-0" style="width:120px">
-                        </div>
-                    </div>
+
+    <div class="row">
+        <div class="col-12">
+            
+            <div class="card">
+                <div class="card-header">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Заявки с наименьшим процентом выполнения
+                    </h4>
+
                 </div>
-                <div>
-                    <canvas id="tex_chart"></canvas>
+                <div class="card-body">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">ОБОРУДОВАНИЕ</th>
+                          <th scope="col">ТИП ОБОРУДОВАНИЯ</th>
+                          <th scope="col">ТИП РЕМОНТА</th>
+                          <th scope="col">ДАТА РЕМОНТА</th>
+                          <th scope="col">ПРОЦЕНТ ВЫПОЛНЕНИЯ</th>
+                          <th scope="col">Просрочено дней</th>
+                          <th scope="col">ДАТА последней заявки</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($badRemonts as $key => $remont)
+                        <tr>
+                          <th scope="row">{{$loop->iteration}}</th>
+                          <td>{{$remont->equipment->garage_number}}</td>
+                          <td>{{$remont->equipment->typeEquipment->name}}</td>
+                          <td>{{$remont->remontType->name}}</td>
+                          <td>{{$remont->remont_begin}}</td>
+                          <td>{{$remont->percent}}</td>
+                          <td>{{$remont->prosrocheno_dney}}</td>
+                          <td>{{$remont->latest_application_date}}</td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+
                 </div>
-                <div>
-                    <small><span style="width: 16px;height: 16px;background-color: #9BD0F5;display: inline-block;border-radius: 50%;"></span> Запланировано</small>
-                    <br>
-                    <small><span style="width: 16px;height: 16px;background-color: #FFB1C1;display: inline-block;border-radius: 50%;"></span> Фактически проведенные</small>
-                </div>
-                <button class="btn btn-info mt-5" data-bs-toggle="modal" data-bs-target="#diagnostikaModal">Подробно</button>
-                <!-- Modal -->
-                <!-- zdes bil modal -->
             </div>
+
         </div>
-    </div> -->
+    </div>
 </div>
 
 
@@ -343,6 +372,7 @@
                                               '<th scope="col">Тип оборудования</th>' +
                                               '<th scope="col">Тип ремонта</th>' +
                                               '<th scope="col">Дата ремонта</th>' +
+                                              '<th scope="col">Процент выполнения</th>' +
                                               '<th scope="col"></th>' +
                                             '</tr>' +
                                           '</thead>' +
@@ -354,6 +384,7 @@
                                                 '<td>' + (element.type_equipment.name ?? '--') + '</td>' +
                                                 '<td>' + (element.plan_remonts[0].remont_type.name) + '</td>' +
                                                 '<td>' + (element.plan_remonts[0].remont_begin + ' - ' + element.plan_remonts[0].remont_end) + '</td>' +
+                                                '<td>' + (element.percent) + '</td>' +
                                                 '<td><a href="' + '/order_resources?equipment_id=' + element.id + '&plan_remont_id=' + element.plan_remonts[0].id + '' + '" class="btn btn-sm btn-info ms-3"><i class="fe fe-eye"></i></a></td>' +
                                             '</tr>';
                     });
@@ -393,6 +424,7 @@
                     '#bd1200',
                     '#e74c3c',
                     '#ffc3bd',
+                    'lightblue',
                     '#b0fe15',
                     '#20c997',
                     '#0a8b65',
