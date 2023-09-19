@@ -233,11 +233,15 @@
                                         if (!isset($item->orderResource->customs_date_receipt) and !isset($item->orderResource->date_delivery_object)) {
                                             $add_days = $item->technicalResource->delivery_time;
                                             $date1 = date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact) + (24*3600*$add_days));
-                                            $date2 = date('d-m-Y');
+                                            $date2 = date('d-m-Y', strtotime($item->delivery_date));
                                             $dateTimestamp1 = strtotime($date1);
                                             $dateTimestamp2 = strtotime($date2);
 
-                                            $flag_delivery = true; 
+                                            if ($dateTimestamp1 > $dateTimestamp2) {
+                                                $flag_delivery = true;
+                                            } else {
+                                                $flag_delivery = false;
+                                            }
                                         } else {
                                             $flag_delivery = false;
                                         }
