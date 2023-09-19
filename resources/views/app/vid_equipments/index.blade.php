@@ -29,51 +29,15 @@
             @include('app.components.breadcrumb', [
                 'datas' => [
                     [
-                    'active' => true,
-                    'url' => '',
-                    'name' => $title,
-                    'disabled' => false
+                        'active' => true,
+                        'url' => '',
+                        'name' => $title,
+                        'disabled' => false
                     ]
                 ]
             ])
         </div>
     </div> <!-- / .header -->
-
-    <!-- filter -->
-    <div class="container-fluid">
-        <div class="card mt-4">
-            <!-- <div class="card-header">
-                <h3 class="mb-0">Фильтр</h3>
-            </div> -->
-            <div class="card-body">
-                <form action="{{route($route_name.'.index')}}">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="vid_equipment_id" class="form-label">Вид оборудования</label>
-                                <select class="form-control @error('vid_equipment_id') is-invalid @enderror" name="vid_equipment_id" data-choices>
-                                    <option value="">Выберите из списка</option>
-                                    @foreach ($vid_equipments as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $search ? 'selected' : '' }}>{{ $item->name  }}</option>
-                                    @endforeach
-                                </select>
-                                @error('vid_equipment_id')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary lift">
-                                    Фильтр
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- CARDS -->
     <div class="container-fluid">
@@ -85,22 +49,20 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Вид оборудования</th>
+                            <th scope="col">Наименование</th>
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($type_equipments as $key => $item)
+                        @foreach ($vid_equipments as $key => $item)
                             <tr>
-                                <th scope="row" style="width: 100px">{{ $type_equipments->firstItem() + $key }}</th>
+                                <th scope="row" style="width: 100px">{{ $vid_equipments->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         {{ $item->name }}
                                     </div>
                                 </td>
-                                <td>{{ $item->vidEquipment->name ?? '--' }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
@@ -118,7 +80,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $type_equipments->links() }}
+                    {{ $vid_equipments->links() }}
                 </div>
             </div>
         </div>

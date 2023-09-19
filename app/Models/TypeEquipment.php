@@ -12,8 +12,14 @@ class TypeEquipment extends Model
     protected $table = 'type_equipments';
 
     protected $fillable = [
-        'name'
+        'name',
+        'vid_equipment_id'
     ];
+
+    public function vidEquipment()
+    {
+        return $this->belongsTo(VidEquipment::class);
+    }
 
     public function equipments()
     {

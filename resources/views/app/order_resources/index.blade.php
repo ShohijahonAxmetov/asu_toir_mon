@@ -105,12 +105,13 @@
                             <th scope="col">Каталожный №</th>
                             <th scope="col">Наименование номенклатурное</th>
                             <th scope="col">Номенклатурный №</th>
+                            <th scope="col">Потребное кол-во</th>
                             <th scope="col">На складе (дата)</th>
                             <th scope="col">На складе (кол-во)</th>
-                            <th scope="col">Потребное кол-во</th>
                             <th scope="col">Вид заявки</th>
                             <th scope="col">Дата заявки</th>
                             <th scope="col">Заявлено</th>
+                            <th scope="col">Дата поставки (план)</th>
                             <th scope="col">Дата начала ремонта</th>
                             <th scope="col">Время поставки (время, необходимое для выполнения заказа)</th>
                             <th scope="col">Время поставки (время доставки)</th>
@@ -127,7 +128,6 @@
                             <th scope="col">Дата доставки на объект</th>
                             <th scope="col">Статус исполнения</th>
                             <th scope="col">Осталось дней до ремонта</th>
-                            <th scope="col">Дата поставки (план)</th>
                             <th scope="col">Просрочено дней</th>
                             <th scope="col"></th>
                         </tr>
@@ -144,19 +144,57 @@
                                 <td>{{ $item->technicalResource->catalog_number ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->nomen_name ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->nomen_number ?? '--' }}</td>
+                                <td>{{ $item->required_quantity ?? '--' }}</td>
                                 <td>{{ $item->warehouse_date ?? '--' }}</td>
                                 <td>{{ $item->warehouse_quantity ?? '--' }}</td>
-                                <td>{{ $item->required_quantity ?? '--' }}</td>
                                 <td>{{ $item->type_application ?? '--' }}</td>
                                 <td>{{ isset($item->application_date) ? date('d-m-Y', strtotime($item->application_date)) : '--' }}</td>
                                 <td>{{ $item->declared_quantity ?? '--' }}</td>
-                                <td>{{ $item->planRemont->remont_begin ?? '--' }}</td>
+                                <td>{{ $item->delivery_date ? date('d-m-Y', strtotime($item->delivery_date)) : '--' }}</td>
+                                <td>{{ $item->remont_begin ? date('d-m-Y', strtotime($item->remont_begin)) : '--' }}</td>
                                 <td>{{ $item->technicalResource->time_complete_order ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->delivery_time ?? '--' }}</td>
-                                <td>{{ $item->orderResource->order_number ?? '--' }}</td>
-                                <td>{{ $item->orderResource->order_date ?? '--' }}</td>
-                                <td>{{ $item->orderResource->order_quantity ?? '--' }}</td>
-                                <td>{{ $item->orderResource->contract_number ?? '--' }}</td>
+                                @php
+                                    if (isset($item->orderResource->order_date)) {
+                                        $flag_order = false;
+                                    } else {
+                                        $add_days = $item->technicalResource->time_complete_order;
+                                        $date1 = date('d-m-Y',strtotime($item->application_date) + (24*3600*$add_days));
+                                        $date2 = date('d-m-Y');
+                                        $dateTimestamp1 = strtotime($date1);
+                                        $dateTimestamp2 = strtotime($date2);
+                                        $flag_order = true;
+                                        if ($dateTimestamp1 > $dateTimestamp2) {
+                                            $flag_order = false;
+                                        } else {
+                                            $flag_order = true;
+                                        }
+                                            
+                                    } 
+                                    /// ;
+                                @endphp
+                                <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_number ?? '--' }}</td>
+                                <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_date ?? '--' }}</td>
+                                <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_quantity ?? '--' }}</td>
+                                @php
+                                    if (isset($item->orderResource->contract_date)) {
+                                        $flag_contact = false;
+                                    } else {
+                                       /* $add_days = $item->technicalResource->time_complete_order;
+                                        $date1 = date('d-m-Y',strtotime($item->application_date) + (24*3600*$add_days));
+                                        $date2 = date('d-m-Y');
+                                        $dateTimestamp1 = strtotime($date1);
+                                        $dateTimestamp2 = strtotime($date2);
+                                        $flag_order = true;
+                                        if ($dateTimestamp1 > $dateTimestamp2) {
+                                            $flag_order = false;
+                                        } else {
+                                            $flag_order = true;
+                                        } */
+                                        $flag_contact = true;    
+                                    } 
+                                @endphp
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
                                 <td>{{ $item->orderResource->contract_date ?? '--' }}</td>
                                 <td>{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
                                 <td>{{ $item->orderResource->date_manufacture_contract ?? '--' }}</td>
@@ -186,7 +224,6 @@
                                         if($selected_model) $data_postavki = $selected_model->delivery_date;
                                     }
                                 @endphp
-                                <td>{{ $data_postavki ? date('d-m-Y', strtotime($data_postavki)) : '--' }}</td>
                                 <td>
                                     {{
                                         isset($item->planRemont->remont_begin)

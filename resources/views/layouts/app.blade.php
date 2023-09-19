@@ -89,6 +89,12 @@
                                 class="collapse {{ request()->is('equipments') || request()->is('equipments/*') || request()->is('type_equipments') || request()->is('type_equipments/*') ? 'show' : '' }}"
                                 id="equipments">
                                 <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
+                                           href="{{ route('equipments.index') }}">
+                                            Оборудования
+                                        </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('type_equipments') || request()->is('type_equipments/*') ? 'active' : '' }}"
                                            href="{{ route('type_equipments.index') }}">
@@ -96,9 +102,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
-                                           href="{{ route('equipments.index') }}">
-                                            Оборудования
+                                        <a class="nav-link {{ request()->is('vid_equipments') || request()->is('vid_equipments/*') ? 'active' : '' }}"
+                                           href="{{ route('vid_equipments.index') }}">
+                                            Виды оборудования
                                         </a>
                                     </li>
                                 </ul>

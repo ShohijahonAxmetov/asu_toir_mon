@@ -63,6 +63,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                        <label for="vid_equipment_id" class="form-label required">Вид оборудования</label>
+                                        <select class="form-control mb-4 @error('vid_equipment_id') is-invalid @enderror" name="vid_equipment_id" required>
+                                            @foreach ($vid_equipments as $key => $item)
+                                                <option value="{{ $item->id }}" {{ old('vid_equipment_id', $type_equipment->vid_equipment_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('vid_equipment_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div>
+
                             <!-- Button -->
                             <div class="model-btns d-flex justify-content-end">
                                 <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Отмена</a>
