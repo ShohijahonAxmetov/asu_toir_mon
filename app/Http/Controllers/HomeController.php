@@ -83,62 +83,63 @@ class HomeController extends Controller
 
         return view('home', [
             'remonts' => $remonts,
-            'applications' => json_encode($this->applications())
+            'applications' => json_encode($this->applications()),
+            'badRemonts' => $this->getBadRemonts()
         ]);
     }
 
-    public function chart()
-    {
-        $type_technical_inspections = TypeTechnicalInspection::all();
-        $result_plan = [];
-        $result_fact = [];
-        foreach($type_technical_inspections as $key => $item) {
-            $result_plan[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
-                $q->where('type_technical_inspection_id', $item->id)
-                    ->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-            })->count();
+    // public function chart()
+    // {
+    //     $type_technical_inspections = TypeTechnicalInspection::all();
+    //     $result_plan = [];
+    //     $result_fact = [];
+    //     foreach($type_technical_inspections as $key => $item) {
+    //         $result_plan[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
+    //             $q->where('type_technical_inspection_id', $item->id)
+    //                 ->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //         })->count();
 
-            $result_fact[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
-                $q->where('type_technical_inspection_id', $item->id)
-                    ->whereHas('technical_inspections', function ($qi) {
-                        $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-                    });
-            })
-            ->count();
-        }
-
-
-        /*
-            dannie dlya modali
-        */
-        $zaplanirovannie = Equipment::whereHas('details', function($q) {
-            $q->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-            })
-            ->with(['details' => function ($q) {
-                $q->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-            }, 'details.technical_inspections'])
-            ->get();
-        $provedennie = Equipment::whereHas('details', function($q) {
-            $q->whereHas('technical_inspections', function ($qi) {
-                $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-            });
-            })
-            ->with(['details' => function ($q) {
-                $q->whereHas('technical_inspections', function ($qi) {
-                    $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
-                });
-            }, 'details.technical_inspections'])
-            ->get();
+    //         $result_fact[$key] = Equipment::whereHas('details', function ($q) use ($key, $item) {
+    //             $q->where('type_technical_inspection_id', $item->id)
+    //                 ->whereHas('technical_inspections', function ($qi) {
+    //                     $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //                 });
+    //         })
+    //         ->count();
+    //     }
 
 
-        return response([
-            'result_plan' => $result_plan,
-            'result_fact' => $result_fact,
+    //     /*
+    //         dannie dlya modali
+    //     */
+    //     $zaplanirovannie = Equipment::whereHas('details', function($q) {
+    //         $q->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //         })
+    //         ->with(['details' => function ($q) {
+    //             $q->whereBetween('planned', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //         }, 'details.technical_inspections'])
+    //         ->get();
+    //     $provedennie = Equipment::whereHas('details', function($q) {
+    //         $q->whereHas('technical_inspections', function ($qi) {
+    //             $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //         });
+    //         })
+    //         ->with(['details' => function ($q) {
+    //             $q->whereHas('technical_inspections', function ($qi) {
+    //                 $qi->whereBetween('now', [date('Y-m-d', strtotime($_GET['start'])), date('Y-m', strtotime($_GET['end'])).'-'.date('t', strtotime($_GET['end']))]);
+    //             });
+    //         }, 'details.technical_inspections'])
+    //         ->get();
 
-            'zaplanirovannie' => $zaplanirovannie,
-            'provedennie' => $provedennie,
-        ]);
-    }
+
+    //     return response([
+    //         'result_plan' => $result_plan,
+    //         'result_fact' => $result_fact,
+
+    //         'zaplanirovannie' => $zaplanirovannie,
+    //         'provedennie' => $provedennie,
+    //     ]);
+    // }
 
 
     // calendar functions
@@ -197,8 +198,18 @@ class HomeController extends Controller
                 })
                 ->with(['planRemonts' => function ($q) use ($year, $month, $day) {
                     $q->where('remont_begin', $year . '-' . $month . '-' . $day);
-                }, 'planRemonts.applications', 'planRemonts.remontType', 'planRemonts.applications.orderResource', 'planRemonts.applications.technicalResource', 'typeEquipment', 'department'])
+                }, 'planRemonts.applications', 'planRemonts.applications.orderResource.executionStatuse', 'planRemonts.remontType', 'planRemonts.applications.orderResource', 'planRemonts.applications.technicalResource', 'typeEquipment', 'department'])
                 ->first();
+
+            if($item) {
+                $applications = $item->planRemonts[0]->applications;
+                $doned_count = 0;
+                foreach ($applications as $key => $value) {
+                    if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == 7) $doned_count ++;
+                }
+
+                $item->percent = ($doned_count/count($item->planRemonts[0]->applications)*100).'% ('.$doned_count.'/'.count($item->planRemonts[0]->applications).')';
+            }
 
             if($item) $res[] = $item;
         }
@@ -211,8 +222,8 @@ class HomeController extends Controller
     public function applications(): array
     {
         $applications = [];
-        // $applications[0] = Application::whereNotHas('orderResource')
-        //     ->count();
+        $applications[0] = Application::whereDoesntHave('orderResource')
+            ->count();
 
         foreach ([2,3,4,5,6,7] as $key => $value) {
             $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
@@ -222,5 +233,46 @@ class HomeController extends Controller
         }
 
         return $applications;
+    }
+
+    public function getBadRemonts(): \Illuminate\Database\Eloquent\Collection
+    {
+        $remonts = PlanRemont::where('remont_begin', '>', date('Y-m-d'))
+            ->whereHas('applications', function($q) {
+                $q->where(function($qi) {
+                    $qi->whereHas('orderResource', function($qi2) {
+                        $qi2->where('execution_statuse_id', '!=', 7);
+                    })->orWhereDoesntHave('orderResource');
+                });
+            })
+            ->with('applications', 'applications.technicalResource')
+            ->get();
+
+        foreach ($remonts as $key => $remont) {
+            $prosrocheno_dney = 0;
+            // chislo ispolnennix zakazov
+            $doned_count = 0;
+            foreach ($remont->applications as $key => $application) {
+                // vremya vipolneniya v dnyax
+                $vremya_vipolneniya = $application->technicalResource->time_complete_order + $application->technicalResource->delivery_time;
+                $data_vipolneniya = date('Y-m-d', strtotime($application->application_date. ' + '.$vremya_vipolneniya.' days'));
+                $prosrocheno_dney += (strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400;
+
+                // chislo ispolnennix zakazov
+                if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == 7) $doned_count ++;
+            }
+            $remont->prosrocheno_dney = $prosrocheno_dney;
+
+            // procent ispolnennix zakazov
+            $remont->percent = ($doned_count/count($remont->applications)*100).'% ('.$doned_count.'/'.count($remont->applications).')';
+
+            // data posledney zayavki
+            $remont->latest_application_date = $remont->applications[count($remont->applications)-1]->application_date ?? '--';
+        }
+
+        $remonts->sortByDesc('prosrocheno_dney')
+            ->take(5);
+
+        return $remonts;
     }
 }
