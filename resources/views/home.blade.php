@@ -109,7 +109,7 @@
                         @foreach($badRemonts as $key => $remont)
                         <tr>
                           <th scope="row">{{$loop->iteration}}</th>
-                          <td>{{$remont->equipment->garage_number}}</td>
+                          <td>{{$remont->equipment->garage_number.' ('.$remont->equipment->department->name.')'}}</td>
                           <td>{{$remont->equipment->typeEquipment->name}}</td>
                           <td>{{$remont->remontType->name}}</td>
                           <td>{{$remont->remont_begin}}</td>

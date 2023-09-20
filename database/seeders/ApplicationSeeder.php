@@ -23,7 +23,7 @@ class ApplicationSeeder extends Seeder
     		$data = [
     			'id' => $i+1,
     			'plan_remont_id' => $plan_remont_id,
-    			'equipment_id' => rand(1,21),
+    			'equipment_id' => $plan_remont->equipment_id,
     			'technical_resource_id' => rand(1,50),
     			'required_quantity' => $required_quantity,
     			'warehouse_number' => '№'.rand(1,1598),
