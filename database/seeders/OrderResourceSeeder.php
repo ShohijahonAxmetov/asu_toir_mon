@@ -17,6 +17,7 @@ class OrderResourceSeeder extends Seeder
         for($i=0; $i<500; $i++) {
         	$application_id = rand(1,999);
         	$application = Application::find($application_id);
+            $contract_number = '№ '.rand(1564,5486451);
         	$contract_date = date('Y-m-d', strtotime($application->application_date.'+'.rand(1,20).' days'));
         	$local_foreign = rand(1,2);
         	$date_manufacture_contract = date('Y-m-d', strtotime($contract_date.'+'.rand(1,20).' days'));
@@ -30,12 +31,45 @@ class OrderResourceSeeder extends Seeder
         		$date_delivery_object = date('Y-m-d', strtotime($customs_date_exit.'+'.rand(0, 5).' days'));
         	}
 
+            $rand_status = rand(2,7);
+
+            switch ($rand_status) {
+                case 2:
+                    $contract_number = null;
+                    $contract_date = null;
+                    $local_foreign = null;
+                    $date_manufacture_contract = null;
+                    $date_manufacture_fact = null;
+                    $customs_date_receipt = null;
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 3:
+                    $date_manufacture_fact = null;
+                    $customs_date_receipt = null;
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 4:
+                    $customs_date_receipt = null;
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 5:
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 6:
+                    $date_delivery_object = null;
+                    break;
+            }
+
         	$data = [
         		'application_id' => $application_id,
         		'order_number' => '№ '.rand(1564,5486451),
         		'order_date' => date('Y-m-d', strtotime($application->application_date.'+'.rand(0,60).' day')),
         		'order_quantity' => $application->declared_quantity,
-        		'contract_number' => '№ '.rand(1564,5486451),
+        		'contract_number' => $contract_number,
         		'contract_date' => $contract_date,
         		'local_foreign' => $local_foreign,
         		'date_manufacture_contract' => $date_manufacture_contract,
@@ -43,7 +77,6 @@ class OrderResourceSeeder extends Seeder
         		'customs_date_receipt' => $customs_date_receipt,
         		'customs_date_exit' => $customs_date_exit,
         		'date_delivery_object' => $date_delivery_object,
-        		'application_id' => $application_id,
         	];
         	$data['execution_statuse_id'] = $this->setStatus($data);
 
