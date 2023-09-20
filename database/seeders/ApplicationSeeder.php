@@ -16,10 +16,10 @@ class ApplicationSeeder extends Seeder
     {
     	for($i=0; $i<1000; $i++) {
     		$required_quantity = rand(51,99);
-    		$warehouse_quantity = $required_quantity - rand(1,50);
-    		$warehouse_date = '2023-'.rand(01, 12).'-'.rand(01,28);
     		$plan_remont_id = rand(1,200);
     		$plan_remont = PlanRemont::find($plan_remont_id);
+    		$warehouse_quantity = $required_quantity - rand(1,50);
+    		$warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
     		$data = [
     			'id' => $i+1,
     			'plan_remont_id' => $plan_remont_id,
