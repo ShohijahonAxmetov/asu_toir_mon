@@ -51,11 +51,12 @@
                             @csrf
                             <div class="row">
                                 <div class="col-12">
+
                                     <div class="form-group">
                                         <label for="equipment_id" class="form-label required">Оборудование</label>
                                         <select class="form-control mb-4 @error('equipment_id') is-invalid @enderror" name="equipment_id" required>
                                             @foreach ($equipments as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('equipment_id') == $item->id ? 'selected' : '' }}>{{ $item->garage_number }}</option>
+                                                <option value="{{ $item->id }}" {{ old('equipment_id') == $item->id ? 'selected' : '' }}>{{ $item->typeEquipment->name . '  № ' . $item->garage_number . '  ( ' . $item->department->name . '  ) ' }}</option>
                                             @endforeach
                                         </select>
                                         @error('equipment_id')
@@ -64,6 +65,7 @@
                                         </span>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
                                         <label for="month" class="form-label required">Месяц</label>
                                         <select class="form-control mb-4 @error('month') is-invalid @enderror" name="month" required>
@@ -77,11 +79,12 @@
                                         </span>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
                                         <label for="plan_remont_id" class="form-label required">Ремонт</label>
                                         <select class="form-control mb-4 @error('plan_remont_id') is-invalid @enderror" name="plan_remont_id" required>
                                             @foreach ($plan_remonts as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('plan_remont_id') == $item->id ? 'selected' : '' }}>{{ date('d-m-Y', strtotime($item->remont_begin)) }}</option>
+                                                <option value="{{ $item->id }}" {{ old('plan_remont_id') == $item->id ? 'selected' : '' }}>{{ date('d-m-Y', strtotime($item->remont_begin)) . ' - ' . date('d-m-Y', strtotime($item->remont_end)) . '  ( ' . $item->equipment->typeEquipment->name . '  № ' . $item->equipment->garage_number . '  ) '}}</option>
                                             @endforeach
                                         </select>
                                         @error('plan_remont_id')
@@ -90,6 +93,7 @@
                                         </span>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
                                         <label for="required_quantity" class="form-label required">Потребное количество на ремонт</label>
                                         <input type="text" class="form-control @error('required_quantity') is-invalid @enderror" name="required_quantity" value="{{ old('required_quantity') }}" id="required_quantity" placeholder="Потребное количество на ремонт..." required>
