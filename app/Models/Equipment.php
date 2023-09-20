@@ -12,7 +12,9 @@ class Equipment extends Model
     protected $fillable = [
         'type_equipment_id',
         'department_id',
-        'garage_number'
+        'garage_number',
+        'commissioning_date',
+        'eq_condition',
     ];
 
     public function typeEquipment()

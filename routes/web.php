@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('units', \App\Http\Controllers\UnitController::class);
     Route::resource('order_resources', \App\Http\Controllers\OrderResourceController::class);
     Route::resource('vid_equipments', \App\Http\Controllers\VidEquipmentController::class);
+    Route::get('/monitoring', [App\Http\Controllers\OrderResourceController::class, 'monitoring'])->name('monitoring');
 
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

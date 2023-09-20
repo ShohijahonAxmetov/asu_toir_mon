@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderResourceController extends Controller
 {
-    public $title = 'Мониторинг';
+    public $title = 'Учет исполнения заявок';
     public $route_name = 'order_resources';
     public $route_parameter = 'order_resource';
+
+    public $subtitle = 'Мониторинг';
     /**
      * Display a listing of the resource.
      */
@@ -211,5 +213,43 @@ class OrderResourceController extends Controller
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 7;
 
         return $status_id;
+    }
+
+    public function monitoring()
+    {
+        $applications = Application::latest();
+        $equipment_id = null;
+        $plan_remont_id = null;
+        if(isset($request->equipment_id) && $request->equipment_id != '') {
+            $applications = $applications->where('equipment_id', $request->equipment_id);
+            $equipment_id = $request->equipment_id;
+        }
+        if(isset($request->plan_remont_id) && $request->plan_remont_id != '') {
+            $applications = $applications->where('plan_remont_id', $request->plan_remont_id);
+            $plan_remont_id = $request->plan_remont_id;
+        }
+        $applications = $applications->with('orderResource')
+            ->select('applications.*')
+            ->join('equipment', 'equipment.id', '=', 'applications.equipment_id')
+            ->join('type_equipments', 'type_equipments.id', '=', 'equipment.type_equipment_id')
+            ->orderBy('type_equipments.name')
+            ->orderBy('equipment.garage_number')
+            ->paginate(12);
+
+        $plan_remonts = PlanRemont::latest()
+            ->get();
+        $equipments = Equipment::orderBy('garage_number', 'ASC')
+            ->get();
+
+        return view('app.'.$this->route_name.'.index2', [
+            'title' => $this->subtitle,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'applications' => $applications,
+            'equipment_id' => $equipment_id,
+            'plan_remont_id' => $plan_remont_id,
+            'plan_remonts' => $plan_remonts,
+            'equipments' => $equipments,
+        ]);
     }
 }

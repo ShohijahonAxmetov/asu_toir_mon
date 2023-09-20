@@ -64,6 +64,14 @@
                             <th scope="row">Подразделение</th>
                             <td class="">{{$equipment->department->name ?? '--'}}</td>
                         </tr>
+                        <tr>
+                            <th scope="row">Дата ввода</th>
+                            <td class="">{{$equipment->commissioning_date ?? '--'}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Состояние</th>
+                            <td class="">{{$equipment->eq_condition ?? '--'}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

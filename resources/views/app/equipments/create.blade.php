@@ -77,15 +77,17 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    @foreach([['Гаражный номер', 'garage_number', 'text', 1],['Дата ввода', 'commissioning_date', 'date', 0],['Состояние','eq_condition','text', 0]] as $item)
                                     <div class="form-group">
-                                        <label for="title" class="form-label required">Гаражный номер</label>
-                                        <input type="text" class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') }}" id="garage_number" placeholder="Гаражный номер...">
-                                        @error('garage_number')
+                                        <label for="{{$item[1]}}" class="form-label @if($item[3]) required @endif">{{$item[0]}}</label>
+                                        <input type="{{$item[2]}}" class="form-control @error($item[1]) is-invalid @enderror" name="{{$item[1]}}" value="{{ old($item[1]) }}" id="{{$item[1]}}" placeholder="{{$item[0]}}..." @if($item[3]) required @endif>
+                                        @error($item[1])
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- Button -->

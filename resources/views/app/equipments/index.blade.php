@@ -86,6 +86,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Гаражный номер</th>
+                            <th scope="col">Дата ввода</th>
+                            <th scope="col">Состояние</th>
                             <th scope="col">Тип оборудования</th>
                             <th scope="col">Подразделение</th>
                             <th scope="col">Дата добавления</th>
@@ -101,6 +103,8 @@
                                         {{ $item->garage_number }}
                                     </div>
                                 </td>
+                                <td>{{ $item->commissioning_date ?? '--' }}</td>
+                                <td>{{ $item->eq_condition ?? '--' }}</td>
                                 <td>{{ $item->typeEquipment->name ?? '--' }}</td>
                                 <td>{{ $item->department->name ?? '--' }}</td>
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>

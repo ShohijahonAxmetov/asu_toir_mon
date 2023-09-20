@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="form-group">
                                     <label for="department_id" class="form-label required">Подразделение</label>
-                                    <select class="form-control mb-4 @error('department_id') is-invalid @enderror" name="department_id" required>
+                                    <select class="form-control @error('department_id') is-invalid @enderror" name="department_id" required>
                                         @foreach ($departments as $key => $item)
                                             <option value="{{ $item->id }}" {{ old('department_id', $equipment->department_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                         @endforeach
@@ -78,15 +78,17 @@
                                     @enderror
                                 </div>
                                 <div class="col-12">
+                                    @foreach([['Гаражный номер', 'garage_number', 'text', 1],['Дата ввода', 'commissioning_date', 'date', 0],['Состояние','eq_condition','text', 0]] as $item)
                                     <div class="form-group">
-                                        <label for="garage_number" class="form-label required">Гаражный номер</label>
-                                        <input type="text" required class="form-control @error('garage_number') is-invalid @enderror" name="garage_number" value="{{ old('garage_number') ?? $equipment->garage_number }}" id="garage_number" placeholder="Гаражный номер...">
-                                        @error('garage_number')
+                                        <label for="{{$item[1]}}" class="form-label @if($item[3]) required @endif">{{$item[0]}}</label>
+                                        <input type="{{$item[2]}}" @if($item[3]) required @endif class="form-control @error($item[1]) is-invalid @enderror" name="{{$item[1]}}" value="{{ old($item[1]) ?? $equipment->{$item[1]} }}" id="{{$item[1]}}" placeholder="{{$item[0]}}...">
+                                        @error($item[1])
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- Button -->
