@@ -215,7 +215,7 @@ class OrderResourceController extends Controller
         return $status_id;
     }
 
-    public function monitoring()
+    public function monitoring(Request $request)
     {
         $applications = Application::latest();
         $equipment_id = null;

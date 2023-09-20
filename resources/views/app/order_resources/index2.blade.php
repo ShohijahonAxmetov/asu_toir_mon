@@ -46,7 +46,7 @@
                 <h3 class="mb-0">Фильтр</h3>
             </div> -->
             <div class="card-body">
-                <form action="{{route($route_name.'.index')}}">
+                <form action="{{route('monitoring')}}">
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
@@ -187,7 +187,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $applications->links() }}
+                    {{ $applications->appends($_GET)->links() }}
                 </div>
             </div>
         </div>
