@@ -49,13 +49,13 @@
             <div class="card-body">
                 <form action="{{route('monitoring')}}">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6" id="equipment_filter">
                             <div class="form-group">
                                 <label for="equipment_id" class="form-label">Оборудование</label>
-                                <select class="form-control @error('equipment_id') is-invalid @enderror" name="equipment_id" data-choices>
+                                <select class="form-control @error('equipment_id') is-invalid @enderror" name="equipment_id" data-choices id="equipment_id">
                                     <option value="">Выберите из списка</option>
                                     @foreach ($equipments as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $equipment_id ? 'selected' : '' }}>{{ $item->garage_number.' ('.$item->department->name.')' }}</option>
+                                        <option value="{{ $item->id }}" verververv="oinbewion" {{ $item->id == $equipment_id ? 'selected' : '' }}>{{ $item->garage_number.' ('.$item->department->name.')' }}</option>
                                     @endforeach
                                 </select>
                                 @error('equipment_id')
@@ -65,13 +65,13 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" id="remont_filter">
                             <div class="form-group">
                                 <label for="plan_remont_id" class="form-label">Ремонт</label>
-                                <select class="form-control @error('plan_remont_id') is-invalid @enderror" name="plan_remont_id" data-choices>
+                                <select class="form-control @error('plan_remont_id') is-invalid @enderror" name="plan_remont_id" data-choices id="remont_id">
                                     <option value="">Выберите из списка</option>
                                     @foreach ($plan_remonts as $key => $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $plan_remont_id ? 'selected' : '' }}>{{ $item->remont_begin.' - '.$item->remont_end.' ('.$item->equipment->garage_number.')' }}</option>
+                                        <option value="{{ $item->id }}" data-equipment_id="{{$item->equipment_id}}" {{ $item->id == $plan_remont_id ? 'selected' : '' }}>{{ $item->remont_begin.' - '.$item->remont_end.' ('.$item->equipment->garage_number.')' }}</option>
                                     @endforeach
                                 </select>
                                 @error('plan_remont_id')
@@ -117,6 +117,7 @@
                             <th scope="col" rowspan="2">Дата заявки</th>
                             <th scope="col" rowspan="2">Договор (№)</th>
                             <th scope="col" rowspan="2">Договор (дата)</th>
+                            <th scope="col" rowspan="2">Договор (местный/зарубежный)</th>
                             <th scope="col" rowspan="2">Осталось время на поставку</th>
                             <th scope="col" rowspan="2">Дата начала ремонта по плану</th>
                             <th scope="col" rowspan="2">Осталось дней до начала ремонта</th>
@@ -174,14 +175,15 @@
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
                                 <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
                                 <td>{{ $item->remont_begin ? date('d-m-Y', strtotime($item->remont_begin)) : '--' }}</td>
                                 <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
-                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 3 ? 'bg-success' : '') : '' }}"></td>
-                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}"></td>
-                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}"></td>
-                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 5 ? 'bg-success' : '') : '' }}"></td>
-                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 7 ? 'bg-success' : '') : '' }}"></td>
+                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 3 ? 'bg-success' : '') : '' }}">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 3 ? '+' : '') : '' }}</td>
+                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? '+' : '') : '' }}</td>
+                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? '+' : '') : '' }}</td>
+                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 5 ? 'bg-success' : '') : '' }}">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 5 ? '+' : '') : '' }}</td>
+                                <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 7 ? 'bg-success' : '') : '' }}">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 7 ? '+' : '') : '' }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -193,5 +195,36 @@
             </div>
         </div>
     </div>
+
+
+    <select id="all_remonts">
+        @foreach ($plan_remonts as $key => $item)
+            <option value="{{ $item->id }}" data-equipment_id="{{$item->equipment_id}}" {{ $item->id == $plan_remont_id ? 'selected' : '' }}>{{ $item->remont_begin.' - '.$item->remont_end.' ('.$item->equipment->garage_number.')' }}</option>
+        @endforeach
+    </select>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        let equipmentSelect = document.getElementById('equipment_id');
+//         equipmentSelect.addEventListener('change', () => {
+//             console.log(123);
+
+//             let remontSelect = document.getElementById('remont_id');
+//             let allRemonts = document.querySelectorAll('#all_remonts');
+
+// console.log(allRemonts.innerHTML);
+
+//             remontSelect.innerHTML = allRemonts.innerHTML;
+//             let remontOptions = document.querySelectorAll('#remont_id>option');
+//             console.log(remontOptions)
+
+//             remontOptions.forEach((option) => {
+//                 if (option.getAttribute('data-equipment_id') != equipmentSelect.value) {
+//                     option.style.display = "none";
+//                 } else {
+//                     console.log(2);
+//                 }
+//             });
+//         });
+    </script>
 
 @endsection
