@@ -135,7 +135,7 @@
                                 <th scope="row" style="width: 100px">{{ $applications->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->equipment->typeEquipment->name.' ('.$item->equipment->garage_number.')' }}
+                                        {{ $item->equipment->typeEquipment->name.' № '.$item->equipment->garage_number.' ('.$item->equipment->department->name.')' }}
                                     </div>
                                 </td>
                                 <td>{{ $item->equipment->commissioning_date ?? '--' }}</td>
@@ -173,9 +173,9 @@
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
-                                <td>{{ $item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--' }}</td>
+                                <td class="{{$item->delivery_date ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
                                 <td>{{ $item->remont_begin ? date('d-m-Y', strtotime($item->remont_begin)) : '--' }}</td>
-                                <td>{{ $item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--' }}</td>
+                                <td>{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 3 ? 'bg-success' : '') : '' }}"></td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}"></td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id >= 4 ? 'bg-success' : '') : '' }}"></td>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Application;
 use App\Models\PlanRemont;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,12 @@ class ApplicationSeeder extends Seeder
      */
     public function run(): void
     {
-    	for($i=0; $i<1000; $i++) {
+		$items = Application::all();
+		foreach($items as $item) {
+			$item->delete();
+		}
+
+    	for($i=0; $i<500; $i++) {
     		$required_quantity = rand(51,99);
     		$plan_remont_id = rand(1,200);
     		$plan_remont = PlanRemont::find($plan_remont_id);
@@ -22,6 +28,59 @@ class ApplicationSeeder extends Seeder
     		$warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
     		$data = [
     			'id' => $i+1,
+    			'plan_remont_id' => $plan_remont_id,
+    			'equipment_id' => $plan_remont->equipment_id,
+    			'technical_resource_id' => rand(1,50),
+    			'required_quantity' => $required_quantity,
+    			'warehouse_number' => '№'.rand(1,1598),
+    			'warehouse_date' => $warehouse_date,
+    			'warehouse_quantity' => $warehouse_quantity,
+    			'type_application' => 2,
+    			'requirement_id' => $i+1,
+    			'application_date' => $warehouse_date,
+    			'declared_quantity' => $required_quantity - $warehouse_quantity,
+    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-1 day')),
+    			'remont_begin' => $plan_remont->remont_begin
+    		];
+
+        	Application::create($data);
+    	}
+
+		for($i=0; $i<500; $i++) {
+    		$required_quantity = rand(51,99);
+    		$plan_remont_id = rand(1,200);
+    		$plan_remont = PlanRemont::find($plan_remont_id);
+    		$warehouse_quantity = $required_quantity - rand(1,50);
+    		$warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
+    		$data = [
+    			'id' => $i+1+500,
+    			'plan_remont_id' => $plan_remont_id,
+    			'equipment_id' => $plan_remont->equipment_id,
+    			'technical_resource_id' => rand(1,50),
+    			'required_quantity' => $required_quantity,
+    			'warehouse_number' => '№'.rand(1,1598),
+    			'warehouse_date' => $warehouse_date,
+    			'warehouse_quantity' => $warehouse_quantity,
+    			'type_application' => 3,
+    			'requirement_id' => $i+1,
+    			'application_date' => $warehouse_date,
+    			'declared_quantity' => $required_quantity - $warehouse_quantity,
+    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-1 day')),
+    			'remont_begin' => $plan_remont->remont_begin
+    		];
+
+        	Application::create($data);
+    	}
+
+		for($i=0; $i<1000; $i++) {
+    		$required_quantity = rand(51,99);
+    		$plan_remont_id = rand(1,200);
+    		$plan_remont = PlanRemont::find($plan_remont_id);
+    		$warehouse_quantity = $required_quantity - rand(1,50);
+    		// $warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
+    		$warehouse_date = '2022-12-'.rand(01,28);
+    		$data = [
+    			'id' => $i+1+1000,
     			'plan_remont_id' => $plan_remont_id,
     			'equipment_id' => $plan_remont->equipment_id,
     			'technical_resource_id' => rand(1,50),

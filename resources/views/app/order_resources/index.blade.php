@@ -277,7 +277,7 @@
                                         isset($item->planRemont->remont_begin)
                                             ? ((strtotime($item->planRemont->remont_begin) - strtotime(date('Y-m-d'))) / 86400) > 0
                                                 ? '--'
-                                                : ((strtotime($item->planRemont->remont_begin) - strtotime(date('Y-m-d'))) / 86400)
+                                                : ((strtotime(date('Y-m-d')) - strtotime($item->planRemont->remont_begin)) / 86400)
                                             : '--'
                                     }}
                                 </td>

@@ -14,6 +14,7 @@ class PlanRemontSeeder extends Seeder
     public function run(): void
     {
         for($i=0; $i<200; $i++) {
+            $data['id'] = $i+1;
         	$data['equipment_id'] = rand(1,21);
         	$data['remont_type_id'] = rand(1,4);
         	$data['remont_begin'] = '2023-'.rand(01, 12).'-'.rand(01,28);
