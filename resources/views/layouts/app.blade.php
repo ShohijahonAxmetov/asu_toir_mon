@@ -97,7 +97,7 @@
                                 <li class="nav-item">
                                         <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
                                            href="{{ route('equipments.index') }}">
-                                            Оборудования
+                                            Оборудование
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -159,7 +159,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('year_applications') || request()->is('year_applications/*') ? 'active' : '' }}"
                                            href="{{ route('year_applications.index') }}">
-                                            Годовая заявка на ремонт
+                                            Годовая заявка МТР на ремонты
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -178,16 +178,29 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('order_resources') || request()->is('order_resources/*') ? 'active' : '' }}"
-                               href="{{ route('order_resources.index') }}">
-                                <i class="fe fe-book"></i> Учет исполнения заявок
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('monitoring') ? 'active' : '' }}"
-                               href="{{ route('monitoring') }}">
+                            <a class="nav-link" href="#monitoring" data-bs-toggle="collapse" role="button"
+                               aria-expanded="{{ request()->is('order_resources') || request()->is('order_resources/*') || request()->is('monitoring') ? 'true' : 'false' }}"
+                               aria-controls="documents">
                                 <i class="fe fe-book"></i> Мониторинг
                             </a>
+                            <div
+                                class="collapse {{ request()->is('order_resources') || request()->is('order_resources/*') || request()->is('monitoring') ? 'show' : '' }}"
+                                id="monitoring">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="{{route('order_resources.index')}}">
+                                            Учет исполнения заявок
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="{{route('monitoring')}}">
+                                            Заявки и мониторинг их исполнения
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">

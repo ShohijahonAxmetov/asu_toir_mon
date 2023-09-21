@@ -82,7 +82,7 @@
                                         <select class="form-control mb-4 @error('parent_id') is-invalid @enderror" name="parent_id">
                                             <option value=""></option>
                                             @foreach ($details as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('arent_id') == $item->id ? 'selected' : '' }}>{{ $item->technicalResource->catalog_name }}</option>
+                                                <option value="{{ $item->id }}" {{ old('arent_id', $parent_id) == $item->id ? 'selected' : '' }}>{{ $item->technicalResource->catalog_name }}</option>
                                             @endforeach
                                         </select>
                                         @error('parent_id')

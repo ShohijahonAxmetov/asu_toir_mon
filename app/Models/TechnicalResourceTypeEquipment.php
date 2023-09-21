@@ -29,4 +29,9 @@ class TechnicalResourceTypeEquipment extends Model
     {
         return $this->belongsTo(TechnicalResourceTypeEquipment::class, 'parent_id');
     }
+
+    public function children()
+    {
+        return $this->hasMany(TechnicalResourceTypeEquipment::class, 'parent_id');
+    }
 }

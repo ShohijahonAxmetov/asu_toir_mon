@@ -19,7 +19,8 @@ class TechnicalResourceTypeEquipmentController extends Controller
      */
     public function index(Request $request)
     {
-        $details = TechnicalResourceTypeEquipment::latest();
+        $details = TechnicalResourceTypeEquipment::whereNull('parent_id')
+            ->latest();
         $search = null;
 //        if(isset($request->type_equipment_id) && $request->type_equipment_id != '') {
 //            $equipments = $equipments->where('type_equipment_id', $request->type_equipment_id);
@@ -40,10 +41,12 @@ class TechnicalResourceTypeEquipmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $type_equipments = TypeEquipment::all();
-        $technical_resources = TechnicalResource::all();
+        $technical_resources = TechnicalResource::latest();
+        if($request->parent_id && $request->parent_id != '') $technical_resources = $technical_resources->where('id', '!=', $request->parent_id);
+        $technical_resources = $technical_resources->get();
         $details = TechnicalResourceTypeEquipment::all();
 
         return view('app.'.$this->route_name.'.create', [
@@ -53,6 +56,7 @@ class TechnicalResourceTypeEquipmentController extends Controller
             'type_equipments' => $type_equipments,
             'technical_resources' => $technical_resources,
             'details' => $details,
+            'parent_id' => $request->parent_id ?? null,
         ]);
     }
 
@@ -86,9 +90,23 @@ class TechnicalResourceTypeEquipmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TechnicalResourceTypeEquipment $technicalResourceTypeEquipment)
+    public function show($technicalResourceTypeEquipment)
     {
-        //
+        $technicalResourceTypeEquipment = TechnicalResourceTypeEquipment::find($technicalResourceTypeEquipment);
+        // $type_equipments = TypeEquipment::all();
+        // $technical_resources = TechnicalResource::all();
+        // $details = TechnicalResourceTypeEquipment::where('id', '!=', $technicalResourceTypeEquipment->id)
+        //     ->get();
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'detail' => $technicalResourceTypeEquipment,
+            // 'type_equipments' => $type_equipments,
+            // 'technical_resources' => $technical_resources,
+            // 'details' => $details,
+        ]);
     }
 
     /**
