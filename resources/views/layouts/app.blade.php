@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="/assets/css/theme.bundle.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <style type="text/css">
+        table tr:hover {
+            --bs-table-hover-bg: rgba(4,7,13,.03);
+        }
+    </style>
     @yield('links')
 
     <!-- Scripts -->
