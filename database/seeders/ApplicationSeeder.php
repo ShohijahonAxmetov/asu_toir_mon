@@ -73,7 +73,7 @@ class ApplicationSeeder extends Seeder
     			'requirement_id' => $i+1,
     			'application_date' => $warehouse_date,
     			'declared_quantity' => $required_quantity - $warehouse_quantity,
-    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-1 day')),
+    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-5 day')), // Дата поставки (план)
     			'remont_begin' => $plan_remont->remont_begin
     		];
 
@@ -99,7 +99,7 @@ class ApplicationSeeder extends Seeder
     			'requirement_id' => $i+1,
     			'application_date' => $warehouse_date,
     			'declared_quantity' => $required_quantity - $warehouse_quantity,
-    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-1 day')),
+    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-5 day')),
     			'remont_begin' => $plan_remont->remont_begin
     		];
 
@@ -128,7 +128,7 @@ class ApplicationSeeder extends Seeder
     			'requirement_id' => $i+1,
     			'application_date' => $warehouse_date,
     			'declared_quantity' => $required_quantity - $warehouse_quantity,
-    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-1 day')),
+    			'delivery_date' => date('Y-m-d', strtotime($plan_remont->remont_begin.'-5 day')),
     			'remont_begin' => $plan_remont->remont_begin
     		];
 

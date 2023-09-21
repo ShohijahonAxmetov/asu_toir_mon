@@ -22,23 +22,32 @@ class OrderResourceSeeder extends Seeder
         for($i=0; $i<2000; $i++) {
         	$application_id = rand(1,1999);
         	$application = Application::find($application_id);
-            $order_date = date('Y-m-d', strtotime($application->application_date.'+'.rand(0,60).' day'));
+            $order_date = date('Y-m-d', strtotime($application->application_date.'+'.rand(0,10).' day')); // заказ - 60
 
             $contract_number = '№ '.rand(1564,5486451);
-        	$contract_date = date('Y-m-d', strtotime($order_date.'+'.rand(1,60).' days'));
+        	$contract_date = date('Y-m-d', strtotime($order_date.'+'.rand(1,10).' days')); // контракт - 60
         	$local_foreign = rand(1,2);
         	$date_manufacture_contract = date('Y-m-d', strtotime($contract_date.'+'.rand(1,30).' days'));
-        	$date_manufacture_fact = date('Y-m-d', strtotime($date_manufacture_contract.'+'.rand(0,30).' days'));
+        	$date_manufacture_fact = date('Y-m-d', strtotime($contract_date.'+'.rand(0,30).' days'));
         	$customs_date_receipt = null;
         	$customs_date_exit = null;
-        	$date_delivery_object = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0,15).' days'));
+        	$date_delivery_object = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0,10).' days')); // 15
         	if($local_foreign == 2) {
         		$customs_date_receipt = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0, 4).' days'));
         		$customs_date_exit = date('Y-m-d', strtotime($customs_date_receipt.'+'.rand(0, 7).' days'));
-        		$date_delivery_object = date('Y-m-d', strtotime($customs_date_exit.'+'.rand(0, 30).' days'));
+        		$date_delivery_object = date('Y-m-d', strtotime($customs_date_exit.'+'.rand(0, 10).' days'));  //30
         	}
 
-            $rand_status = rand(2,7);
+            $day_sum = (strtotime(date('Y-m-d')) - strtotime($application->application_date)) / (24*60*60);
+            if ($day_sum > 30 && $application->application_type == 1) {
+                $rand_status = 7;
+                $contract_number = $day_sum;
+            } else {
+                $rand_status = rand(2,7);
+                $contract_number = $day_sum;
+            }
+
+            
 
             switch ($rand_status) {
                 case 2:
