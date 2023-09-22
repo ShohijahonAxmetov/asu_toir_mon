@@ -189,14 +189,14 @@
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link"
-                                           href="{{route('order_resources.index')}}">
-                                            Учет исполнения заявок
+                                           href="{{route('monitoring')}}">
+                                            Заявки и мониторинг их исполнения
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link"
-                                           href="{{route('monitoring')}}">
-                                            Заявки и мониторинг их исполнения
+                                           href="{{route('order_resources.index')}}">
+                                            Учет исполнения заявок
                                         </a>
                                     </li>
                                 </ul>

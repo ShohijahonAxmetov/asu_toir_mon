@@ -102,7 +102,7 @@
                         <thead>
                         <tr>
                             <th scope="col" rowspan="2">#</th>
-                            <th scope="col" rowspan="2">Тип оборудование и гар. №</th>
+                            <th scope="col" rowspan="2">Тип оборудования и гар. №</th>
                             <th scope="col" rowspan="2">Дата ввода</th>
                             <th scope="col" rowspan="2">Состояние</th>
                             <th scope="col" rowspan="2">Номенклатурный №</th>

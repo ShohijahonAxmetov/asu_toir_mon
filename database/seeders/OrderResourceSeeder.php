@@ -130,10 +130,8 @@ class OrderResourceSeeder extends Seeder
             if ($day_sum > 60 ) {
 //                if ($day_sum > 30 && $application->application_type == 1) {
                 $rand_status = 8;
-                $contract_number = $day_sum;
             } else {
                 $rand_status = rand(2,7);
-                $contract_number = $day_sum;
             }
 
             

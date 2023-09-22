@@ -105,6 +105,10 @@
                             Прикрепленные файлы
                         </h1>
 
+                        <a href="{{ route('files.create', ['model' => 'App\Models\TechnicalResource', 'model_id' => $item->id]) }}" class="btn btn-primary lift">
+                            Добавить
+                        </a>
+
                     </div>
                 </div> <!-- / .row -->
             </div> <!-- / .header-body -->
