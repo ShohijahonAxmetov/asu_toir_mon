@@ -119,6 +119,15 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="files" class="form-label">Файлы</label>
+                                        <input type="file" multiple="multiple" class="form-control @error('files') is-invalid @enderror" name="files[]" value="{{ old('files') }}" id="files" placeholder="Файлы...">
+                                        @error('files')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <!-- Button -->

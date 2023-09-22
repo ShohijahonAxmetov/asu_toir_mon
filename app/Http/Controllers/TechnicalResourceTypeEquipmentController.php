@@ -6,11 +6,16 @@ use App\Models\Equipment;
 use App\Models\TechnicalResource;
 use App\Models\TechnicalResourceTypeEquipment;
 use App\Models\TypeEquipment;
+
+use App\Traits\UploadFile;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TechnicalResourceTypeEquipmentController extends Controller
 {
+    use UploadFile;
+
     public $title = 'Узлы для типа оборудования';
     public $route_name = 'technical_resource_type_eqs';
     public $route_parameter = 'technical_resource_type_eq';
@@ -93,19 +98,14 @@ class TechnicalResourceTypeEquipmentController extends Controller
     public function show($technicalResourceTypeEquipment)
     {
         $technicalResourceTypeEquipment = TechnicalResourceTypeEquipment::find($technicalResourceTypeEquipment);
-        // $type_equipments = TypeEquipment::all();
-        // $technical_resources = TechnicalResource::all();
-        // $details = TechnicalResourceTypeEquipment::where('id', '!=', $technicalResourceTypeEquipment->id)
-        //     ->get();
+        $files = $this->get('App\Models\TechnicalResource', $technicalResourceTypeEquipment->technical_resource_id);
 
         return view('app.'.$this->route_name.'.show', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'detail' => $technicalResourceTypeEquipment,
-            // 'type_equipments' => $type_equipments,
-            // 'technical_resources' => $technical_resources,
-            // 'details' => $details,
+            'files' => $files,
         ]);
     }
 

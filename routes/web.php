@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('order_resources', \App\Http\Controllers\OrderResourceController::class);
     Route::resource('vid_equipments', \App\Http\Controllers\VidEquipmentController::class);
     Route::get('/monitoring', [App\Http\Controllers\OrderResourceController::class, 'monitoring'])->name('monitoring');
+    Route::get('/monitoring/{application_id}', [App\Http\Controllers\OrderResourceController::class, 'monitoringShow'])->name('monitoring.show');
+    Route::delete('/files/{file}', [App\Http\Controllers\UploadedFileController::class, 'destroy'])->name('files.destroy');
 
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

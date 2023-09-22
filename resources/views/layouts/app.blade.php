@@ -88,7 +88,7 @@
                             <a class="nav-link" href="#equipments" data-bs-toggle="collapse" role="button"
                                aria-expanded="{{ request()->is('equipments') || request()->is('equipments/*') || request()->is('type_equipments') || request()->is('type_equipments/*') ? 'true' : 'false' }}"
                                aria-controls="documents">
-                                <i class="fe fe-truck"></i> Оборудования
+                                <i class="fe fe-truck"></i> Оборудование
                             </a>
                             <div
                                 class="collapse {{ request()->is('equipments') || request()->is('equipments/*') || request()->is('type_equipments') || request()->is('type_equipments/*') ? 'show' : '' }}"
@@ -97,7 +97,7 @@
                                 <li class="nav-item">
                                         <a class="nav-link {{ request()->is('equipments') || request()->is('equipments/*') ? 'active' : '' }}"
                                            href="{{ route('equipments.index') }}">
-                                            Оборудование
+                                            Оборудования
                                         </a>
                                     </li>
                                     <li class="nav-item">

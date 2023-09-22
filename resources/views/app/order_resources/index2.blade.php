@@ -102,11 +102,11 @@
                         <thead>
                         <tr>
                             <th scope="col" rowspan="2">#</th>
-                            <th scope="col" rowspan="2">Тип оборудоваие и гар. №</th>
+                            <th scope="col" rowspan="2">Тип оборудование и гар. №</th>
                             <th scope="col" rowspan="2">Дата ввода</th>
                             <th scope="col" rowspan="2">Состояние</th>
                             <th scope="col" rowspan="2">Номенклатурный №</th>
-                            <th scope="col" rowspan="2">Необходимые запчасти</th>
+                            <th scope="col" rowspan="2">Наименования запчастей</th>
                             <th scope="col" rowspan="2">Потребное количество</th>
                             <th scope="col" rowspan="2">На складе (дата)</th>
                             <th scope="col" rowspan="2">На складе (кол-во)</th>
@@ -121,7 +121,8 @@
                             <th scope="col" rowspan="2">Осталось время на поставку</th>
                             <th scope="col" rowspan="2">Дата начала ремонта по плану</th>
                             <th scope="col" rowspan="2">Осталось дней до начала ремонта</th>
-                            <th scope="col" colspan="5" class="text-center">Ход исполнения</th>
+                            <th scope="col" colspan="5" class="text-center">Ход исполнения на {{date('d-m-Y')}}</th>
+                            <th scope="col" rowspan="2"></th> 
                         </tr>
                         <tr>
                             <th scope="col">в производстве</th>
@@ -171,7 +172,7 @@
                                         } 
                                     } else {
                                         $flag_contact = false;
-                                    }  // 
+                                    }
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
@@ -184,6 +185,11 @@
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 4 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 4 ? '+' : '') : '' }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 5 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 5 ? '+' : '') : '' }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 7 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 7 ? '+' : '') : '' }}</td>
+                                <td style="width: 200px">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ route('monitoring.show', ['application_id' => $item->id]) }}" class="btn btn-sm btn-info"><i class="fe fe-eye"></i></a>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

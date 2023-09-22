@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\TechnicalResource;
 use App\Models\Unit;
+
+use App\Traits\UploadFile;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +14,8 @@ use Illuminate\Support\Str;
 
 class TechnicalResourceController extends Controller
 {
+    use UploadFile;
+
     public $title = 'Материально-технические ресурсы';
     public $route_name = 'technical_resources';
     public $route_parameter = 'technical_resource';
@@ -68,7 +73,27 @@ class TechnicalResourceController extends Controller
             ]);
         }
 
-        BaseController::store(TechnicalResource::class, $data);
+        DB::beginTransaction();
+        try {
+
+            $model = BaseController::store(TechnicalResource::class, $data);
+
+            // upload files
+            if($request->hasFile('files')) $res = $this->upload('App\Models\TechnicalResource', $model->id, $request->file('files'));
+            if(isset($res['error'])) return back()->with([
+                'success' => false,
+                'message' => $res['error']
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->route($this->route_name.'.index')->with([
             'success' => true,
@@ -81,7 +106,20 @@ class TechnicalResourceController extends Controller
      */
     public function show(TechnicalResource $technicalResource)
     {
-        //
+        $files = $this->get('App\Models\TechnicalResource', $technicalResource->id);
+        $units = Unit::orderBy('name', 'ASC')
+            ->get();
+
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'item' => $technicalResource,
+            'units' => $units,
+            'files' => $files,
+        ]);
+
     }
 
     /**
@@ -91,6 +129,7 @@ class TechnicalResourceController extends Controller
     {
         $units = Unit::orderBy('name', 'ASC')
             ->get();
+
 
         return view('app.'.$this->route_name.'.edit', [
             'title' => $this->title,
@@ -123,7 +162,27 @@ class TechnicalResourceController extends Controller
             ]);
         }
 
-        BaseController::store($technicalResource, $data, 1);
+        DB::beginTransaction();
+        try {
+
+            BaseController::store($technicalResource, $data, 1);
+
+            // upload files
+            if($request->hasFile('files')) $res = $this->upload('App\Models\TechnicalResource', $technicalResource->id, $request->file('files'));
+            if(isset($res['error'])) return back()->with([
+                'success' => false,
+                'message' => $res['error']
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->route($this->route_name.'.index')->with([
             'success' => true,

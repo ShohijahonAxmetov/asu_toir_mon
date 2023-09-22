@@ -252,4 +252,19 @@ class OrderResourceController extends Controller
             'equipments' => $equipments,
         ]);
     }
+
+    public function monitoringShow(Request $request, $application_id)
+    {
+
+        $application = Application::where('id', $application_id)
+            ->with('orderResource')
+            ->first();
+
+        return view('app.'.$this->route_name.'.show', [
+            'title' => $this->subtitle,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'item' => $application,
+        ]);
+    }
 }
