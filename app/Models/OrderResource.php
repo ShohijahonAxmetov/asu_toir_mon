@@ -19,6 +19,9 @@ class OrderResource extends Model
         'local_foreign',
         'date_manufacture_contract',
         'date_manufacture_fact',
+
+        'exit_date', // data. kogda pokinul zavod
+
         'customs_date_receipt',
         'customs_date_exit',
         'date_delivery_object',

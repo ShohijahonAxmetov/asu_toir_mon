@@ -148,6 +148,16 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="exit_date" class="form-label">Покинул завод (дата)</label>
+                                        <input type="date" class="form-control @error('exit_date') is-invalid @enderror" name="exit_date" value="{{ old('exit_date') }}" id="exit_date" placeholder="Покинул завод (дата)...">
+                                        @error('exit_date')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="customs_date_receipt" class="form-label">Таможня (дата поступления)</label>
                                         <input type="date" class="form-control @error('customs_date_receipt') is-invalid @enderror" name="customs_date_receipt" value="{{ old('customs_date_receipt') }}" id="customs_date_receipt" placeholder="Таможня (дата поступления)...">
                                         @error('customs_date_receipt')

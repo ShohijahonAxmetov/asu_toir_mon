@@ -112,6 +112,7 @@ class OrderResourceSeeder extends Seeder
         	$local_foreign = rand(1,2);
         	$date_manufacture_contract = date('Y-m-d', strtotime($contract_date.'+'.rand(1,30).' days'));
         	$date_manufacture_fact = date('Y-m-d', strtotime($contract_date.'+'.rand(0,30).' days'));
+            $exit_date = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0,3).' days'));
         	$customs_date_receipt = null;
         	$customs_date_exit = null;
         	$date_delivery_object = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0,10).' days')); // 15
@@ -147,6 +148,7 @@ class OrderResourceSeeder extends Seeder
                     $local_foreign = null;
                     $date_manufacture_contract = null;
                     $date_manufacture_fact = null;
+                    $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
@@ -157,12 +159,14 @@ class OrderResourceSeeder extends Seeder
                     $local_foreign = null;
                     $date_manufacture_contract = null;
                     $date_manufacture_fact = null;
+                    $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 3:
                     $date_manufacture_fact = null;
+                    $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
@@ -191,6 +195,7 @@ class OrderResourceSeeder extends Seeder
         		'local_foreign' => $local_foreign,
         		'date_manufacture_contract' => $date_manufacture_contract,
         		'date_manufacture_fact' => $date_manufacture_fact,
+                'exit_date' => $exit_date,
         		'customs_date_receipt' => $customs_date_receipt,
         		'customs_date_exit' => $customs_date_exit,
         		'date_delivery_object' => $date_delivery_object,
@@ -210,7 +215,7 @@ class OrderResourceSeeder extends Seeder
         if(!is_null($data['contract_number']) && is_null($data['date_manufacture_fact'])) $status_id = 3;
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 1) $status_id = 6;
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2) $status_id = 4;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 4;
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 5;
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 6;
         if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 7;
