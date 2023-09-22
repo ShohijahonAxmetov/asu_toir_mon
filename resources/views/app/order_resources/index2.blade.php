@@ -187,6 +187,12 @@
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 7 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 7 ? '+' : '') : '' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
+                                        @if(is_null($item->orderResource))
+                                        <a href="{{ route($route_name.'.create', [$route_parameter => $item->id, 'application_id' => $item->id, 'from_monitoring' => 1]) }}" class="btn btn-sm btn-success me-3"><i class="fe fe-edit-2"></i></a>
+                                        @else
+                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item->orderResource, 'application_id' => $item->id, 'from_monitoring' => 1]) }}" class="btn btn-sm btn-success me-3"><i class="fe fe-edit-2"></i></a>
+                                        @endif
+
                                         <a href="{{ route('monitoring.show', ['application_id' => $item->id]) }}" class="btn btn-sm btn-info"><i class="fe fe-eye"></i></a>
                                     </div>
                                 </td>

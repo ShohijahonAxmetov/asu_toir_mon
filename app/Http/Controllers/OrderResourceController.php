@@ -103,6 +103,11 @@ class OrderResourceController extends Controller
         BaseController::store(OrderResource::class, $data);
         $data['filter'] = json_decode($data['filter'], true);
 
+        if(isset($request->from_monitoring) && $request->from_monitoring == 1) return redirect()->route('monitoring')->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
+
         return redirect()->route($this->route_name.'.index', ['equipment_id' => $data['filter']['equipment_id'] ?? null,
             'plan_remont_id' => $data['filter']['plan_remont_id'] ?? null])->with([
             'success' => true,
@@ -178,6 +183,10 @@ class OrderResourceController extends Controller
         BaseController::store($orderResource, $data, 1);
         $data['filter'] = json_decode($data['filter'], true);
 
+        if(isset($request->from_monitoring) && $request->from_monitoring == 1) return redirect()->route('monitoring')->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
         return redirect()->route($this->route_name.'.index', ['equipment_id' => $data['filter']['equipment_id'] ?? null,
             'plan_remont_id' => $data['filter']['plan_remont_id'] ?? null])->with([
             'success' => true,

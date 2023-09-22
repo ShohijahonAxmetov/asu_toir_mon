@@ -52,6 +52,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <input type="hidden" name="application_id" value="{{$application_id}}">
+                                    @if(isset($_GET['from_monitoring']))
+                                    <input type="hidden" name="from_monitoring" value="1">
+                                    @endif
                                     <!-- <div class="form-group">
                                         <label for="application_id" class="form-label required">Заявка</label>
                                         <select class="form-control @error('application_id') is-invalid @enderror" name="application_id" required>
