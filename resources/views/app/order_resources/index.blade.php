@@ -19,9 +19,9 @@
                     <div class="col-auto">
 
                         <!-- Button -->
-                        <a href="{{ route($route_name.'.create') }}" class="btn btn-primary lift">
+                        <!-- <a href="{{ route($route_name.'.create') }}" class="btn btn-primary lift">
                             Добавить
-                        </a>
+                        </a> -->
 
                     </div>
                 </div> <!-- / .row -->

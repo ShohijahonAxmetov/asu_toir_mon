@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Application;
 use App\Models\PlanRemont;
 use App\Models\RepairApplication;
+use App\Models\OrderResource;
 ;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,6 +18,10 @@ class ApplicationSeeder extends Seeder
      */
     public function run(): void
     {
+        $items = OrderResource::all();
+        foreach($items as $item) {
+            $item->delete();
+        }
 		$items = Application::all();
 		foreach($items as $item) {
 			$item->delete();

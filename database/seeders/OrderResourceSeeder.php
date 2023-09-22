@@ -129,7 +129,7 @@ class OrderResourceSeeder extends Seeder
 			
             if ($day_sum > 60 ) {
 //                if ($day_sum > 30 && $application->application_type == 1) {
-                $rand_status = 7;
+                $rand_status = 8;
                 $contract_number = $day_sum;
             } else {
                 $rand_status = rand(2,7);
@@ -172,15 +172,21 @@ class OrderResourceSeeder extends Seeder
                     $date_delivery_object = null;
                     break;
                 case 4:
+                    $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 5:
+                    $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 6:
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 7:
                     $date_delivery_object = null;
                     break;
             }
@@ -213,12 +219,13 @@ class OrderResourceSeeder extends Seeder
 
         if(is_null($data['contract_number'])) $status_id = 2;
         if(!is_null($data['contract_number']) && is_null($data['date_manufacture_fact'])) $status_id = 3;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 1) $status_id = 6;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 4;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 5;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 6;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 7;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = 7;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 8;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = 4;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 5;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 6;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 7;
+        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 8;
 
         return $status_id;
     }
