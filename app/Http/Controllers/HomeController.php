@@ -225,7 +225,7 @@ class HomeController extends Controller
         $applications[0] = Application::whereDoesntHave('orderResource')
             ->count();
 
-        foreach ([2,3,4,5,6,7] as $key => $value) {
+        foreach ([2,3,4,5,6,7,8] as $key => $value) {
             $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
                 $q->where('execution_statuse_id', $value);
             })
@@ -238,10 +238,11 @@ class HomeController extends Controller
     public function getBadRemonts(): \Illuminate\Database\Eloquent\Collection
     {
         $remonts = PlanRemont::where('remont_begin', '>', date('Y-m-d'))
+            ->has('applications', '>', 5)
             ->whereHas('applications', function($q) {
                 $q->where(function($qi) {
                     $qi->whereHas('orderResource', function($qi2) {
-                        $qi2->where('execution_statuse_id', '!=', 7);
+                        $qi2->where('execution_statuse_id', '!=', 8);
                     })->orWhereDoesntHave('orderResource');
                 });
             })
@@ -259,7 +260,7 @@ class HomeController extends Controller
                 // $prosrocheno_dney = ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) > $prosrocheno_dney ? ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) : $prosrocheno_dney;
 
                 // chislo ispolnennix zakazov
-                if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == 7) $doned_count ++;
+                if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == 8) $doned_count ++;
             }
             // $remont->prosrocheno_dney = $prosrocheno_dney == 0 ? '--' : $prosrocheno_dney;
 

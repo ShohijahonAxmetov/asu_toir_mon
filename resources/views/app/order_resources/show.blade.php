@@ -27,7 +27,7 @@
             'datas' => [
                 [
                 'active' => false,
-                'url' => route($route_name.'.index'),
+                'url' => route('monitoring'),
                 'name' => $title,
                 'disabled' => false
                 ],

@@ -111,7 +111,11 @@
                             </div>
                             <!-- Button -->
                             <div class="model-btns d-flex justify-content-end">
+                                @if(isset($_GET['from_monitoring']) && $_GET['from_monitoring'] == 1)
+                                <a href="{{ route('monitoring') }}" type="button" class="btn btn-secondary">Отмена</a>
+                                @else
                                 <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Отмена</a>
+                                @endif
                                 <button type="submit" class="btn btn-primary ms-2">Сохранить</button>
                             </div>
 
