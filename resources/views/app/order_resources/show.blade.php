@@ -173,7 +173,44 @@
                             <th scope="row">Ход исполнения на {{date('d-m-Y')}}</th>
                             <td class="">{{ $item->orderResource ? $item->orderResource->executionStatuse->name : 'оформляется заказ' }}</td>
                         </tr>
-                        
+                        @php
+                            // 4
+
+                            if (isset($item->orderResource->date_manufacture_fact)) {
+                                if (!isset($item->orderResource->customs_date_receipt) and !isset($item->orderResource->date_delivery_object)) {
+                                    $add_days = $item->technicalResource->delivery_time;
+                                    $date1 = date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact) + (24*3600*$add_days));
+                                    $date2 = date('d-m-Y', strtotime($item->delivery_date));
+                                    $dateTimestamp1 = strtotime($date1);
+                                    $dateTimestamp2 = strtotime($date2);
+
+                                    if ($dateTimestamp1 > $dateTimestamp2) {
+                                        $flag_delivery = true;
+                                    } else {
+                                        $flag_delivery = false;
+                                    }
+                                } else {
+                                    $flag_delivery = false;
+                                }
+                            } else {
+                                $flag_delivery = false;
+                            }   // 
+                        @endphp
+                        <tr>
+                            <th scope="row">Дата доставки на объект</th>
+                            <td class="{{ $flag_delivery ? 'bg-danger' : '' }}">{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Опоздали с поставкой (дней)</th>
+                            <td class="">
+                                @if(isset($item->orderResource->date_delivery_object) && strtotime($item->orderResource->date_delivery_object) > strtotime($item->delivery_date))
+                                {{ (strtotime($item->orderResource->date_delivery_object) - strtotime($item->delivery_date)) / (24*3600) }}
+                                @else
+                                --
+                                @endif
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
