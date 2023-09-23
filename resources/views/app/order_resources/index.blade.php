@@ -145,7 +145,7 @@
                                 <td>{{ $item->technicalResource->nomen_name ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->nomen_number ?? '--' }}</td>
                                 <td>{{ $item->required_quantity ?? '--' }}</td>
-                                <td>{{ $item->warehouse_date ?? '--' }}</td>
+                                <td>{{ isset($item->warehouse_date) ? date('d-m-Y', strtotime($item->warehouse_date)) : '--' }}</td>
                                 <td>{{ $item->warehouse_quantity ?? '--' }}</td>
                                 <td>{{ $item->type_application ?? '--' }}</td>
                                 <td>{{ isset($item->application_date) ? date('d-m-Y', strtotime($item->application_date)) : '--' }}</td>
@@ -174,7 +174,7 @@
                                     /// ;
                                 @endphp
                                 <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_number ?? '--' }}</td>
-                                <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_date ?? '--' }}</td>
+                                <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ isset($item->orderResource->order_date) ? date('d-m-Y', strtotime($item->orderResource->order_date)) : '--'}}</td>
                                 <td class="{{ $flag_order ? 'bg-danger' : '' }}">{{ $item->orderResource->order_quantity ?? '--' }}</td>
                                 @php
                                     if (isset($item->orderResource->order_date)) {
@@ -198,7 +198,7 @@
                                     }  // 
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
-                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->contract_date) ? date('d-m-Y', strtotime($item->orderResource->contract_date)) : '--'}}</td>
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
 
                                 @php
@@ -220,11 +220,11 @@
                                         $flag_manufacture = false;
                                     }  // 
                                 @endphp
-                                <td class="{{ $flag_manufacture ? 'bg-danger' : '' }}">{{ $item->orderResource->date_manufacture_contract ?? '--' }}</td>
-                                <td>{{ $item->orderResource->date_manufacture_fact ?? '--' }}</td>
+                                <td class="{{ $flag_manufacture ? 'bg-danger' : '' }}">{{ isset($item->orderResource->date_manufacture_contract) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_contract)) : '--'}}</td>
+                                <td>{{ isset($item->orderResource->date_manufacture_fact) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact)) : '--'}}</td>
 
-                                <td>{{ $item->orderResource->customs_date_receipt ?? '--' }}</td>
-                                <td>{{ $item->orderResource->customs_date_exit ?? '--' }}</td>
+                                <td>{{ isset($item->orderResource->customs_date_receipt) ? date('d-m-Y', strtotime($item->orderResource->customs_date_receipt)) : '--'}}</td>
+                                <td>{{ isset($item->orderResource->customs_date_exit) ? date('d-m-Y', strtotime($item->orderResource->customs_date_exit)) : '--'}}</td>
 
                                 @php
                                     // 4

@@ -49,7 +49,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Дата ввода</th>
-                            <td class="">{{$item->equipment->commissioning_date ?? '--'}}</td>
+                            <td class="">{{isset($item->equipment->commissioning_date) ? date('d-m-Y', strtotime($item->equipment->commissioning_date)) : '--'}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Состояние</th>
@@ -77,7 +77,7 @@
                         </tr>
                         <tr>
                             <th scope="row">На складе (дата)</th>
-                            <td class="">{{ $item->warehouse_date ?? '--'}}</td>
+                            <td class="">{{ isset($item->warehouse_date) ? date('d-m-Y', strtotime($item->warehouse_date)) : '--'}}</td>
                         </tr>
                         <tr>
                             <th scope="row">На складе (кол-во)</th>
@@ -114,7 +114,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Заказ (дата)</th>
-                            <td class="">{{ $item->orderResource->order_date ?? '--'}}</td>
+                            <td class="">{{ isset($item->orderResource->order_date) ? date('d-m-Y', strtotime($item->orderResource->order_date)) : '--'}}</td>
                         </tr>
 
                         <tr>
@@ -128,7 +128,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Договор (дата)</th>
-                            <td class="">{{ $item->orderResource->contract_date ?? '--'}}</td>
+                            <td class="">{{ isset($item->orderResource->contract_date) ? date('d-m-Y', strtotime($item->orderResource->contract_date)) : '--'}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Договор (местный/зарубежный)</th>
@@ -136,17 +136,26 @@
                         </tr>
 
                         <tr>
-                            <th scope="row">Дата изготовления</th>
-                            <td class="">{{ $item->orderResource->exit_date ?? '--'}}</td>
+                            <th scope="row">Дата изготовления (по договору)</th>
+                            <td class="">{{ isset($item->orderResource->date_manufacture_contract) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_contract)) : '--'}}</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Дата изготовления (по факту)</th>
+                            <td class="">{{ isset($item->orderResource->date_manufacture_fact) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact)) : '--'}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Покинул завод (дата)</th>
+                            <td class="">{{ isset($item->orderResource->exit_date) ? date('d-m-Y', strtotime($item->orderResource->exit_date)) : '--'}}</td>
                         </tr>
 
                         <tr>
                             <th scope="row">Таможня (дата поступления)</th>
-                            <td class="">{{ $item->orderResource->customs_date_receipt ?? '--'}}</td>
+                            <td class="">{{ isset($item->orderResource->customs_date_receipt) ? date('d-m-Y', strtotime($item->orderResource->customs_date_receipt)) : '--'}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Таможня (дата выхода)</th>
-                            <td class="">{{ $item->orderResource->customs_date_exit ?? '--'}}</td>
+                            <td class="">{{ isset($item->orderResource->customs_date_exit) ? date('d-m-Y', strtotime($item->orderResource->customs_date_exit)) : '--'}}</td>
                         </tr>
 
                         <tr>

@@ -146,7 +146,7 @@
                                 <td>{{ $item->technicalResource->nomen_number ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
                                 <td>{{ $item->required_quantity ?? '--' }}</td>
-                                <td>{{ $item->warehouse_date ?? '--' }}</td>
+                                <td>{{ isset($item->warehouse_date) ? date('d-m-Y', strtotime($item->warehouse_date)) : '--' }}</td>
                                 <td>{{ $item->warehouse_quantity ?? '--' }}</td>
                                 <td>{{ $item->declared_quantity ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->catalog_number ?? '--' }}</td>
@@ -175,11 +175,11 @@
                                     }
                                 @endphp
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_number ?? '--' }}</td>
-                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ $item->orderResource->contract_date ?? '--' }}</td>
+                                <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->contract_date) ? date('d-m-Y', strtotime($item->orderResource->contract_date)) : '--' }}</td>
                                 <td class="{{ $flag_contact ? 'bg-danger' : '' }}">{{ isset($item->orderResource->local_foreign) ?( $item->orderResource->local_foreign != null ? ($item->orderResource->local_foreign == 1 ? 'местный' : 'зарубежный') : '--') : '--' }}</td>
-                                <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
+                                <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 8) ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 8) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
                                 <td>{{ $item->remont_begin ? date('d-m-Y', strtotime($item->remont_begin)) : '--' }}</td>
-                                <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
+                                <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 8) ? ((strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 8) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--') }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 3 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 3 ? '+' : '') : '' }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 4 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 4 ? '+' : '') : '' }}</td>
                                 <td class="{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 5 || $item->orderResource->executionStatuse->id == 7 ? 'bg-success' : '') : '' }} fw-bold h1">{{ $item->orderResource ? ($item->orderResource->executionStatuse->id == 5 || $item->orderResource->executionStatuse->id == 7 ? '+' : '') : '' }}</td>
