@@ -84,7 +84,7 @@ class HomeController extends Controller
         return view('home', [
             'remonts' => $remonts,
             'applications' => json_encode($this->applications()),
-            'badRemonts' => $this->getBadRemonts()
+            'badRemonts' => $this->getBadRemonts(),
         ]);
     }
 
@@ -222,10 +222,16 @@ class HomeController extends Controller
     public function applications(): array
     {
         $applications = [];
-        $applications[0] = Application::whereDoesntHave('orderResource')
+
+        $applications[] = Application::whereHas('orderResource', function($q) {
+                $q->where('execution_statuse_id', 8);
+            })
             ->count();
 
-        foreach ([2,3,4,5,6,7,8] as $key => $value) {
+        $applications[] = Application::whereDoesntHave('orderResource')
+            ->count();
+
+        foreach ([2,3,4,5,6,7] as $key => $value) {
             $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
                 $q->where('execution_statuse_id', $value);
             })

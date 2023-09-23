@@ -73,6 +73,28 @@
                     <!-- Legend -->
                     <div id="trafficChartLegend" class="chart-legend"></div>
 
+                    <div>
+
+                        <ul class="d-flex flex-wrap">
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #0a8b65"></span>исполнен ({{json_decode($applications)[0]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #bd1200"></span>оформляется заказ ({{json_decode($applications)[1]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #e74c3c"></span>оформляется договор ({{json_decode($applications)[2]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #ffc3bd"></span>договор исполняется ({{json_decode($applications)[3]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: lightblue"></span>оборудование изготовлено, находится у исполнителя ({{json_decode($applications)[4]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: blue"></span>в пути ({{json_decode($applications)[5]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #b0fe15"></span>на таможне ({{json_decode($applications)[6]}})</li>
+                            <li style="list-style-type: none;    color: #718597;
+    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #20c997"></span>в пути после таможни ({{json_decode($applications)[7]}})</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -412,20 +434,21 @@
     new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: [
-                'оформляется заказ',
-                'оформляется договор',
-                'договор исполняется',
-                'оборудования изготовлены, находится у исполнителя',
-                'в пути',
-                'на таможне',
-                'в пути после таможни',
-                'исполнен'
-            ],
+            // labels: [
+            //     'исполнен',
+            //     'оформляется заказ',
+            //     'оформляется договор',
+            //     'договор исполняется',
+            //     'оборудования изготовлены, находится у исполнителя',
+            //     'в пути',
+            //     'на таможне',
+            //     'в пути после таможни'
+            // ],
             datasets: [{
                 label: 'Учет заявок',
                 data: {{$applications}},
                 backgroundColor: [
+                    '#0a8b65',
                     '#bd1200',
                     '#e74c3c',
                     '#ffc3bd',
@@ -433,7 +456,6 @@
                     'blue',
                     '#b0fe15',
                     '#20c997',
-                    '#0a8b65',
                 ],
                 // borderWidth: 2,
                 // hoverOffset: 4,
@@ -441,7 +463,7 @@
                 // weight: 50
             }],
         },
-        options: {
+        // options: {
             // responsive: true,
             // plugins: {
             //   legend: {
@@ -452,7 +474,7 @@
             //     // text: 'Chart.js Pie Chart'
             //   }
             // }
-        }
+        // }
     });
 </script>
 @endsection
