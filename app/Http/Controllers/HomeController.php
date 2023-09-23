@@ -205,7 +205,7 @@ class HomeController extends Controller
                 $applications = $item->planRemonts[0]->applications;
                 $doned_count = 0;
                 foreach ($applications as $key => $value) {
-                    if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == 7) $doned_count ++;
+                    if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == 8) $doned_count ++;
                 }
 
                 $item->percent = (round($doned_count/count($item->planRemonts[0]->applications)*100, 2)).'% ('.$doned_count.'/'.count($item->planRemonts[0]->applications).')';

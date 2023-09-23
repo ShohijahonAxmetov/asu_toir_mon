@@ -103,6 +103,7 @@
                           <th scope="col">ПРОЦЕНТ ВЫПОЛНЕНИЯ</th>
                           <!-- <th scope="col">Просрочено дней</th> -->
                           <th scope="col">ДАТА последней заявки</th>
+                          <th scope="col"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -116,6 +117,9 @@
                           <td>{{$remont->percent}}</td>
                           <!-- <td>{{$remont->prosrocheno_dney}}</td> -->
                           <td>{{$remont->latest_application_date}}</td>
+                          <td>
+                              <a href="{{ route('monitoring', ['equipment_id' => $remont->equipment, 'plan_remont_id' => $remont->id]) }}" class="btn btn-sm btn-info"><i class="fe fe-eye"></i></a>
+                          </td>
                         </tr>
                         @endforeach
                       </tbody>
@@ -385,7 +389,7 @@
                                                 '<td>' + (element.plan_remonts[0].remont_type.name) + '</td>' +
                                                 '<td>' + (element.plan_remonts[0].remont_begin + ' - ' + element.plan_remonts[0].remont_end) + '</td>' +
                                                 '<td>' + (element.percent) + '</td>' +
-                                                '<td><a href="' + '/order_resources?equipment_id=' + element.id + '&plan_remont_id=' + element.plan_remonts[0].id + '' + '" class="btn btn-sm btn-info ms-3"><i class="fe fe-eye"></i></a></td>' +
+                                                '<td><a href="' + '/monitoring?equipment_id=' + element.id + '&plan_remont_id=' + element.plan_remonts[0].id + '' + '" class="btn btn-sm btn-info ms-3"><i class="fe fe-eye"></i></a></td>' +
                                             '</tr>';
                     });
                     result = result + '</tbody>' +

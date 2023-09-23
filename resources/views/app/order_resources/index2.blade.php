@@ -209,11 +209,11 @@
     </div>
 
 
-    <select id="all_remonts">
+    <!-- <select id="all_remonts">
         @foreach ($plan_remonts as $key => $item)
             <option value="{{ $item->id }}" data-equipment_id="{{$item->equipment_id}}" {{ $item->id == $plan_remont_id ? 'selected' : '' }}>{{ $item->remont_begin.' - '.$item->remont_end.' ('.$item->equipment->garage_number.')' }}</option>
         @endforeach
-    </select>
+    </select> -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         let equipmentSelect = document.getElementById('equipment_id');
