@@ -148,12 +148,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#applications" data-bs-toggle="collapse" role="button"
-                               aria-expanded="{{ request()->is('year_applications') || request()->is('year_applications/*') ? 'true' : 'false' }}"
+                               aria-expanded="{{ request()->is('year_applications') || request()->is('year_applications/*') || request()->is('repair_applications') || request()->is('repair_applications/*') || request()->is('emergency_applications') || request()->is('emergency_applications/*') ? 'true' : 'false' }}"
                                aria-controls="documents">
                                 <i class="fe fe-book"></i> Заявки
                             </a>
                             <div
-                                class="collapse {{ request()->is('year_applications') || request()->is('year_applications/*') ? 'show' : '' }}"
+                                class="collapse {{ request()->is('year_applications') || request()->is('year_applications/*') || request()->is('repair_applications') || request()->is('repair_applications/*') || request()->is('emergency_applications') || request()->is('emergency_applications/*') ? 'show' : '' }}"
                                 id="applications">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">

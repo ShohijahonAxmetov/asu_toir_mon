@@ -87,7 +87,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Тип оборудования</th>
                             <th scope="col">МТР</th>
-                            <th scope="col">Родительский узел</th>
+                            <!-- <th scope="col">Родительский узел</th> -->
                             <th scope="col">Дата добавления</th>
                             <th scope="col"></th>
                         </tr>
@@ -102,7 +102,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $item->technicalResource->catalog_name }}</td>
-                                <td>{{ $item->parent->technicalResource->catalog_name ?? '--' }}</td>
+                                <!-- <td>{{ $item->parent->technicalResource->catalog_name ?? '--' }}</td> -->
                                 <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">

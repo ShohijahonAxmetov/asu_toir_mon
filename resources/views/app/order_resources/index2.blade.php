@@ -141,7 +141,7 @@
                                         {{ $item->equipment->typeEquipment->name.' № '.$item->equipment->garage_number.' ('.$item->equipment->department->name.')' }}
                                     </div>
                                 </td>
-                                <td>{{ $item->equipment->commissioning_date ?? '--' }}</td>
+                                <td>{{ isset($item->equipment->commissioning_date) ? date('d-m-Y', strtotime($item->equipment->commissioning_date)) : '--'}}</td>
                                 <td>{{ $item->equipment->eq_condition ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->nomen_number ?? '--' }}</td>
                                 <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
