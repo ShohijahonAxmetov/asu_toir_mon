@@ -6,7 +6,9 @@ use App\Models\Application;
 use App\Models\PlanRemont;
 use App\Models\RepairApplication;
 use App\Models\OrderResource;
-;
+use App\Models\EmergencyApplication;
+use App\Models\YearApplication;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -91,6 +93,23 @@ class ApplicationSeeder extends Seeder
     		$plan_remont = PlanRemont::find($plan_remont_id);
     		$warehouse_quantity = $required_quantity - rand(1,50);
     		$warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
+
+			// Вставка аварийной заявки
+			// Если заявка на этот ремонт
+			if (EmergencyApplication::where('plan_remont_id', $plan_remont_id)->get()->count() > 0) {
+				// есть
+				$application3 = EmergencyApplication::where('plan_remont_id', $plan_remont_id)->latest()->first();
+				$warehouse_date = $application3->application_date;
+			} else {
+				// нет
+				$data_app = [
+					'application_date' => $warehouse_date,
+					'equipment_id' => $plan_remont->equipment_id,
+					'plan_remont_id' => $plan_remont_id,
+				];
+				EmergencyApplication::create($data_app);
+			}
+
     		$data = [
     			'id' => $i+1+500,
     			'plan_remont_id' => $plan_remont_id,
@@ -120,11 +139,29 @@ class ApplicationSeeder extends Seeder
     		// $warehouse_date = date('Y-m-d', strtotime($plan_remont->remont_begin.'-'.rand(20,50).' day'));
     		 $warehouse_date = '2022-12-'.rand(01,28);
 
+			$technical_resource_id = rand(1,50);
+			$department_id =  $plan_remont->equipment->department_id;
+			// Вставка годовой заявки
+			// Если заявка на этот ремонт
+			if (YearApplication::where('technical_resource_id', $technical_resource_id)->where('department_id', $department_id)->get()->count() > 0) {
+		/*		// есть
+				$application3 = YearApplication::where('plan_remont_id', $plan_remont_id)->latest()->first();
+				$warehouse_date = $application3->application_date; */
+			} else {
+				// нет
+	/*			$data_app = [
+					'application_date' => $warehouse_date,
+					'equipment_id' => $plan_remont->equipment_id,
+					'plan_remont_id' => $plan_remont_id,
+				];
+				YearApplication::create($data_app); */
+			} 
+
     		$data = [
     			'id' => $i+1+1000,
     			'plan_remont_id' => $plan_remont_id,
     			'equipment_id' => $plan_remont->equipment_id,
-    			'technical_resource_id' => rand(1,50),
+    			'technical_resource_id' => $technical_resource_id,
     			'required_quantity' => $required_quantity,
     			'warehouse_number' => '№'.rand(1,1598),
     			'warehouse_date' => $warehouse_date,

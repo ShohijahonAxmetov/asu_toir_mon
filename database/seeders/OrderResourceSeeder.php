@@ -102,6 +102,10 @@ class OrderResourceSeeder extends Seeder
 		
 
         for($i=0; $i<2000; $i++) {
+            if (in_array($i, [1998, 1990, 1982, 1970, 1960, 1950, 1932, 1918, 1890, 1872, 
+            1858, 1845, 1832, 1821, 1805, 1789, 1775] ) && $application->application_type != 1) {
+                continue;
+            }
         	$application_id = $i + 1;
         	$application = Application::find($application_id);
 			
@@ -207,6 +211,7 @@ class OrderResourceSeeder extends Seeder
         	$data['execution_statuse_id'] = $this->setStatus($data);
 
         	OrderResource::create($data);
+
         } 
 		
     }
