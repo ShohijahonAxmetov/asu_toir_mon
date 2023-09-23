@@ -65,7 +65,19 @@ class ApplicationSeeder extends Seeder
 					'plan_remont_id' => $plan_remont_id,
 				];
 				RepairApplication::create($data_app);
+				$application2 = RepairApplication::where('plan_remont_id', $plan_remont_id)->latest()->first();
 			}
+			// Вставка дочерней записи
+	/*		$data_sub = [
+				'repair_application_id' => $application2-,
+				'technical_resource_id' => $warehouse_date,
+				'required_quantity' => $warehouse_date,
+				'warehouse_number' => $warehouse_date,
+				'warehouse_date' => $warehouse_date,
+				'warehouse_quantity' => $warehouse_date,
+				'declared_quantity' => $warehouse_date,
+				'delivery_date' => $warehouse_date
+			];*/
     		
     		$data = [
     			'id' => $i+1,
@@ -149,12 +161,26 @@ class ApplicationSeeder extends Seeder
 				$warehouse_date = $application3->application_date; */
 			} else {
 				// нет
-	/*			$data_app = [
-					'application_date' => $warehouse_date,
-					'equipment_id' => $plan_remont->equipment_id,
-					'plan_remont_id' => $plan_remont_id,
+				$data_app = [
+					'department_id' => $department_id,
+					'technical_resource_id' => $technical_resource_id,
+					'unit_id' => 1,
+					'quantity' => 0,
+					'quantity_m1' => 0,
+					'quantity_m2' => 0,
+					'quantity_m3' => 0,
+					'quantity_m4' => 0,
+					'quantity_m5' => 0,
+					'quantity_m6' => 0,
+					'quantity_m7' => 0,
+					'quantity_m8' => 0,
+					'quantity_m9' => 0,
+					'quantity_m10' => 0,
+					'quantity_m11' => 0,
+					'quantity_m12' => 0,
+					'year' => 2023,
 				];
-				YearApplication::create($data_app); */
+				YearApplication::create($data_app);
 			} 
 
     		$data = [
