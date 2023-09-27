@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanRemont;
+use App\Models\TechnicalResource;
 use App\Models\TypeTechnicalInspection;
 use App\Models\Equipment;
 use App\Models\Application;
@@ -79,13 +80,15 @@ class HomeController extends Controller
         //     'provedennie' => $provedennie,
         // ]);
 
+        $this->createGraph(48);
+
         $remonts = PlanRemont::whereBetween('remont_begin', [date('Y-m-').'01', date('Y-m-').date( 't', time())])
             ->get();
 
         return view('home', [
             'remonts' => $remonts,
             'applications' => json_encode($this->applications()),
-            'badRemonts' => $this->getBadRemonts(),
+            'badRemonts' => $this->getBadRemonts()
         ]);
     }
 
@@ -284,5 +287,43 @@ class HomeController extends Controller
             ->take(5);
 
         return $remonts;
+    }
+
+    public function createGraph($id): void
+    {
+        $technicalResource = TechnicalResource::find($id);
+
+        $testData = [
+            [
+                'name' => 'First',
+                'children' => [
+                    [
+                        'name' => 'Second lvl',
+                        'children' => []
+                    ]
+                ]
+            ],
+            [
+                'name' => 'First 2',
+                'children' => []
+            ]
+        ];
+
+
+        $gd_img = imagecreatetruecolor(1000, 1000);
+
+        $ink = imagecolorallocate($gd_img, 255, 255, 255);
+
+        foreach ($testData as $key => $value) {
+            imageellipse($gd_img, 200, 200, 150, 100, $ink);
+            imagettftext($gd_img, 14, 0, 200, 200, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
+
+            if($value['children']) {
+                imageellipse($gd_img, 200, 300, 150, 100, $ink);
+                imagettftext($gd_img, 14, 0, 200, 300, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
+            }
+        }
+        
+        imagepng($gd_img, 'result.png');
     }
 }

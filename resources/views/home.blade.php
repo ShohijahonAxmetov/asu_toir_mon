@@ -147,6 +147,10 @@
     </div>
 </div>
 
+<div class="container-fluid">
+    <img src="/result.png">
+</div>
+
 
 <!-- calendar -->
 <!-- Modal -->
