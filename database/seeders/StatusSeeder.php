@@ -24,7 +24,7 @@ class StatusSeeder extends Seeder
     		],
     		[
     			'id' => 21,
-    			'name' => 'договор неоплачен'
+    			'name' => 'договор не оплачен'
     		],
     		[
     			'id' => 31,
@@ -36,7 +36,7 @@ class StatusSeeder extends Seeder
     		],
     		[
     			'id' => 51,
-    			'name' => 'в пути'
+    			'name' => 'в пути на таможню'
     		],
     		[
     			'id' => 61,
@@ -44,7 +44,7 @@ class StatusSeeder extends Seeder
     		],
     		[
     			'id' => 71,
-    			'name' => 'в пути после таможни'
+    			'name' => 'в пути на объект'
     		],
     		[
     			'id' => 81,
