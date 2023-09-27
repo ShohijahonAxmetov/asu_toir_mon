@@ -212,17 +212,68 @@ class OrderResourceController extends Controller
         $data = $request->all();
         $status_id = 0;
 
-        if(is_null($data['contract_number'])) $status_id = 2;
-        if(!is_null($data['contract_number']) && is_null($data['date_manufacture_fact'])) $status_id = 3;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 8;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = 4;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 5;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 6;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 8;
+        // оформляется договор
+        if(is_null($data['contract_number'])) $status_id = $this->statuses_list()[2];
+
+        // договор неоплачен
+        if(!is_null($data['contract_number']) && is_null($data['payment_date'])) $status_id = $this->statuses_list()[3];
+
+        // договор исполняется
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && is_null($data['date_manufacture_fact'])) $status_id = $this->statuses_list()[4];
+
+        //  в пути на объект (в пути после таможни)
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = $this->statuses_list()[8];
+
+        // исполнен + местный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = $this->end_status_id();
+
+        // изготовлен
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = $this->statuses_list()[5];
+
+        // в пути + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = $this->statuses_list()[6];
+
+        // на таможне + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = $this->statuses_list()[7];
+
+        // в пути после таможни + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = $this->statuses_list()[8];
+
+        //  исполнен + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = $this->end_status_id();
+
+        // if(is_null($data['contract_number'])) $status_id = 2;
+        // if(!is_null($data['contract_number']) && is_null($data['date_manufacture_fact'])) $status_id = 3;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = 7;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 8;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = 4;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 5;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 6;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 7;
+        // if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 8;
 
         return $status_id;
+    }
+
+    public function statuses_list(): array
+    {
+        $statuses_list = [
+            2 => 11,
+            3 => 21,
+            4 => 31,
+            5 => 41,
+            6 => 51,
+            7 => 61,
+            8 => 71
+
+        ];
+
+        return $statuses_list;
+    }
+
+    public function end_status_id()
+    {
+         return 81;
     }
 
     public function monitoring(Request $request)

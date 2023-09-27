@@ -173,7 +173,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Осталось время на поставку</th>
-                            <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--')}}</td>
+                            <td style="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 71) ? ((strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 < 0 ? '--bs-table-accent-bg:#e63757' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 71) ? '--' : ($item->delivery_date ? (strtotime($item->delivery_date) - strtotime(date('Y-m-d')))/86400 : '--')}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Дата начала ремонта по плану</th>
@@ -181,7 +181,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Осталось дней до начала ремонта</th>
-                            <td class="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 7) ? ((strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 < 0 ? 'bg-danger' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 7) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--')}}</td>
+                            <td style="{{(is_null($item->orderResource) || $item->orderResource->executionStatuse->id < 71) ? ((strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 < 0 ? '--bs-table-accent-bg:#e63757' : '') : ''}}">{{ ($item->orderResource && $item->orderResource->executionStatuse->id >= 71) ? '--' : ($item->remont_begin ? (strtotime($item->remont_begin) - strtotime(date('Y-m-d')))/86400 : '--')}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Ход исполнения на {{date('d-m-Y')}}</th>
@@ -212,7 +212,7 @@
                         @endphp
                         <tr>
                             <th scope="row">Дата доставки на объект</th>
-                            <td class="{{ $flag_delivery ? 'bg-danger' : '' }}">{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
+                            <td style="{{ $flag_delivery ? '--bs-table-accent-bg:#e63757' : '' }}">{{ isset($item->orderResource->date_delivery_object) ? date('d-m-Y', strtotime($item->orderResource->date_delivery_object)) : '--' }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Опоздали с поставкой (дней)</th>
