@@ -17,6 +17,7 @@ class OrderResource extends Model
         'contract_number',
         'contract_date',
         'local_foreign',
+        'payment_date',
         'date_manufacture_contract',
         'date_manufacture_fact',
 

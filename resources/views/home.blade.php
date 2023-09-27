@@ -76,22 +76,15 @@
                     <div>
 
                         <ul class="d-flex flex-wrap">
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #0a8b65"></span>исполнен ({{json_decode($applications)[0]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #bd1200"></span>оформляется заказ ({{json_decode($applications)[1]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #e74c3c"></span>оформляется договор ({{json_decode($applications)[2]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #ffc3bd"></span>договор исполняется ({{json_decode($applications)[3]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: lightblue"></span>оборудование изготовлено, находится у исполнителя ({{json_decode($applications)[4]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: blue"></span>в пути ({{json_decode($applications)[5]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #b0fe15"></span>на таможне ({{json_decode($applications)[6]}})</li>
-                            <li style="list-style-type: none;    color: #718597;
-    font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #20c997"></span>в пути после таможни ({{json_decode($applications)[7]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #0a8b65"></span>исполнен ({{json_decode($applications)[0]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #bd1200"></span>оформляется заказ ({{json_decode($applications)[1]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #e74c3c"></span>оформляется договор ({{json_decode($applications)[2]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #eb54e1"></span>договор неоплачен ({{json_decode($applications)[3]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #ffc3bd"></span>договор исполняется ({{json_decode($applications)[4]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: lightblue"></span>оборудование изготовлено, находится у исполнителя ({{json_decode($applications)[5]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: blue"></span>в пути ({{json_decode($applications)[6]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #b0fe15"></span>на таможне ({{json_decode($applications)[7]}})</li>
+                            <li style="list-style-type: none;color: #718597;font-size: 12px;" class="me-3 d-flex align-items-center"><span class="me-2" style="width: 8px;height: 8px;border-radius: 50%;background-color: #20c997"></span>в пути после таможни ({{json_decode($applications)[8]}})</li>
                         </ul>
                     </div>
 
@@ -451,6 +444,7 @@
                     '#0a8b65',
                     '#bd1200',
                     '#e74c3c',
+                    '#eb54e1',
                     '#ffc3bd',
                     'lightblue',
                     'blue',

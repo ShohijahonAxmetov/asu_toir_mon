@@ -122,6 +122,7 @@
                             <th scope="col">Договор (дата)</th>
                             <th scope="col">Договор (местный/зарубежный)</th>
                             <th scope="col">Дата изготовления (по договору)</th>
+                            <th scope="col">Дата оплаты договора</th>
                             <th scope="col">Дата изготовления (по факту)</th>
                             <th scope="col">Таможня (дата поступления)</th>
                             <th scope="col">Таможня (дата выхода)</th>
@@ -221,6 +222,7 @@
                                     }  // 
                                 @endphp
                                 <td class="{{ $flag_manufacture ? 'bg-danger' : '' }}">{{ isset($item->orderResource->date_manufacture_contract) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_contract)) : '--'}}</td>
+                                <td>{{ isset($item->orderResource->payment_date) ? date('d-m-Y', strtotime($item->orderResource->payment_date)) : '--'}}</td>
                                 <td>{{ isset($item->orderResource->date_manufacture_fact) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact)) : '--'}}</td>
 
                                 <td>{{ isset($item->orderResource->customs_date_receipt) ? date('d-m-Y', strtotime($item->orderResource->customs_date_receipt)) : '--'}}</td>

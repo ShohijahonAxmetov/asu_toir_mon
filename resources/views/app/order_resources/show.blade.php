@@ -141,6 +141,11 @@
                         </tr>
 
                         <tr>
+                            <th scope="row">Дата оплаты договора</th>
+                            <td class="">{{ isset($item->orderResource->payment_date) ? date('d-m-Y', strtotime($item->orderResource->payment_date)) : '--'}}</td>
+                        </tr>
+
+                        <tr>
                             <th scope="row">Дата изготовления (по факту)</th>
                             <td class="">{{ isset($item->orderResource->date_manufacture_fact) ? date('d-m-Y', strtotime($item->orderResource->date_manufacture_fact)) : '--'}}</td>
                         </tr>

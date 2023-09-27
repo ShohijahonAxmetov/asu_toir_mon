@@ -94,7 +94,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                @foreach([['Дата изготовления (по договору)', 'date_manufacture_contract', 'date', 0], ['Дата изготовления (по факту)', 'date_manufacture_fact', 'date', 0], ['Покинул завод (дата)', 'exit_date', 'date', 0], ['Таможня (дата поступления)', 'customs_date_receipt', 'date', 0], ['Таможня (дата выхода)', 'customs_date_exit', 'date', 0], ['Дата доставки на объект', 'date_delivery_object' ,'date', 0]] as $item)
+                                @foreach([['Дата изготовления (по договору)', 'date_manufacture_contract', 'date', 0], ['Дата оплаты договора', 'payment_date', 'date', 0], ['Дата изготовления (по факту)', 'date_manufacture_fact', 'date', 0], ['Покинул завод (дата)', 'exit_date', 'date', 0], ['Таможня (дата поступления)', 'customs_date_receipt', 'date', 0], ['Таможня (дата выхода)', 'customs_date_exit', 'date', 0], ['Дата доставки на объект', 'date_delivery_object' ,'date', 0]] as $item)
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="{{$item[1]}}" class="form-label @if($item[3]) required @endif">{{$item[0]}}</label>

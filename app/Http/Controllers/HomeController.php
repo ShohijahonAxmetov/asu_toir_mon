@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    const END_STATUS_ID = 81;
     /**
      * Create a new controller instance.
      *
@@ -205,7 +206,7 @@ class HomeController extends Controller
                 $applications = $item->planRemonts[0]->applications;
                 $doned_count = 0;
                 foreach ($applications as $key => $value) {
-                    if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == 8) $doned_count ++;
+                    if(!is_null($value->orderResource) && $value->orderResource->execution_statuse_id == self::END_STATUS_ID) $doned_count ++;
                 }
 
                 $item->percent = (round($doned_count/count($item->planRemonts[0]->applications)*100, 2)).'% ('.$doned_count.'/'.count($item->planRemonts[0]->applications).')';
@@ -224,14 +225,15 @@ class HomeController extends Controller
         $applications = [];
 
         $applications[] = Application::whereHas('orderResource', function($q) {
-                $q->where('execution_statuse_id', 8);
+                $q->where('execution_statuse_id', self::END_STATUS_ID);
             })
             ->count();
 
         $applications[] = Application::whereDoesntHave('orderResource')
             ->count();
 
-        foreach ([2,3,4,5,6,7] as $key => $value) {
+        $statuses_ids_without_end_anf_start = [11,21,31,41,51,61,71];
+        foreach ($statuses_ids_without_end_anf_start as $key => $value) {
             $applications[] = Application::whereHas('orderResource', function($q) use ($value) {
                 $q->where('execution_statuse_id', $value);
             })
@@ -248,7 +250,7 @@ class HomeController extends Controller
             ->whereHas('applications', function($q) {
                 $q->where(function($qi) {
                     $qi->whereHas('orderResource', function($qi2) {
-                        $qi2->where('execution_statuse_id', '!=', 8);
+                        $qi2->where('execution_statuse_id', '!=', self::END_STATUS_ID);
                     })->orWhereDoesntHave('orderResource');
                 });
             })
@@ -266,7 +268,7 @@ class HomeController extends Controller
                 // $prosrocheno_dney = ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) > $prosrocheno_dney ? ((strtotime(date('Y-m-d')) - strtotime(date('Y-m-d', strtotime($data_vipolneniya)))) / 86400) : $prosrocheno_dney;
 
                 // chislo ispolnennix zakazov
-                if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == 8) $doned_count ++;
+                if(!is_null($application->orderResource) && $application->orderResource->execution_statuse_id == self::END_STATUS_ID) $doned_count ++;
             }
             // $remont->prosrocheno_dney = $prosrocheno_dney == 0 ? '--' : $prosrocheno_dney;
 

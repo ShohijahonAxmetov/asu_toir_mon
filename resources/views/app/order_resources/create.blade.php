@@ -138,6 +138,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label for="payment_date" class="form-label">Дата оплаты договора</label>
+                                        <input type="date" class="form-control @error('payment_date') is-invalid @enderror" name="payment_date" value="{{ old('payment_date') }}" id="payment_date" placeholder="Дата оплаты договора...">
+                                        @error('payment_date')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="date_manufacture_fact" class="form-label">Дата изготовления (по факту)</label>
                                         <input type="date" class="form-control @error('date_manufacture_fact') is-invalid @enderror" name="date_manufacture_fact" value="{{ old('date_manufacture_fact') }}" id="date_manufacture_fact" placeholder="Дата изготовления (по факту)...">
                                         @error('date_manufacture_fact')

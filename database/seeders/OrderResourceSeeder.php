@@ -115,7 +115,8 @@ class OrderResourceSeeder extends Seeder
             $contract_number = '№ '.rand(1564,5486451);
         	$contract_date = date('Y-m-d', strtotime($order_date.'+'.rand(1,10).' days')); // контракт - 60
         	$local_foreign = rand(1,2);
-        	$date_manufacture_contract = date('Y-m-d', strtotime($contract_date.'+'.rand(1,30).' days'));
+        	$payment_date = date('Y-m-d', strtotime($contract_date.'+'.rand(1,10).' days'));
+            $date_manufacture_contract = date('Y-m-d', strtotime($contract_date.'+'.rand(1,30).' days'));
         	$date_manufacture_fact = date('Y-m-d', strtotime($contract_date.'+'.rand(0,30).' days'));
             $exit_date = date('Y-m-d', strtotime($date_manufacture_fact.'+'.rand(0,3).' days'));
         	$customs_date_receipt = null;
@@ -134,33 +135,34 @@ class OrderResourceSeeder extends Seeder
 			
             if ($day_sum > 60 ) {
 //                if ($day_sum > 30 && $application->application_type == 1) {
-                $rand_status = 8;
+                $rand_status = $this->end_status_id();
             } else {
-                $rand_status = rand(2,7);
+                $rand_status = rand(2,8);
             }
 
             
 			$order_number = '№ '.rand(1564,5486451);
 
             switch ($rand_status) {
-                case 1:
-					$order_number = null;
-					$order_date = null;
-                    $contract_number = null;
-                    $contract_date = null;
-                    $local_foreign = null;
-                    $date_manufacture_contract = null;
-                    $date_manufacture_fact = null;
-                    $exit_date = null;
-                    $customs_date_receipt = null;
-                    $customs_date_exit = null;
-                    $date_delivery_object = null;
-                    break;
+     //            case 1:
+					// $order_number = null;
+					// $order_date = null;
+     //                $contract_number = null;
+     //                $contract_date = null;
+     //                $local_foreign = null;
+     //                $date_manufacture_contract = null;
+     //                $date_manufacture_fact = null;
+     //                $exit_date = null;
+     //                $customs_date_receipt = null;
+     //                $customs_date_exit = null;
+     //                $date_delivery_object = null;
+     //                break;
                 case 2:
                     $contract_number = null;
                     $contract_date = null;
                     $local_foreign = null;
                     $date_manufacture_contract = null;
+                    $payment_date = null;
                     $date_manufacture_fact = null;
                     $exit_date = null;
                     $customs_date_receipt = null;
@@ -168,6 +170,7 @@ class OrderResourceSeeder extends Seeder
                     $date_delivery_object = null;
                     break;
                 case 3:
+                    $payment_date = null;
                     $date_manufacture_fact = null;
                     $exit_date = null;
                     $customs_date_receipt = null;
@@ -175,21 +178,28 @@ class OrderResourceSeeder extends Seeder
                     $date_delivery_object = null;
                     break;
                 case 4:
+                    $date_manufacture_fact = null;
                     $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 5:
+                    $exit_date = null;
                     $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 6:
+                    $customs_date_receipt = null;
                     $customs_date_exit = null;
                     $date_delivery_object = null;
                     break;
                 case 7:
+                    $customs_date_exit = null;
+                    $date_delivery_object = null;
+                    break;
+                case 8:
                     $date_delivery_object = null;
                     break;
             }
@@ -203,6 +213,7 @@ class OrderResourceSeeder extends Seeder
         		'contract_date' => $contract_date,
         		'local_foreign' => $local_foreign,
         		'date_manufacture_contract' => $date_manufacture_contract,
+                'payment_date' => $payment_date,
         		'date_manufacture_fact' => $date_manufacture_fact,
                 'exit_date' => $exit_date,
         		'customs_date_receipt' => $customs_date_receipt,
@@ -221,16 +232,57 @@ class OrderResourceSeeder extends Seeder
     {
         $status_id = 0;
 
-        if(is_null($data['contract_number'])) $status_id = 2;
-        if(!is_null($data['contract_number']) && is_null($data['date_manufacture_fact'])) $status_id = 3;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = 8;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = 4;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = 5;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = 6;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = 7;
-        if(!is_null($data['contract_number']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = 8;
+        // оформляется договор
+        if(is_null($data['contract_number'])) $status_id = $this->statuses_list()[2];
+
+        // договор неоплачен
+        if(!is_null($data['contract_number']) && is_null($data['payment_date'])) $status_id = $this->statuses_list()[3];
+
+        // договор исполняется
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && is_null($data['date_manufacture_fact'])) $status_id = $this->statuses_list()[4];
+
+        //  в пути на объект (в пути после таможни)
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1) $status_id = $this->statuses_list()[8];
+
+        // исполнен + местный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 1 && !is_null($data['date_delivery_object'])) $status_id = $this->end_status_id();
+
+        // изготовлен
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && is_null($data['exit_date'])) $status_id = $this->statuses_list()[5];
+
+        // в пути + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2) $status_id = $this->statuses_list()[6];
+
+        // на таможне + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt'])) $status_id = $this->statuses_list()[7];
+
+        // в пути после таможни + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit'])) $status_id = $this->statuses_list()[8];
+
+        //  исполнен + зарубежный
+        if(!is_null($data['contract_number']) && !is_null($data['payment_date']) && !is_null($data['date_manufacture_fact']) && !is_null($data['exit_date']) && $data['local_foreign'] == 2 && !is_null($data['customs_date_receipt']) && !is_null($data['customs_date_exit']) && !is_null($data['date_delivery_object'])) $status_id = $this->end_status_id();
 
         return $status_id;
+    }
+
+    public function statuses_list(): array
+    {
+        $statuses_list = [
+            2 => 11,
+            3 => 21,
+            4 => 31,
+            5 => 41,
+            6 => 51,
+            7 => 61,
+            8 => 71
+
+        ];
+
+        return $statuses_list;
+    }
+
+    public function end_status_id()
+    {
+         return 81;
     }
 }
