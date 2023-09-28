@@ -30,6 +30,10 @@
 </div> <!-- / .header -->
 
 <div class="container-fluid">
+    <img src="/result.png">
+</div>
+
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 col-xl-4 mb-5">
             <div class="chart__block card h-100">
@@ -145,10 +149,6 @@
 
         </div>
     </div>
-</div>
-
-<div class="container-fluid">
-    <img src="/result.png">
 </div>
 
 

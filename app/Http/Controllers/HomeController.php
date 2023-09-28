@@ -295,35 +295,60 @@ class HomeController extends Controller
 
         $testData = [
             [
-                'name' => 'First',
+                'name' => '1',
                 'children' => [
                     [
-                        'name' => 'Second lvl',
+                        'name' => '11',
                         'children' => []
                     ]
                 ]
             ],
             [
-                'name' => 'First 2',
+                'name' => '2',
                 'children' => []
             ]
         ];
 
-
-        $gd_img = imagecreatetruecolor(1000, 1000);
+        $img_width = 1000;
+        $img_height = 1000;
+        $gd_img = imagecreatetruecolor($img_width, $img_height);
 
         $ink = imagecolorallocate($gd_img, 255, 255, 255);
 
+        // orasidagi farqlar
+        $farqX = 150;
+        $farqY = 100;
         foreach ($testData as $key => $value) {
-            imageellipse($gd_img, 200, 200, 150, 100, $ink);
-            imagettftext($gd_img, 14, 0, 200, 200, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
 
-            if($value['children']) {
-                imageellipse($gd_img, 200, 300, 150, 100, $ink);
-                imagettftext($gd_img, 14, 0, 200, 300, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
-            }
+            // narisovat ellips
+            $x = $img_width/2;
+            $y = $farqY; // $img_height
+            $width = 150;
+            $height = 100;
+
+            imageellipse($gd_img, $x, $y, $width, $height, $ink);
+
+
+            // napisat tekst vnutri ellipsa
+            $fontSize = 14;
+            $ugol = 0;
+
+            imagettftext($gd_img, $fontSize, $ugol, $x, $y, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
+
+
+            // if($value['children']) {
+            //     foreach ($value['children'] as $childKey => $child) {
+            //         imageellipse($gd_img, $x1, $y1-$farqY, $width, $height, $ink);
+            //         imagettftext($gd_img, $fontSize, $ugol, $x1, $y1-$farqY, $ink, '/assets/fonts/graph/font.ttf', $child['name']);
+            //     }
+            // }
         }
         
         imagepng($gd_img, 'result.png');
+    }
+
+    public function childrenTree($var)
+    {
+
     }
 }
