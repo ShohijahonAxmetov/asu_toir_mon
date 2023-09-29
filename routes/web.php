@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('equipments/{equipment}/graph', [\App\Http\Controllers\EquipmentController::class, 'graph'])->name('equipments.graph');
     Route::resource('equipments', \App\Http\Controllers\EquipmentController::class);
     Route::resource('type_equipments', \App\Http\Controllers\TypeEquipmentController::class);
     Route::resource('technical_resources', \App\Http\Controllers\TechnicalResourceController::class);

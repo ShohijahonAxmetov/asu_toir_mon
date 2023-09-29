@@ -5,6 +5,18 @@
 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
 <link rel="stylesheet" href="/assets/css/home.css">
 
+<!-- for graph -->
+<!-- <style type="text/css">
+.graph_link {
+  stroke: #ccc;
+}
+
+.graph_node text {
+  pointer-events: none;
+  font: 16px sans-serif;
+}
+</style> -->
+
 @endsection
 
 @section('content')
@@ -29,9 +41,7 @@
     </div>
 </div> <!-- / .header -->
 
-<div class="container-fluid">
-    <img src="/result.png">
-</div>
+<!-- <div class="container-fluid" id="for_graph"></div> -->
 
 <div class="container-fluid">
     <div class="row">
@@ -183,6 +193,70 @@
 @endsection
 
 @section('scripts')
+<!-- for graph -->
+<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+
+<script>
+
+// var width = 1920,
+//     height = 1000
+
+// var svg = d3.select("#for_graph").append("svg")
+//     .attr("width", width)
+//     .attr("height", height);
+
+// var force = d3.layout.force()
+//     .gravity(0.05)
+//     .distance(300)
+//     .charge(-300)
+//     .size([width, height]);
+
+// let json = @json($forGraph);
+
+
+
+// force
+//   .nodes(json.nodes)
+//   .links(json.links)
+//   .start();
+
+// var link = svg.selectAll(".link")
+//   .data(json.links)
+// .enter().append("line")
+//   .attr("class", "graph_link");
+
+// var node = svg.selectAll(".node")
+//   .data(json.nodes)
+// .enter().append("g")
+//   .attr("class", "graph_node")
+//   .call(force.drag);
+
+// // node.append("image")
+// //   .attr("xlink:href", "https://github.com/favicon.ico")
+// //   .attr("x", -8)
+// //   .attr("y", -8)
+// //   .attr("width", 16)
+// //   .attr("height", 16);
+
+// node.append("circle")
+//     .attr("r", 12);
+
+// node.append("text")
+//   .attr("dx", 12)
+//   .attr("dy", ".35em")
+//   .text(function(d) { return d.name });
+
+// force.on("tick", function() {
+//     link.attr("x1", function(d) { return d.source.x; })
+//         .attr("y1", function(d) { return d.source.y; })
+//         .attr("x2", function(d) { return d.target.x; })
+//         .attr("y2", function(d) { return d.target.y; });
+
+//     node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+// });
+
+</script>
+<!-- for graph end -->
 
 <!-- calendar scripts -->
 <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>

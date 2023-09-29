@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanRemont;
 use App\Models\TechnicalResource;
+use App\Models\TechnicalResourceTypeEquipment;
 use App\Models\TypeTechnicalInspection;
 use App\Models\Equipment;
 use App\Models\Application;
@@ -80,6 +81,19 @@ class HomeController extends Controller
         //     'provedennie' => $provedennie,
         // ]);
 
+        $forGraph = [
+            'nodes' => [
+                ['name' => '1'],
+                ['name' => '2'],
+                ['name' => '3'],
+            ],
+            'links' => [
+                ['source' => 1, 'target' => 0],
+                ['source' => 2, 'target' => 0]
+            ]
+        ];       
+
+
         $this->createGraph(48);
 
         $remonts = PlanRemont::whereBetween('remont_begin', [date('Y-m-').'01', date('Y-m-').date( 't', time())])
@@ -88,7 +102,8 @@ class HomeController extends Controller
         return view('home', [
             'remonts' => $remonts,
             'applications' => json_encode($this->applications()),
-            'badRemonts' => $this->getBadRemonts()
+            'badRemonts' => $this->getBadRemonts(),
+            'forGraph' => $forGraph
         ]);
     }
 
@@ -350,5 +365,41 @@ class HomeController extends Controller
     public function childrenTree($var)
     {
 
+    }
+
+    public function example()
+    {
+        $forGraph = [
+            'nodes' => [],
+            'links' => []
+        ];
+        $item = TechnicalResourceTypeEquipment::find(9);
+        $forGraph['nodes'][0] = ['name' => $item->technicalResource->catalog_name];
+
+        foreach ($item->children as $childKey => $childValue) {
+            $forGraph['nodes'][] = ['name' => $childValue->technicalResource->catalog_name];
+
+            $index = count($forGraph['nodes'])-1;
+            $forGraph['links'][] = ['source' => $index, 'target' => 0];
+
+            if(isset($childValue->children[0])) {
+                foreach ($childValue->children as $subChildKey => $subChildValue) {
+                    $forGraph['nodes'][] = ['name' => $subChildValue->technicalResource->catalog_name];
+
+                    $indexSub = count($forGraph['nodes'])-1;
+                    $forGraph['links'][] = ['source' => $indexSub, 'target' => $index];
+                }
+
+                if(isset($subChildValue->children[0])) {
+                    foreach ($subChildValue->children as $sub2ChildKey => $sub2ChildValue) {
+                        $forGraph['nodes'][] = ['name' => $sub2ChildValue->technicalResource->catalog_name];
+
+                        $forGraph['links'][] = ['source' => count($forGraph['nodes'])-1, 'target' => $indexSub];
+                    }
+                }
+            }
+        }
+
+        return $forGraph;
     }
 }

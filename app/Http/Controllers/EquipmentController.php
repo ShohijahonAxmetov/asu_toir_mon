@@ -156,4 +156,54 @@ class EquipmentController extends Controller
             'message' => 'Успешно удален'
         ]);
     }
+
+    public function graph(Equipment $equipment)
+    {
+        // podgotovka dannix
+        $equipmentUzels = $equipment->typeEquipment->technicalResourceTypeEquipments;
+
+        $children = $equipmentUzels->where('parent_id', null);
+        $equipmentUzels = $equipmentUzels->reject(function($value) {
+            return is_null($value->parent_id);
+        });
+
+        foreach ($children as $key => $child) {
+            $arr = [];
+            foreach ($equipmentUzels as $uzelKey => $uzel) {
+                if($child->id == $uzel->parent_id) {
+                    $arr[] = $uzel;
+                    $equipmentUzels->forget($uzelKey);
+                }
+            }
+            $child->children = $arr;
+        }
+
+
+
+        $children = $children->technicalResource->catalog_name;
+        dd($children);
+        // sam graph
+        $graph = [
+            'name' => $equipment->typeEquipment->name.' №'.$equipment->garage_number,
+            'children' => $children
+        ];
+
+        dd($equipmentUzels);
+        foreach ($equipment->technicalResourceTypeEquipments as $childKey => $child) {
+            $forGraph['children'][$childKey] = [
+                'name' => $child->technicalResource->catalog_name
+            ];
+
+            // foreach ($child->children as $subKey => $sub) {
+            //     $forGraph['children'][$childKey]['children'][] = [
+            //         'name' => $sub->technicalResource->catalog_name
+            //     ];
+            // }
+        }
+
+        return view('app.'.$this->route_name.'.graph', [
+            'equipment' => $equipment,
+            'graph' => $graph
+        ]);
+    }
 }

@@ -17,8 +17,8 @@
 
                     </div>
                     <div class="col-auto">
-
-							<a href="{{ route($route_name . '.edit', [$route_parameter => $equipment]) }}" class="btn btn-primary lift">Редактировать</a>
+                            <a href="{{ route($route_name . '.graph', [$route_parameter => $equipment]) }}" class="btn btn-secondary lift">Структура</a>
+							<a href="{{ route($route_name . '.edit', [$route_parameter => $equipment]) }}" class="btn btn-primary lift ms-3">Редактировать</a>
 							<a class="btn btn-danger lift ms-3" onclick="var result = confirm('Вы уверены?');if (result){event.preventDefault();document.getElementById('delete-form{{ $equipment->id }}').submit();}"> Удалить</a>
 							<form action="{{ route($route_name . '.destroy', [$route_parameter => $equipment]) }}" id="delete-form{{ $equipment->id }}" method="POST" style="display: none;">
 								@csrf
