@@ -3,7 +3,7 @@
 <head>
 	<title>Структура {{$equipment->garage_number}}</title>
 
-	<style type="text/css">
+	<style>
 		.node {
 		    cursor: pointer;
 		}
@@ -20,10 +20,16 @@
 		    stroke: #ccc;
 		    stroke-width: 1.5px;
 		}
+        body {
+            margin: 0;
+        }
 	</style>
 </head>
 <body>
-	<div class="graph"></div>
+    <div class="position-fixed">
+        <a href="{{route('equipments.show', ['equipment' => $equipment])}}">Назад</a>
+    </div>
+	<div id="graph" class="position-fixed w-100" style="height: 97vh"></div>
 
 	<script src="https://d3js.org/d3.v3.min.js"></script>
 	<script type="text/javascript">
@@ -49,7 +55,7 @@
 	        return [d.x + rectW / 2, d.y + rectH / 2];
 	    });
 
-	    var svg = d3.select("#graph").append("svg").attr("width", 2000).attr("height", 2000)
+	    var svg = d3.select("#graph").append("svg").attr("width", "100%").attr("height", "100%")
 	        .call(zm = d3.behavior.zoom().scaleExtent([1,3]).on("zoom", redraw)).append("g")
 	        .attr("transform", "translate(" + 350 + "," + 20 + ")");
 
@@ -70,7 +76,7 @@
 	    root.children.forEach(collapse);
 	    update(root);
 
-	    d3.select("#graph").style("height", "800px");
+	    d3.select("#graph");
 
 	    function update(source) {
 

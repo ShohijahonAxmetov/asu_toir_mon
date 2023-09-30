@@ -159,51 +159,52 @@ class EquipmentController extends Controller
 
     public function graph(Equipment $equipment)
     {
-        // podgotovka dannix
-        $equipmentUzels = $equipment->typeEquipment->technicalResourceTypeEquipments;
+        $this->setAllUzels($equipment);
 
-        $children = $equipmentUzels->where('parent_id', null);
-        $equipmentUzels = $equipmentUzels->reject(function($value) {
-            return is_null($value->parent_id);
-        });
-
-        foreach ($children as $key => $child) {
-            $arr = [];
-            foreach ($equipmentUzels as $uzelKey => $uzel) {
-                if($child->id == $uzel->parent_id) {
-                    $arr[] = $uzel;
-                    $equipmentUzels->forget($uzelKey);
-                }
-            }
-            $child->children = $arr;
+        foreach ($this->allUzels as $item) {
+            $item->name = $item->technicalResource->catalog_name;
+            $this->ch($item);
         }
 
-
-
-        $children = $children->technicalResource->catalog_name;
-        dd($children);
-        // sam graph
         $graph = [
-            'name' => $equipment->typeEquipment->name.' №'.$equipment->garage_number,
-            'children' => $children
+            'id' => 99999999999,
+            'name' => $equipment->typeEquipment->name,
+            'children' => $this->allUzels->where('parent_id', null)->toArray()
         ];
-
-        dd($equipmentUzels);
-        foreach ($equipment->technicalResourceTypeEquipments as $childKey => $child) {
-            $forGraph['children'][$childKey] = [
-                'name' => $child->technicalResource->catalog_name
-            ];
-
-            // foreach ($child->children as $subKey => $sub) {
-            //     $forGraph['children'][$childKey]['children'][] = [
-            //         'name' => $sub->technicalResource->catalog_name
-            //     ];
-            // }
-        }
+//        dd($this->allUzels->where('parent_id', null)->toArray());
 
         return view('app.'.$this->route_name.'.graph', [
             'equipment' => $equipment,
             'graph' => $graph
         ]);
+    }
+
+    public $allUzels;
+    public function setAllUzels(Equipment $equipment)
+    {
+        $equipmentUzels = $equipment->typeEquipment->technicalResourceTypeEquipments()
+            ->with('technicalResource')
+            ->get();
+
+        $this->allUzels = $equipmentUzels;
+    }
+
+    function ch($uzel)
+    {
+        $temp = [];
+
+        foreach ($this->allUzels as $key => $item) {
+            if($uzel->id == $item->parent_id) {
+                $temp[] = $item;
+            }
+        }
+
+        if(isset($temp[0])) {
+            $uzel->children = $temp;
+
+            foreach ($uzel->children as $child) {
+                $this->ch($child);
+            }
+        }
     }
 }
