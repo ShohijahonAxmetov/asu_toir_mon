@@ -81,21 +81,6 @@ class HomeController extends Controller
         //     'provedennie' => $provedennie,
         // ]);
 
-        $forGraph = [
-            'nodes' => [
-                ['name' => '1'],
-                ['name' => '2'],
-                ['name' => '3'],
-            ],
-            'links' => [
-                ['source' => 1, 'target' => 0],
-                ['source' => 2, 'target' => 0]
-            ]
-        ];       
-
-
-        $this->createGraph(48);
-
         $remonts = PlanRemont::whereBetween('remont_begin', [date('Y-m-').'01', date('Y-m-').date( 't', time())])
             ->get();
 
@@ -103,7 +88,6 @@ class HomeController extends Controller
             'remonts' => $remonts,
             'applications' => json_encode($this->applications()),
             'badRemonts' => $this->getBadRemonts(),
-            'forGraph' => $forGraph
         ]);
     }
 
@@ -302,104 +286,5 @@ class HomeController extends Controller
             ->take(5);
 
         return $remonts;
-    }
-
-    public function createGraph($id): void
-    {
-        $technicalResource = TechnicalResource::find($id);
-
-        $testData = [
-            [
-                'name' => '1',
-                'children' => [
-                    [
-                        'name' => '11',
-                        'children' => []
-                    ]
-                ]
-            ],
-            [
-                'name' => '2',
-                'children' => []
-            ]
-        ];
-
-        $img_width = 1000;
-        $img_height = 1000;
-        $gd_img = imagecreatetruecolor($img_width, $img_height);
-
-        $ink = imagecolorallocate($gd_img, 255, 255, 255);
-
-        // orasidagi farqlar
-        $farqX = 150;
-        $farqY = 100;
-        foreach ($testData as $key => $value) {
-
-            // narisovat ellips
-            $x = $img_width/2;
-            $y = $farqY; // $img_height
-            $width = 150;
-            $height = 100;
-
-            imageellipse($gd_img, $x, $y, $width, $height, $ink);
-
-
-            // napisat tekst vnutri ellipsa
-            $fontSize = 14;
-            $ugol = 0;
-
-            imagettftext($gd_img, $fontSize, $ugol, $x, $y, $ink, '/assets/fonts/graph/font.ttf', $value['name']);
-
-
-            // if($value['children']) {
-            //     foreach ($value['children'] as $childKey => $child) {
-            //         imageellipse($gd_img, $x1, $y1-$farqY, $width, $height, $ink);
-            //         imagettftext($gd_img, $fontSize, $ugol, $x1, $y1-$farqY, $ink, '/assets/fonts/graph/font.ttf', $child['name']);
-            //     }
-            // }
-        }
-        
-        imagepng($gd_img, 'result.png');
-    }
-
-    public function childrenTree($var)
-    {
-
-    }
-
-    public function example()
-    {
-        $forGraph = [
-            'nodes' => [],
-            'links' => []
-        ];
-        $item = TechnicalResourceTypeEquipment::find(9);
-        $forGraph['nodes'][0] = ['name' => $item->technicalResource->catalog_name];
-
-        foreach ($item->children as $childKey => $childValue) {
-            $forGraph['nodes'][] = ['name' => $childValue->technicalResource->catalog_name];
-
-            $index = count($forGraph['nodes'])-1;
-            $forGraph['links'][] = ['source' => $index, 'target' => 0];
-
-            if(isset($childValue->children[0])) {
-                foreach ($childValue->children as $subChildKey => $subChildValue) {
-                    $forGraph['nodes'][] = ['name' => $subChildValue->technicalResource->catalog_name];
-
-                    $indexSub = count($forGraph['nodes'])-1;
-                    $forGraph['links'][] = ['source' => $indexSub, 'target' => $index];
-                }
-
-                if(isset($subChildValue->children[0])) {
-                    foreach ($subChildValue->children as $sub2ChildKey => $sub2ChildValue) {
-                        $forGraph['nodes'][] = ['name' => $sub2ChildValue->technicalResource->catalog_name];
-
-                        $forGraph['links'][] = ['source' => count($forGraph['nodes'])-1, 'target' => $indexSub];
-                    }
-                }
-            }
-        }
-
-        return $forGraph;
     }
 }
