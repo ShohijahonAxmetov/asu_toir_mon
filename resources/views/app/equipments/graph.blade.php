@@ -3,6 +3,13 @@
 <head>
 	<title>Структура {{$equipment->garage_number}}</title>
 
+	<!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/libs.bundle.css" />
+    <link rel="stylesheet" href="/assets/css/theme.bundle.css" />
 	<style>
 		.node {
 		    cursor: pointer;
@@ -26,10 +33,90 @@
 	</style>
 </head>
 <body>
-    <div class="position-fixed">
-        <a href="{{route('equipments.show', ['equipment' => $equipment])}}">Назад</a>
+	<!-- HEADER -->
+    <div class="header">
+        <div class="container-fluid">
+		<div class="mt-3">
+	        <a href="{{route('equipments.show', ['equipment' => $equipment])}}">< Назад</a>
+	    </div>
+            <!-- Body -->
+            <div class="header-body">
+                <div class="row align-items-end">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h1 class="header-title">
+                            Наработки оборудования {{$equipment->typeEquipment->name}} №{{$equipment->garage_number}}
+                        </h1>
+
+                    </div>
+                    <div class="col-auto">
+
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .header-body -->
+        </div>
+    </div> <!-- / .header -->
+	<div class="container-fluid">
+        <div class="card mt-4">
+            <div class="card-body">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Наработки</th>
+                            <th scope="col">Остаточный ресурс</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($uzels as $key => $item)
+                            <tr>
+                                <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {{ $item->technicalResource->catalog_name }}
+                                    </div>
+                                </td>
+                                <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
+                                <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-	<div id="graph" class="position-fixed w-100" style="height: 97vh"></div>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="container-fluid">
+
+            <!-- Body -->
+            <div class="header-body">
+                <div class="row align-items-end">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h1 class="header-title">
+                            Структура оборудования {{$equipment->typeEquipment->name}} №{{$equipment->garage_number}}
+                        </h1>
+
+                    </div>
+                    <div class="col-auto">
+
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .header-body -->
+        </div>
+    </div> <!-- / .header -->
+	<div class="container-fluid">
+		<div id="graph" class="w-100" style="height: 97vh"></div>
+	</div>
 
 	<script src="https://d3js.org/d3.v3.min.js"></script>
 	<script type="text/javascript">
@@ -46,7 +133,8 @@
 
 	    var i = 0,
 	        duration = 750,
-	        rectW = 100,
+	        // rectW = 100,
+	        rectW = 100 / 5,
 	        rectH = 30;
 
 	    var tree = d3.layout.tree().nodeSize([120, 40]);
@@ -103,18 +191,34 @@
 	        })
 	            .on("click", click);
 
-	        nodeEnter.append("rect")
-	            .attr("width", rectW)
-	            .attr("height", rectH)
+	        // nodeEnter.append("rect")
+	        //     .attr("width", rectW)
+	        //     .attr("height", rectH)
+	        //     .attr("stroke", "black")
+	        //     .attr("stroke-width", 1)
+	        //     .style("fill", function (d) {
+	        //     return d._children ? "lightsteelblue" : "#fff";
+	        // });
+	        nodeEnter.append("circle")
+	            .attr("r", rectW)
+	            // .attr("height", rectH)
 	            .attr("stroke", "black")
 	            .attr("stroke-width", 1)
 	            .style("fill", function (d) {
 	            return d._children ? "lightsteelblue" : "#fff";
 	        });
 
-	        nodeEnter.append("text")
-	            .attr("x", rectW / 2)
-	            .attr("y", rectH / 2)
+	        // nodeEnter.append("text")
+	        //     .attr("x", rectW / 2)
+	        //     .attr("y", rectH / 2)
+	        //     .attr("dy", ".35em")
+	        //     .attr("text-anchor", "middle")
+	        //     .text(function (d) {
+	        //     return d.name;
+	        // });
+            nodeEnter.append("text")
+	            .attr("x", 0)
+	            .attr("y", 0)
 	            .attr("dy", ".35em")
 	            .attr("text-anchor", "middle")
 	            .text(function (d) {
@@ -128,9 +232,17 @@
 	            return "translate(" + d.x + "," + d.y + ")";
 	        });
 
-	        nodeUpdate.select("rect")
-	            .attr("width", rectW)
-	            .attr("height", rectH)
+	        // nodeUpdate.select("rect")
+	        //     .attr("width", rectW)
+	        //     .attr("height", rectH)
+	        //     .attr("stroke", "black")
+	        //     .attr("stroke-width", 1)
+	        //     .style("fill", function (d) {
+	        //     return d._children ? "lightsteelblue" : "#fff";
+	        // });
+            nodeUpdate.select("circle")
+	            .attr("r", rectW)
+	            // .attr("height", rectH)
 	            .attr("stroke", "black")
 	            .attr("stroke-width", 1)
 	            .style("fill", function (d) {
@@ -148,12 +260,19 @@
 	        })
 	            .remove();
 
-	        nodeExit.select("rect")
-	            .attr("width", rectW)
-	            .attr("height", rectH)
-	        //.attr("width", bbox.getBBox().width)""
-	        //.attr("height", bbox.getBBox().height)
-	        .attr("stroke", "black")
+	        // nodeExit.select("rect")
+	        //     .attr("width", rectW)
+	        //     .attr("height", rectH)
+	        // 	//.attr("width", bbox.getBBox().width)""
+	        // 	//.attr("height", bbox.getBBox().height)
+	        // 	.attr("stroke", "black")
+	        //     .attr("stroke-width", 1);
+            nodeExit.select("circle")
+	            .attr("r", rectW)
+	            // .attr("height", rectH)
+	        	//.attr("width", bbox.getBBox().width)""
+	        	//.attr("height", bbox.getBBox().height)
+	        	.attr("stroke", "black")
 	            .attr("stroke-width", 1);
 
 	        nodeExit.select("text");

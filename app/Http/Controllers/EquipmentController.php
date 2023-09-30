@@ -157,26 +157,10 @@ class EquipmentController extends Controller
         ]);
     }
 
-    public function graph(Equipment $equipment)
+    public $currentLvl;
+    public function setCurrentLevel($value = 0)
     {
-        $this->setAllUzels($equipment);
-
-        foreach ($this->allUzels as $item) {
-            $item->name = $item->technicalResource->catalog_name;
-            $this->ch($item);
-        }
-
-        $graph = [
-            'id' => 99999999999,
-            'name' => $equipment->typeEquipment->name,
-            'children' => $this->allUzels->where('parent_id', null)->toArray()
-        ];
-//        dd($this->allUzels->where('parent_id', null)->toArray());
-
-        return view('app.'.$this->route_name.'.graph', [
-            'equipment' => $equipment,
-            'graph' => $graph
-        ]);
+        $this->currentLvl = $value;
     }
 
     public $allUzels;
@@ -189,12 +173,39 @@ class EquipmentController extends Controller
         $this->allUzels = $equipmentUzels;
     }
 
-    function ch($uzel)
+    public function graph(Equipment $equipment)
+    {
+        $this->setAllUzels($equipment);
+        $this->setCurrentLevel();
+
+        $subCollection = $this->allUzels->where('parent_id', null);
+        foreach ($subCollection as $key => $item) {
+            $item->name = $item->technicalResource->catalog_name;
+            $item->originalName = $item->technicalResource->catalog_name;
+            $this->ch($item, 1);
+        }
+
+        $graph = [
+            'id' => 99999999999,
+            'name' => $equipment->typeEquipment->name,
+            'children' => $this->allUzels->where('parent_id', null)->toArray()
+        ];
+        // dd($graph['children'][8]);
+
+        return view('app.'.$this->route_name.'.graph', [
+            'equipment' => $equipment,
+            'graph' => $graph,
+            'uzels' => $this->allUzels,
+        ]);
+    }
+
+    function ch($uzel, $lvl)
     {
         $temp = [];
 
         foreach ($this->allUzels as $key => $item) {
             if($uzel->id == $item->parent_id) {
+                $item->lvl = $lvl;
                 $temp[] = $item;
             }
         }
@@ -202,9 +213,15 @@ class EquipmentController extends Controller
         if(isset($temp[0])) {
             $uzel->children = $temp;
 
+            $lvl = $lvl + 1;
             foreach ($uzel->children as $child) {
-                $this->ch($child);
+                $this->ch($child, $lvl);
             }
         }
+    }
+
+    public function getDesignations()
+    {
+        return ['X', 'Y', 'Z', 'M', 'N', 'P', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20'];
     }
 }
