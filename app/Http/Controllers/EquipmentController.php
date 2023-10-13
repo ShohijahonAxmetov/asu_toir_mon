@@ -179,18 +179,20 @@ class EquipmentController extends Controller
         $this->setCurrentLevel();
 
         $subCollection = $this->allUzels->where('parent_id', null);
+        $counter = 0;
         foreach ($subCollection as $key => $item) {
-            $item->name = $item->technicalResource->catalog_name;
+            $item->name = $this->getDesignations()[0].$counter ++ + 1;
             $item->originalName = $item->technicalResource->catalog_name;
             $this->ch($item, 1);
         }
+        // dd($subCollection->toArray());
 
         $graph = [
             'id' => 99999999999,
             'name' => $equipment->typeEquipment->name,
             'children' => $this->allUzels->where('parent_id', null)->toArray()
+            // 'children' => $subCollection->toArray()
         ];
-        // dd($graph['children'][8]);
 
         return view('app.'.$this->route_name.'.graph', [
             'equipment' => $equipment,
@@ -203,9 +205,12 @@ class EquipmentController extends Controller
     {
         $temp = [];
 
+        $counter = 0;
         foreach ($this->allUzels as $key => $item) {
             if($uzel->id == $item->parent_id) {
                 $item->lvl = $lvl;
+                $item->name = $this->getDesignations()[$lvl].$counter++ + 1;
+                $item->originalName = $item->technicalResource->catalog_name;
                 $temp[] = $item;
             }
         }

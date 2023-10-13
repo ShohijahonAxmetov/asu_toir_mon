@@ -78,11 +78,11 @@
                                 <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->technicalResource->catalog_name }}
+                                        {{ $item->name.'('.$item->technicalResource->catalog_name.')' }}
                                     </div>
                                 </td>
-                                <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
-                                <td>{{ $item->technicalResource->catalog_name ?? '--' }}</td>
+                                <td>--</td>
+                                <td>--</td>
                             </tr>
                         @endforeach
                         </tbody>
