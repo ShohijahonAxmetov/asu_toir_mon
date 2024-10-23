@@ -202,6 +202,55 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('repairs') || request()->is('repairs/*') ? 'active' : '' }}"
+                               href="{{ route('repairs.index') }}">
+                                <i class="fe fe-briefcase"></i> Ремонты
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tech_maps" data-bs-toggle="collapse" role="button"
+                               aria-expanded="{{ request()->is('tech_maps') || request()->is('tech_maps/*') || request()->is('tech_map_groups') || request()->is('tech_map_groups/*') || request()->is('tech_operations') || request()->is('tech_operations/*') || request()->is('tech_operation_stages') || request()->is('tech_operation_stages/*') ? 'true' : 'false' }}"
+                               aria-controls="documents">
+                                <i class="fe fe-book"></i> Технологические карты
+                            </a>
+                            <div
+                                class="collapse {{ request()->is('tech_maps') || request()->is('tech_maps/*') || request()->is('tech_map_groups') || request()->is('tech_map_groups/*') || request()->is('tech_operations') || request()->is('tech_operations/*') || request()->is('tech_operation_stages') || request()->is('tech_operation_stages/*') ? 'show' : '' }}"
+                                id="tech_maps">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('tech_map_groups') || request()->is('tech_map_groups/*') ? 'active' : '' }}"
+                                           href="{{route('tech_map_groups.index')}}">
+                                            Группа технологических карт
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('tech_operation_stages') || request()->is('tech_operation_stages/*') ? 'active' : '' }}"
+                                           href="{{route('tech_operation_stages.index')}}">
+                                            Этапы
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('tech_operations') || request()->is('tech_operations/*') ? 'active' : '' }}"
+                                           href="{{route('tech_operations.index')}}">
+                                            Технологические операции
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('tech_maps') || request()->is('tech_maps/*') ? 'active' : '' }}"
+                                           href="{{route('tech_maps.index')}}">
+                                            Технологические карты
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('analysis') || request()->is('analysis/*') ? 'active' : '' }}"
+                                           href="{{route('analysis.index')}}">
+                                            Анализ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <hr class="navbar-divider my-3">
                         <li class="nav-item">
                             <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button"

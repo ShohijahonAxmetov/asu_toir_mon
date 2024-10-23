@@ -14,8 +14,27 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-//            TypeTechnicalInspectionSeeder::class,
-//            EquipmentSeeder::class,
+
+            // для техкарт
+            TechMapGroupsSeeder::class,
+	        TechMapsSeeder::class,
+	        TechOperationStagesSeeder::class,
+	        TechOperationsSeeder::class,
+            TechMapOperationSeeder::class,
+
+	        // справочники
+	        InstrumentSeeder::class,
+	        QualificationSeeder::class,
+	        RepairEquipmentSeeder::class,
+	        UnitSeeder::class,
+            TechnicalResourceSeeder::class,
+
+	        // другие
+	        StatusSeeder::class,
+            RepairSeeder::class,
+            RepairLogSeeder::class,
+       		// TypeTechnicalInspectionSeeder::class,
+       		// EquipmentSeeder::class,
         ]);
     }
 }

@@ -52,7 +52,7 @@ class StatusSeeder extends Seeder
     		],
     	];
 
-    	foreach ($data as $key => $value) {
+    	if(ExecutionStatus::count() == 0) foreach ($data as $key => $value) {
     		ExecutionStatus::create($value);
     	}
     }
