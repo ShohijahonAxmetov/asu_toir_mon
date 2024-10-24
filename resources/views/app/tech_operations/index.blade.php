@@ -53,7 +53,7 @@
                             <th scope="col">Наименование</th>
                             <!-- <th scope="col">Наименование полное</th> -->
                             <th scope="col">Продолжительность</th>
-                            <th scope="col">Расценка</th>
+                            <th scope="col">Расценка, сум   </th>
                             <!-- <th scope="col">Дата добавления</th> -->
                             <th scope="col"></th>
                         </tr>
@@ -69,7 +69,7 @@
                                 </td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->hours.' ч '.$item->minutes.' мин' }}</td>
-                                <td>{{ $item->amount ?? '-' }}</td>
+                                <td>{{ number_format($item->amount) ?? '-' }}</td>
                                 <!-- <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td> -->
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">

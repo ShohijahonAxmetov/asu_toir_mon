@@ -53,8 +53,8 @@ class RepairLog extends Model
 
         return $result == 0
             ? '-'
-            : ($result < -60
+            : ($result < -59
                     ? '-'.(floor($result/60)+1).' ч '.abs($result%60).' м'
-                    : ($result == -60 ? '' : '+').floor($result/60).' ч '.($result%60).' м');
+                    : ($result < 0 ? '-0 ч '.abs($result%60).' м' : '+'.floor($result/60).' ч '.($result%60).' м'));
     }
 }

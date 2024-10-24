@@ -68,8 +68,8 @@
                             <td class="">{{$item->hours.' ч '.$item->minutes.' мин'}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Расценка</th>
-                            <td class="">{{ $item->amount}}</td>
+                            <th scope="row">Расценка, сум</th>
+                            <td class="">{{ number_format($item->amount)}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Содержание работ</th>

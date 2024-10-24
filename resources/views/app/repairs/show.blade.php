@@ -69,7 +69,7 @@
                             @if($deviations->h == 0 && $deviations->i == 0)
                             <td class="">-</td>
                             @else
-                            <td class="{{$deviations->invert ? 'text-success' : 'text-danger'}}">{{($deviations->invert ? '-' : '+').$deviations->h.' ч '.$deviations->i.' м'}}</td>
+                            <td class="text-warning">{{($deviations->invert ? '-' : '+').$deviations->h.' ч '.$deviations->i.' м'}}</td>
                             @endif
                         </tr>
                         <tr>
@@ -134,12 +134,12 @@
                                 <th scope="row" style="width: 100px">{{ $loop->iteration }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $log->techOperation->title }}
+                                        {{ $log->techOperation->title.' ('.$log->techOperation->techOperationStage->title.')' }}
                                     </div>
                                 </td>
                                 <td>{{$log->techOperation->hours.' ч '.$log->techOperation->minutes.' м'}}</td>
                                 <td>{{$log->duration_hours.' ч '.$log->duration_minutes.' м'}}</td>
-                                <td class="{{str_contains($log->deviation(), '+') ? 'bg-danger' : ''}}">{{$log->deviation()}}</td>
+                                <td class="{{$log->deviation() != '-' ? 'bg-warning' : ''}}">{{$log->deviation()}}</td>
                                 <td>{{$log->comments ?? '-'}}</td>
                                 <td style="width: 200px">
                                     <div class="d-flex justify-content-end">
