@@ -27,6 +27,7 @@ class TechMap extends Model
 
     protected $appends = [
         'amount',
+        'duration',
     ];
 
     protected function casts(): array
@@ -78,5 +79,16 @@ class TechMap extends Model
     public function getAmountAttribute()
     {
         return $this->onlyTechOperations()->sum('amount');
+    }
+
+    // return minutes
+    public function getDurationAttribute(): int
+    {
+        $duration = 0;
+        foreach ($this->onlyTechOperations() as $operation) {
+            $duration += $operation->hours*60 + $operation->minutes;
+        }
+
+        return $duration;
     }
 }

@@ -97,8 +97,8 @@ class TechMapController extends Controller
         $techMapOperations = DB::table('tech_map_operations')
                                 ->where('tech_map_id', $techMap->id)
                                 ->join('tech_operations', 'tech_map_operations.model_id', '=', 'tech_operations.id')
+                                ->orderBy('position')
                                 ->get();
-                                // dd($techMapOperations);
 
         return view('app.'.$this->route_name.'.show', [
             'title' => $this->title,

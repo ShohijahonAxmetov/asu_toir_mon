@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Отклонения от норматива</th>
-                            @if($deviations->h == 0 && $deviations->i == 0)
+                            @if(is_string($deviations))
                             <td class="">-</td>
                             @else
                             <td class="text-warning">{{($deviations->invert ? '-' : '+').$deviations->h.' ч '.$deviations->i.' м'}}</td>
@@ -101,9 +101,9 @@
                             Процесс ремонта
                         </h1>
 
-                        <a href="{{ route($route_parameter.'.logs.add', ['repair' => $item->id]) }}" class="btn btn-primary lift">
+                        <!-- <a href="{{ route($route_parameter.'.logs.add', ['repair' => $item->id]) }}" class="btn btn-primary lift">
                             Добавить
-                        </a>
+                        </a> -->
 
                     </div>
                 </div> <!-- / .row -->
@@ -155,6 +155,73 @@
                         @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <div class="card-body">
+            <!-- Button -->
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMembers"> Launch demo modal </button>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Modal: Members -->
+    <div class="modal fade" id="modalMembers" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="card mb-0" data-list='{"valueNames": ["name"]}'>
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title" id="exampleModalCenterTitle"> Редактирование процесса </h4>
+                        <!-- Close -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <p>Продолжительность работы</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="title" class="form-label required">Часы</label>
+                                <input type="text" class="form-control @error('hours') is-invalid @enderror" name="hours" value="{{ old('hours', 1) }}" id="hours" placeholder="Часы..." required>
+                                @error('hours')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-6">
+                                <label for="unit_id" class="form-label required">Минуты</label>
+                                <input type="text" class="form-control @error('minutes') is-invalid @enderror" name="minutes" value="{{ old('minutes', 1) }}" id="minutes" placeholder="Часы..." required>
+                                @error('minutes')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="characteristics" class="form-label">Комментарии</label>
+                                    <textarea rows="5" class="form-control @error('characteristics') is-invalid @enderror" name="characteristics" id="characteristics" placeholder="Комментарии...">{{ old('characteristics') }}</textarea>
+                                    @error('characteristics')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>                                    
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="model-btns d-flex justify-content-end">
+                            <a type="button" class="btn btn-secondary">Отмена</a>
+                            <input type="submit" name="action" value="Сохранить" class="btn btn-success ms-2" />
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

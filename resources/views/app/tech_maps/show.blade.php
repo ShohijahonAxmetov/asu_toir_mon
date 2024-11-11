@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('links')
+@livewireStyles
+@endsection
+
 @section('content')
     <!-- HEADER -->
     <div class="header">
@@ -136,15 +140,15 @@
                                         <span>{{$operation->title}}</span>
                                         @else
                                         <div class="accordion-item w-100 border-0 bg-transparent">
-                                            <h2 class="accordion-header" id="flush-headingOne">
-                                                <button class="accordion-button px-0 border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$operation->id}}" aria-expanded="false" aria-controls="flush-collapse{{$operation->id}}">
-                                                    Технологическая карта: {{ $operation->model::find($operation->model_id)->title }}
+                                            <h2 class="accordion-header" id="flush-heading{{$operation->id}}">
+                                                <button class="h5 px-0 mb-0 text-start border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$operation->id}}" aria-expanded="false" aria-controls="flush-collapse{{$operation->id}}" style="padding-top: 1.32rem;padding-bottom: 1.32rem">
+                                                    <b>Технологическая карта:</b> {{ $operation->model::find($operation->model_id)->title }}
                                                 </button>
                                             </h2>
-                                            <div id="flush-collapse{{$operation->id}}" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                                <ul class="list-group">
+                                            <div id="flush-collapse{{$operation->id}}" class="accordion-collapse collapse show" aria-labelledby="flush-heading{{$operation->id}}">
+                                                <ul class="list-group list-group-numbered">
                                                     @foreach($operation->model::find($operation->model_id)->onlyTechOperations() as $techOperation)
-                                                    <li class="list-group-item">{{ $techOperation->title }}</li>
+                                                    <li class="list-group-item">{{ $techOperation->title }} - {{$techOperation->hours.' ч '.$techOperation->minutes.' м'}}</li>
                                                     @endforeach
                                                 </ul>
                                             </div>
@@ -154,7 +158,11 @@
                                 </td>
                                 <td class="w-100 py-0">
                                     <div class="d-flex align-items-center">
+                                        @if($operation->model == 'App\Models\TechMaps\TechOperation')
                                         <span>{{$operation->hours.' ч '.$operation->minutes.' м'}}</span>
+                                        @else
+                                        <span>{{floor($operation->model::find($operation->model_id)->duration/60).' ч '.($operation->model::find($operation->model_id)->duration%60).' м'}}</span>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -307,4 +315,8 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+@livewireScripts
 @endsection
